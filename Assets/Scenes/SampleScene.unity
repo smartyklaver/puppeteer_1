@@ -677,9 +677,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShoulderController
   shoulder: {fileID: 747047872}
-  rotationSpeed: 50
+  rotationSpeed: 10
   minAngle: -30
-  maxAngle: 60
+  maxAngle: 90
 --- !u!1001 &2066374966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -826,31 +826,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.81965744
+      value: 0.8570499
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.25059652
+      value: 0.010120507
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.043276068
+      value: -0.11463228
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5133131
+      value: -0.5022177
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -21.492
+      value: -5.612
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 20.655
+      value: -11.985
       objectReference: {fileID: 0}
     - target: {fileID: 7603880967163391141, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -68.075
+      value: -60.15
       objectReference: {fileID: 0}
     - target: {fileID: 8144572309102352393, guid: fac59f23779276e4888e7d5c01226ffb, type: 3}
       propertyPath: m_LocalPosition.x
