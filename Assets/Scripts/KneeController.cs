@@ -5,18 +5,18 @@ public class KneeController : MonoBehaviour
     [Header("Left Knee Setup")]
     public Transform leftKnee;
     public float leftRotationSpeed = 50f;
-    public float leftMinAngle = 0f;
-    public float leftMaxAngle = 90f;
-    public KeyCode leftBendKey = KeyCode.X;       // buigen
-    public KeyCode leftStraightenKey = KeyCode.C; // strekken
+    public float leftMinAngle = -90f;
+    public float leftMaxAngle = 0f;
+    public KeyCode leftBendKey = KeyCode.P;       // buigen
+    public KeyCode leftStraightenKey = KeyCode.M; // strekken
 
     [Header("Right Knee Setup")]
     public Transform rightKnee;
     public float rightRotationSpeed = 50f;
-    public float rightMinAngle = 0f;
-    public float rightMaxAngle = 90f;
-    public KeyCode rightBendKey = KeyCode.B;
-    public KeyCode rightStraightenKey = KeyCode.N;
+    public float rightMinAngle = -90f;
+    public float rightMaxAngle = 0f;
+    public KeyCode rightBendKey = KeyCode.X;
+    public KeyCode rightStraightenKey = KeyCode.C;
 
     private float leftCurrentAngle;
     private float rightCurrentAngle;

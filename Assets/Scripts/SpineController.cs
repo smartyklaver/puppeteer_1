@@ -15,8 +15,8 @@ public class SpineController : MonoBehaviour
     private float fixedZAngle;
 
     [Header("Input Toetsen")]
-    public KeyCode bendForwardKey = KeyCode.O;
-    public KeyCode bendBackwardKey = KeyCode.K;
+    public KeyCode bendForwardKey = KeyCode.A;
+    public KeyCode bendBackwardKey = KeyCode.Q;
 
     void Start()
     {

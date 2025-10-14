@@ -21,16 +21,16 @@ public class ElbowController : MonoBehaviour
     public float palmDownAngle = 180f;  // 180° = handpalm naar beneden
 
     [Header("Left Arm Controls")]
-    public KeyCode bendUpLeft = KeyCode.Q;
-    public KeyCode bendDownLeft = KeyCode.A;
-    public KeyCode rotatePalmLeftUp = KeyCode.E;
-    public KeyCode rotatePalmLeftDown = KeyCode.D;
+    public KeyCode bendUpLeft = KeyCode.R;
+    public KeyCode bendDownLeft = KeyCode.F;
+    public KeyCode rotatePalmLeftUp = KeyCode.T;
+    public KeyCode rotatePalmLeftDown = KeyCode.G;
 
     [Header("Right Arm Controls")]
-    public KeyCode bendUpRight = KeyCode.O;
-    public KeyCode bendDownRight = KeyCode.L;
-    public KeyCode rotatePalmRightUp = KeyCode.P;
-    public KeyCode rotatePalmRightDown = KeyCode.Semicolon;
+    public KeyCode bendUpRight = KeyCode.Y;
+    public KeyCode bendDownRight = KeyCode.H;
+    public KeyCode rotatePalmRightUp = KeyCode.U;
+    public KeyCode rotatePalmRightDown = KeyCode.J;
 
     // interne status
     private float leftBend, rightBend;

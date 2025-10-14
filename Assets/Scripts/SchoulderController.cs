@@ -6,50 +6,25 @@ public class ShoulderController : MonoBehaviour
     public Transform leftShoulder;
     public Transform rightShoulder;
     public float rotationSpeed = 50f;
-    public float minAngle = -30f;
-    public float maxAngle = 60f;
-    public float initialStartAngle = 0f;
+    public float currentValue = 0.5f; // startpositie (tussen 0 en 1)
 
-    [Header("Offset Correction (use this to fix uneven poses)")]
-    public float leftOffset = 0f;
-    public float rightOffset = 0f;
-
-    private float leftCurrentAngle;
-    private float rightCurrentAngle;
-
-    private float leftInitialX;
-    private float leftY;
-    private float leftZ;
-
-    private float rightInitialX;
-    private float rightY;
-    private float rightZ;
+    [Header("Left Arm Rotation Range")]
+    public Vector3 leftLowRotation = new Vector3(5.215f, -100.063f, -72.656f);
+    public Vector3 leftHighRotation = new Vector3(-2.258f, 89.23f, -107.951f);
 
     [Header("Input Keys")]
-    public KeyCode leftUpKey = KeyCode.W;
+    public KeyCode leftUpKey = KeyCode.Z;
     public KeyCode leftDownKey = KeyCode.S;
     public KeyCode rightUpKey = KeyCode.E;
     public KeyCode rightDownKey = KeyCode.D;
 
+    private float leftValue;
+    private float rightValue;
+
     void Start()
     {
-        if (leftShoulder != null)
-        {
-            Vector3 rot = leftShoulder.localEulerAngles;
-            leftInitialX = rot.x;
-            leftY = rot.y;
-            leftZ = rot.z;
-            leftCurrentAngle = initialStartAngle;
-        }
-
-        if (rightShoulder != null)
-        {
-            Vector3 rot = rightShoulder.localEulerAngles;
-            rightInitialX = rot.x;
-            rightY = rot.y;
-            rightZ = rot.z;
-            rightCurrentAngle = initialStartAngle;
-        }
+        leftValue = currentValue;
+        rightValue = currentValue;
     }
 
     void Update()
@@ -58,32 +33,32 @@ public class ShoulderController : MonoBehaviour
         if (leftShoulder != null)
         {
             if (Input.GetKey(leftUpKey))
-                leftCurrentAngle += rotationSpeed * Time.deltaTime;
+                leftValue += rotationSpeed * Time.deltaTime * 0.01f;
             if (Input.GetKey(leftDownKey))
-                leftCurrentAngle -= rotationSpeed * Time.deltaTime;
+                leftValue -= rotationSpeed * Time.deltaTime * 0.01f;
 
-            leftCurrentAngle = Mathf.Clamp(leftCurrentAngle, minAngle, maxAngle);
-            leftShoulder.localRotation = Quaternion.Euler(
-                leftCurrentAngle + leftInitialX + leftOffset,
-                leftY,
-                leftZ
-            );
+            leftValue = Mathf.Clamp01(leftValue);
+
+            Quaternion leftRot = Quaternion.Euler(Vector3.Lerp(leftLowRotation, leftHighRotation, leftValue));
+            leftShoulder.localRotation = leftRot;
         }
 
-        // === Right Arm ===
+        // === Right Arm (Mirrored) ===
         if (rightShoulder != null)
         {
             if (Input.GetKey(rightUpKey))
-                rightCurrentAngle += rotationSpeed * Time.deltaTime;
+                rightValue += rotationSpeed * Time.deltaTime * 0.01f;
             if (Input.GetKey(rightDownKey))
-                rightCurrentAngle -= rotationSpeed * Time.deltaTime;
+                rightValue -= rotationSpeed * Time.deltaTime * 0.01f;
 
-            rightCurrentAngle = Mathf.Clamp(rightCurrentAngle, minAngle, maxAngle);
-            rightShoulder.localRotation = Quaternion.Euler(
-                rightCurrentAngle + rightInitialX + rightOffset,
-                rightY,
-                rightZ
-            );
+            rightValue = Mathf.Clamp01(rightValue);
+
+            // Spiegelen van linkerarm rotatie (Y en Z negatief)
+            Vector3 rightLow = new Vector3(leftLowRotation.x, -leftLowRotation.y, -leftLowRotation.z);
+            Vector3 rightHigh = new Vector3(leftHighRotation.x, -leftHighRotation.y, -leftHighRotation.z);
+
+            Quaternion rightRot = Quaternion.Euler(Vector3.Lerp(rightLow, rightHigh, rightValue));
+            rightShoulder.localRotation = rightRot;
         }
     }
 }

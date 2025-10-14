@@ -22,12 +22,12 @@ public class LegController : MonoBehaviour
     private float rightZ;
 
     [Header("Input Toetsen (Links Been)")]
-    public KeyCode leftForwardKey = KeyCode.R;   // Voorbeeld: E = linkerbeen vooruit
-    public KeyCode leftBackwardKey = KeyCode.F;  // D = linkerbeen achteruit
+    public KeyCode leftForwardKey = KeyCode.I;   // Voorbeeld: E = linkerbeen vooruit
+    public KeyCode leftBackwardKey = KeyCode.K;  // D = linkerbeen achteruit
 
     [Header("Input Toetsen (Rechts Been)")]
-    public KeyCode rightForwardKey = KeyCode.T;  // I = rechterbeen vooruit
-    public KeyCode rightBackwardKey = KeyCode.G; // K = rechterbeen achteruit
+    public KeyCode rightForwardKey = KeyCode.O;  // I = rechterbeen vooruit
+    public KeyCode rightBackwardKey = KeyCode.L; // K = rechterbeen achteruit
 
     void Start()
     {
