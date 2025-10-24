@@ -3,17 +3,22 @@ using System.Collections;
 
 public class CurtainMove : MonoBehaviour
 {
-    public Vector3 openOffset = new Vector3(3f, 0f, 0f); // how far to move right
-    public float speed = 2f; // how fast to move
+    [Header("Curtain Settings")]
+    public Vector3 closedPosition = new Vector3(0f, 0f, 0f);  // where the curtain starts
+    public Vector3 openOffset = new Vector3(3f, 0f, 0f);      // how far to move right
+    public float speed = 2f;                                  // movement speed
 
-    private Vector3 closedPosition;
     private Vector3 openPosition;
 
     void Start()
     {
-        closedPosition = transform.position;
+        // Force the curtain to start closed
+        transform.position = closedPosition;
+
+        // Calculate the open position (right side)
         openPosition = closedPosition + openOffset;
 
+        // Start opening the curtain
         StartCoroutine(OpenCurtain());
     }
 
@@ -25,6 +30,7 @@ public class CurtainMove : MonoBehaviour
             yield return null;
         }
 
-        transform.position = openPosition; // snap exactly to final spot
+        // Snap exactly to final position
+        transform.position = openPosition;
     }
 }
