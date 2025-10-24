@@ -5,14 +5,12 @@ public class SpineController : MonoBehaviour
     [Header("Spine Setup")]
     public Transform spine;          // Sleep hier het Spine object in (Armature/Hips/Spine)
     public float rotationSpeed = 50f;
-    public float minAngle = -30f;    // Hoe ver hij achterover mag buigen
-    public float maxAngle = 60f;     // Hoe ver hij voorover mag buigen
     public float initialStartAngle = 0f;
 
     private float currentAngle;
-    private float initialXAngle;
+    private float initialZAngle;
+    private float fixedXAngle;
     private float fixedYAngle;
-    private float fixedZAngle;
 
     [Header("Input Toetsen")]
     public KeyCode bendForwardKey = KeyCode.A;
@@ -22,10 +20,12 @@ public class SpineController : MonoBehaviour
     {
         if (spine != null)
         {
+            // lees huidige rotatie
             Vector3 startRotation = spine.localEulerAngles;
-            initialXAngle = startRotation.x;
+            fixedXAngle = startRotation.x;
             fixedYAngle = startRotation.y;
-            fixedZAngle = startRotation.z;
+            initialZAngle = startRotation.z;
+
             currentAngle = initialStartAngle;
         }
     }
@@ -34,18 +34,18 @@ public class SpineController : MonoBehaviour
     {
         if (spine == null) return;
 
+        // Draai vooruit/achteruit
         if (Input.GetKey(bendForwardKey))
             currentAngle += rotationSpeed * Time.deltaTime;
 
         if (Input.GetKey(bendBackwardKey))
             currentAngle -= rotationSpeed * Time.deltaTime;
 
-        currentAngle = Mathf.Clamp(currentAngle, minAngle, maxAngle);
-
+        // Pas de rotatie toe alleen in Z
         spine.localRotation = Quaternion.Euler(
-            currentAngle + initialXAngle,
+            fixedXAngle,
             fixedYAngle,
-            fixedZAngle
+            initialZAngle + currentAngle
         );
     }
 }

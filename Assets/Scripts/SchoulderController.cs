@@ -19,10 +19,10 @@ public class ShoulderController : MonoBehaviour
     void Start()
     {
         if (leftShoulder != null)
-            leftYAngle = leftShoulder.localEulerAngles.y;
+            leftYAngle = leftShoulder.localEulerAngles.z;
 
         if (rightShoulder != null)
-            rightYAngle = rightShoulder.localEulerAngles.y;
+            rightYAngle = rightShoulder.localEulerAngles.z;
     }
 
     void Update()
@@ -40,7 +40,7 @@ public class ShoulderController : MonoBehaviour
             if (leftYAngle < 0f) leftYAngle += 360f;
 
             Vector3 euler = leftShoulder.localEulerAngles;
-            euler.y = leftYAngle;
+            euler.z = leftYAngle;
             leftShoulder.localEulerAngles = euler;
         }
 
@@ -56,7 +56,7 @@ public class ShoulderController : MonoBehaviour
             if (rightYAngle < 0f) rightYAngle += 360f;
 
             Vector3 euler = rightShoulder.localEulerAngles;
-            euler.y = rightYAngle;
+            euler.z = rightYAngle;
             rightShoulder.localEulerAngles = euler;
         }
     }
