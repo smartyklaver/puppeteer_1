@@ -5,26 +5,24 @@ public class ShoulderController : MonoBehaviour
     [Header("Shoulder Setup")]
     public Transform leftShoulder;
     public Transform rightShoulder;
-    public float rotationSpeed = 50f;
-    public float currentValue = 0.0f; 
-
-    [Header("Left Arm Rotation Range")]
-    public Vector3 leftLowRotation = new Vector3(5.215f, -100.063f, -72.656f);
-    public Vector3 leftHighRotation = new Vector3(-2.258f, 89.23f, -107.951f);
+    public float rotationSpeed = 100f;
 
     [Header("Input Keys")]
-    public KeyCode leftUpKey = KeyCode.Z;
-    public KeyCode leftDownKey = KeyCode.S;
-    public KeyCode rightUpKey = KeyCode.E;
-    public KeyCode rightDownKey = KeyCode.D;
+    public KeyCode leftClockwiseKey = KeyCode.Z;   // links arm draait mee met klok
+    public KeyCode leftCounterKey = KeyCode.S;     // links arm draait tegen klok in
+    public KeyCode rightClockwiseKey = KeyCode.E;
+    public KeyCode rightCounterKey = KeyCode.D;
 
-    private float leftValue;
-    private float rightValue;
+    private float leftYAngle;
+    private float rightYAngle;
 
     void Start()
     {
-        leftValue = currentValue;
-        rightValue = currentValue;
+        if (leftShoulder != null)
+            leftYAngle = leftShoulder.localEulerAngles.y;
+
+        if (rightShoulder != null)
+            rightYAngle = rightShoulder.localEulerAngles.y;
     }
 
     void Update()
@@ -32,33 +30,34 @@ public class ShoulderController : MonoBehaviour
         // === Left Arm ===
         if (leftShoulder != null)
         {
-            if (Input.GetKey(leftUpKey))
-                leftValue += rotationSpeed * Time.deltaTime * 0.01f;
-            if (Input.GetKey(leftDownKey))
-                leftValue -= rotationSpeed * Time.deltaTime * 0.01f;
+            if (Input.GetKey(leftClockwiseKey))
+                leftYAngle += rotationSpeed * Time.deltaTime;
+            if (Input.GetKey(leftCounterKey))
+                leftYAngle -= rotationSpeed * Time.deltaTime;
 
-            leftValue = Mathf.Clamp01(leftValue);
+            // 360° rotatie behouden
+            if (leftYAngle > 360f) leftYAngle -= 360f;
+            if (leftYAngle < 0f) leftYAngle += 360f;
 
-            Quaternion leftRot = Quaternion.Euler(Vector3.Lerp(leftLowRotation, leftHighRotation, leftValue));
-            leftShoulder.localRotation = leftRot;
+            Vector3 euler = leftShoulder.localEulerAngles;
+            euler.y = leftYAngle;
+            leftShoulder.localEulerAngles = euler;
         }
 
         // === Right Arm (Mirrored) ===
         if (rightShoulder != null)
         {
-            if (Input.GetKey(rightUpKey))
-                rightValue += rotationSpeed * Time.deltaTime * 0.01f;
-            if (Input.GetKey(rightDownKey))
-                rightValue -= rotationSpeed * Time.deltaTime * 0.01f;
+            if (Input.GetKey(rightClockwiseKey))
+                rightYAngle += rotationSpeed * Time.deltaTime;
+            if (Input.GetKey(rightCounterKey))
+                rightYAngle -= rotationSpeed * Time.deltaTime;
 
-            rightValue = Mathf.Clamp01(rightValue);
+            if (rightYAngle > 360f) rightYAngle -= 360f;
+            if (rightYAngle < 0f) rightYAngle += 360f;
 
-            // Spiegelen van linkerarm rotatie (Y en Z negatief)
-            Vector3 rightLow = new Vector3(leftLowRotation.x, -leftLowRotation.y, -leftLowRotation.z);
-            Vector3 rightHigh = new Vector3(leftHighRotation.x, -leftHighRotation.y, -leftHighRotation.z);
-
-            Quaternion rightRot = Quaternion.Euler(Vector3.Lerp(rightLow, rightHigh, rightValue));
-            rightShoulder.localRotation = rightRot;
+            Vector3 euler = rightShoulder.localEulerAngles;
+            euler.y = rightYAngle;
+            rightShoulder.localEulerAngles = euler;
         }
     }
 }
