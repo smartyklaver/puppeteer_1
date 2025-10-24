@@ -6,7 +6,7 @@ public class ShoulderController : MonoBehaviour
     public Transform leftShoulder;
     public Transform rightShoulder;
     public float rotationSpeed = 50f;
-    public float currentValue = 0.5f; // startpositie (tussen 0 en 1)
+    public float currentValue = 0.0f; 
 
     [Header("Left Arm Rotation Range")]
     public Vector3 leftLowRotation = new Vector3(5.215f, -100.063f, -72.656f);
