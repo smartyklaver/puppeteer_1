@@ -342,7 +342,7 @@ MonoBehaviour:
   leftShoulder: {fileID: 1052762846}
   rightShoulder: {fileID: 514003206}
   rotationSpeed: 50
-  currentValue: 0.5
+  currentValue: 0
   leftLowRotation: {x: 5.215, y: -100.063, z: -72.656}
   leftHighRotation: {x: -2.258, y: 89.23, z: -107.951}
   leftUpKey: 122
@@ -1480,7 +1480,7 @@ MonoBehaviour:
   leftShoulder: {fileID: 353689899}
   rightShoulder: {fileID: 162216941}
   rotationSpeed: 50
-  currentValue: 0.5
+  currentValue: 0
   leftLowRotation: {x: 5.215, y: -100.063, z: -72.656}
   leftHighRotation: {x: -2.258, y: 89.23, z: -107.951}
   leftUpKey: 122
@@ -1553,6 +1553,57 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -1967021750462275022, guid: 94c438338a55e8d45a5c24764491ffd8, type: 3}
   m_PrefabInstance: {fileID: 1301891077}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2014045221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014045223}
+  - component: {fileID: 2014045222}
+  m_Layer: 0
+  m_Name: UDPManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2014045222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014045221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e18682db203d0499741a30e0975eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
+  port: 56000
+  <LatestData>k__BackingField:
+    leftShoulderValue: 0
+    rightShoulderValue: 0
+    torsoBend: 0
+  running: 0
+  _lastMessage: 
+--- !u!4 &2014045223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014045221}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2019587906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7121393091423432117, guid: 94c438338a55e8d45a5c24764491ffd8, type: 3}
@@ -1713,3 +1764,4 @@ SceneRoots:
   - {fileID: 1052762836}
   - {fileID: 1301891077}
   - {fileID: 2134944454}
+  - {fileID: 2014045223}
