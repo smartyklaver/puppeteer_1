@@ -13,7 +13,7 @@ public class NeckController : MonoBehaviour
 
     [Header("Controls")]
     public KeyCode lookUpKey = KeyCode.UpArrow;      // Omhoog kijken
-    public KeyCode lookDownKey = KeyCode.DownArrow;  // Omlaag kijken
+    public KeyCode lookDownKey = KeyCode.DownArrow;  // Omlaag kijkens
 
     public bool enableHorizontalRotation = false;    // aan/uit voor links-rechts
 
