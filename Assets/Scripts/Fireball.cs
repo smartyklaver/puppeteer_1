@@ -5,13 +5,13 @@ public class Fireball : MonoBehaviour
 {
     [Header("Motion")]
     public float speed = 12f;
-    public float lifeTime = 6f;
-    public float bounceDamping = 0.9f; // reduce speed on deflect
+    public float lifeTime = 12f;
+    public float bounceDamping = 0.9f;
     public int maxReflections = 3;
 
     [Header("Damage")]
     public float damage = 10f;
-    public string ownerTag = "Player"; // set by spawner so it doesn't hit owner
+    public string ownerTag = "Dragon"; // set by spawner
 
     [Header("VFX / SFX")]
     public ParticleSystem hitEffect;
@@ -24,6 +24,16 @@ public class Fireball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        rb.isKinematic = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        // Zorg dat de fireball zijn eigen colliders negeert
+        Collider[] allColliders = GetComponentsInChildren<Collider>();
+        if (allColliders.Length > 1)
+        {
+            for (int i = 1; i < allColliders.Length; i++)
+                Physics.IgnoreCollision(allColliders[0], allColliders[i]);
+        }
     }
 
     void Start()
@@ -31,62 +41,27 @@ public class Fireball : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    // Call this to fire the projectile
     public void Launch(Vector3 direction, float initialSpeed)
     {
-        direction = direction.normalized;
-        rb.linearVelocity = direction * initialSpeed;
+        direction.Normalize();
+        rb.linearVelocity = direction * initialSpeed; // ✅ juiste veld gebruiken
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        GameObject other = collision.gameObject;
-        // ignore hitting the owner
+        // Ignore hitting the owner
         if (!string.IsNullOrEmpty(ownerTag) && other.CompareTag(ownerTag))
             return;
 
-        // If collides with shield -> reflect
-        if (other.CompareTag("Shield"))
+        var damageable = other.GetComponentInParent<IDamageable>();
+        if (damageable != null)
         {
-            ContactPoint contact = collision.contacts[0];
-            Vector3 incoming = rb.linearVelocity.normalized;
-            Vector3 reflectDir = Vector3.Reflect(incoming, contact.normal).normalized;
-
-            reflections++;
-            if (reflections > maxReflections)
-            {
-                Explode(contact.point);
-                return;
-            }
-
-            // optional: change color/emissive on deflect (if you have a Material)
-            rb.linearVelocity = reflectDir * rb.linearVelocity.magnitude * bounceDamping;
-
-            // change owner so reflected ball can hit original shooter (optional)
-            ownerTag = other.tag; // or set to null to allow hitting anyone
-
-            // small sound
-            if (hitSound != null)
-                AudioSource.PlayClipAtPoint(hitSound, transform.position);
-            return;
-        }
-
-        // If hits something else (environment, enemy, player):
-        // apply damage if the other has a damageable component — otherwise explode
-        var damageable = other.GetComponent<IDamageable>();
-        if (damageable != null && (string.IsNullOrEmpty(ownerTag) || !other.CompareTag(ownerTag)))
-        {
+            Debug.Log($"🔥 {other.name} takes {damage} damage!");
             damageable.TakeDamage(damage);
         }
 
-        // explode visually
-        Explode(collision.contacts[0].point);
-    }
-
-    void Explode(Vector3 atPosition)
-    {
         if (hitEffect != null)
-            Instantiate(hitEffect, atPosition, Quaternion.identity);
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
     }

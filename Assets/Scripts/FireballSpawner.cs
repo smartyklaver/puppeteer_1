@@ -5,8 +5,8 @@ public class FireballSpawner : MonoBehaviour
     public Transform mouthTransform;         // set to the bone/transform of the mouth
     public GameObject fireballPrefab;
     public float launchSpeed = 30f;
-    public float spawnOffset = 0.3f;         // push out of the mouth slightly
-    public string shooterTag = "Player";     // tag used as ownerTag
+    public float spawnOffset = 3f;         // push out of the mouth slightly
+    public string shooterTag = "Dragon";     // tag used as ownerTag
 
     public Animator animator;                // optional: play spit animation
     public string spitTriggerName = "Spit";  // optional
