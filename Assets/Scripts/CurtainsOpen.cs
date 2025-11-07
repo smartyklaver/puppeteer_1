@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CurtainMove : MonoBehaviour
 {
+    public CartController cartController;
+    
     [Header("Curtain Settings")]
     public Vector3 closedPosition = new Vector3(0f, 0f, 0f);  // where the curtain starts
     public Vector3 openOffset = new Vector3(3f, 0f, 0f);      // how far to move right
@@ -32,5 +34,6 @@ public class CurtainMove : MonoBehaviour
 
         // Snap exactly to final position
         transform.position = openPosition;
+        cartController.StartMoving();
     }
 }
