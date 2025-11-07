@@ -1067,10 +1067,42 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 400048, guid: a890656eebef5d94ab6c86843cebd735, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1082366054}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100008, guid: a890656eebef5d94ab6c86843cebd735, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3500763946031457626}
   m_SourcePrefab: {fileID: 100100000, guid: a890656eebef5d94ab6c86843cebd735, type: 3}
+--- !u!4 &8429799296439278223 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400318, guid: a890656eebef5d94ab6c86843cebd735, type: 3}
+  m_PrefabInstance: {fileID: 8429799296439664945}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8429799296439278465 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400048, guid: a890656eebef5d94ab6c86843cebd735, type: 3}
   m_PrefabInstance: {fileID: 8429799296439664945}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8429799296439568281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100008, guid: a890656eebef5d94ab6c86843cebd735, type: 3}
+  m_PrefabInstance: {fileID: 8429799296439664945}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3500763946031457626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8429799296439568281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b056f7a537e29345bdd2ce1d75cd3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireballSpawner
+  mouthTransform: {fileID: 8429799296439278223}
+  fireballPrefab: {fileID: 8670972088280272547, guid: d084fdf2e7848094a96d5ebd835b9300, type: 3}
+  launchSpeed: 14
+  spawnOffset: 0.3
+  shooterTag: Player
+  animator: {fileID: 0}
+  spitTriggerName: Spit

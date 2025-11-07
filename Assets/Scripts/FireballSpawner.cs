@@ -4,7 +4,7 @@ public class FireballSpawner : MonoBehaviour
 {
     public Transform mouthTransform;         // set to the bone/transform of the mouth
     public GameObject fireballPrefab;
-    public float launchSpeed = 14f;
+    public float launchSpeed = 30f;
     public float spawnOffset = 0.3f;         // push out of the mouth slightly
     public string shooterTag = "Player";     // tag used as ownerTag
 

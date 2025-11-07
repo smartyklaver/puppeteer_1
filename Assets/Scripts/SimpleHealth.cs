@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class SimpleHealth : MonoBehaviour, IDamageable
 {
     public float hp = 50f;
@@ -10,7 +12,6 @@ public class SimpleHealth : MonoBehaviour, IDamageable
 
     void Die()
     {
-        // your death logic
         Destroy(gameObject);
     }
 }
