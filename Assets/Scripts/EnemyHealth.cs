@@ -1,56 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using UnityEngine;
-using UnityEngine.UI;
-
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
     public float maxHealth = 100f;
     private float currentHealth;
 
-    [Header("UI")]
-    public Slider healthBarPrefab;
-    private Slider healthBarInstance;
-    public Vector3 healthBarOffset = new Vector3(0, 3f, 0);
-
-    Camera mainCamera;
+    [Header("UI Reference")]
+    public Slider healthBar; // verwijst naar je bestaande slider in de UI
 
     void Start()
     {
         currentHealth = maxHealth;
-        mainCamera = Camera.main;
-
-        if (healthBarPrefab != null)
+        if (healthBar != null)
         {
-            // spawn direct in wereld
-            healthBarInstance = Instantiate(healthBarPrefab, transform.position + healthBarOffset, Quaternion.identity);
-            healthBarInstance.maxValue = maxHealth;
-            healthBarInstance.value = maxHealth;
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ No healthBarPrefab assigned on " + name);
-        }
-    }
-
-    void Update()
-    {
-        if (healthBarInstance != null)
-        {
-            healthBarInstance.transform.position = transform.position + healthBarOffset;
-            healthBarInstance.transform.LookAt(mainCamera.transform);
-            healthBarInstance.value = currentHealth;
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
         }
     }
 
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
-        currentHealth = Mathf.Max(currentHealth, 0);
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log($"🐉 {name} took {amount} damage! HP: {currentHealth}/{maxHealth}");
+        Debug.Log($"🐉 {name} took {amount} damage! ({currentHealth}/{maxHealth})");
+
+        if (healthBar != null)
+            healthBar.value = currentHealth;
 
         if (currentHealth <= 0)
             Die();
@@ -59,9 +37,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Die()
     {
         Debug.Log($"💀 {name} died!");
-        if (healthBarInstance != null)
-            Destroy(healthBarInstance.gameObject);
+        // eventueel: healthBar.gameObject.SetActive(false);
         Destroy(gameObject);
     }
 }
-

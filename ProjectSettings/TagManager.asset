@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shield
   - Dragon
+  - Floor
+  - Ground
   layers:
   - Default
   - TransparentFX

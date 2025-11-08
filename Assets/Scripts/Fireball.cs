@@ -1,67 +1,124 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Fireball : MonoBehaviour
 {
     [Header("Motion")]
     public float speed = 12f;
     public float lifeTime = 12f;
-    public float bounceDamping = 0.9f;
-    public int maxReflections = 3;
 
     [Header("Damage")]
     public float damage = 10f;
-    public string ownerTag = "Dragon"; // set by spawner
+    public string ownerTag = "Dragon"; // wordt gezet door spawner
 
     [Header("VFX / SFX")]
     public ParticleSystem hitEffect;
     public AudioClip hitSound;
 
-    Rigidbody rb;
-    int reflections = 0;
+    private Rigidbody rb;
+    private Collider col;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+
         rb.useGravity = false;
         rb.isKinematic = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-        // Zorg dat de fireball zijn eigen colliders negeert
-        Collider[] allColliders = GetComponentsInChildren<Collider>();
-        if (allColliders.Length > 1)
-        {
-            for (int i = 1; i < allColliders.Length; i++)
-                Physics.IgnoreCollision(allColliders[0], allColliders[i]);
-        }
+        // Zorg dat deze collider een trigger is
+        if (col != null)
+            col.isTrigger = true;
     }
 
     void Start()
     {
+        // 🔥 Automatisch vernietigen na X seconden
         Destroy(gameObject, lifeTime);
     }
 
+    // 🔹 Richting en snelheid instellen
     public void Launch(Vector3 direction, float initialSpeed)
     {
         direction.Normalize();
-        rb.linearVelocity = direction * initialSpeed; // ✅ juiste veld gebruiken
+        rb.linearVelocity = direction * initialSpeed;
+
+        // ✅ Zorg dat de fireball NIET botst met zijn eigenaar
+        if (!string.IsNullOrEmpty(ownerTag))
+        {
+            GameObject owner = GameObject.FindGameObjectWithTag(ownerTag);
+            if (owner != null)
+            {
+                Collider[] ownerColliders = owner.GetComponentsInChildren<Collider>();
+                foreach (var oc in ownerColliders)
+                    Physics.IgnoreCollision(col, oc, true);
+            }
+        }
     }
 
-    void OnTriggerEnter(Collider other)
+    // 🔥 Triggers voor damage & vernietiging
+    private void OnTriggerEnter(Collider other)
     {
-        // Ignore hitting the owner
-        if (!string.IsNullOrEmpty(ownerTag) && other.CompareTag(ownerTag))
+        string tag = other.tag;
+
+        // 🚫 Negeer collisie met eigenaar
+        if (!string.IsNullOrEmpty(ownerTag) && tag == ownerTag)
             return;
 
-        var damageable = other.GetComponentInParent<IDamageable>();
-        if (damageable != null)
+        // 🚫 Negeer zwaard (geen effect)
+        if (tag == "Sword")
+            return;
+
+        // 🚫 Negeer andere fireballs (regen mag elkaar niet raken)
+        if (tag == "Fireball")
+            return;
+
+        // ✅ Schild → blokkeert en vernietigt
+        if (tag == "Shield")
         {
-            Debug.Log($"🔥 {other.name} takes {damage} damage!");
-            damageable.TakeDamage(damage);
+            Explode(other.transform.position);
+            return;
         }
 
+        // ✅ Speler → damage + vernietig
+        if (tag == "Player")
+        {
+            var damageable = other.GetComponentInParent<IDamageable>();
+            if (damageable != null)
+            {
+                Debug.Log($"🔥 {other.name} takes {damage} damage!");
+                damageable.TakeDamage(damage);
+            }
+
+            Explode(other.transform.position);
+            return;
+        }
+
+        // ✅ Grond → vernietig
+        if (tag == "Ground")
+        {
+            Explode(transform.position);
+            return;
+        }
+
+        // ✅ Muren / plafonds → vernietig
+        if (tag == "Wall" || tag == "Ceiling")
+        {
+            Explode(transform.position);
+            return;
+        }
+
+        // Andere dingen? Veilig negeren
+    }
+
+    // 💥 Explosie en vernietiging
+    void Explode(Vector3 at)
+    {
         if (hitEffect != null)
-            Instantiate(hitEffect, transform.position, Quaternion.identity);
+            Instantiate(hitEffect, at, Quaternion.identity);
+
+        if (hitSound != null)
+            AudioSource.PlayClipAtPoint(hitSound, at);
 
         Destroy(gameObject);
     }
