@@ -10,25 +10,33 @@ public class FireballSpawner : MonoBehaviour
     public string shooterTag = "Dragon";
     public Animator animator;
     public string spitTriggerName = "Spit";
+    private Coroutine spawnRoutine;
 
 
-
-    void Start()
+    void OnEnable()
     {
-        // Start the coroutine that continuously spits fire
-        StartCoroutine(SpitLoop());
+        // start spawning when enabled
+        spawnRoutine = StartCoroutine(SpitLoop());
     }
-    void Update()
+
+    void OnDisable()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-            Spit();
+        // stop all coroutines when disabled
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
     }
+
     IEnumerator SpitLoop()
     {
         while (true)
         {
+            yield return new WaitForSeconds(1);
             Spit();
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(4);
+            
         }
     }
 

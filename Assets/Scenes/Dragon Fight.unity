@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5981622c3e393da44b352156af57f655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwordAttack
-  damage: 5
+  damage: 25
 --- !u!1 &227163022
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +748,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 788789269}
     m_Modifications:
+    - target: {fileID: 1883476907041018681, guid: f10c15c2cc112d648bfb0796eeac9ff8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c2d36d8fb591cbb44bb558d9e99792a6, type: 2}
+    - target: {fileID: 1883476907041018683, guid: f10c15c2cc112d648bfb0796eeac9ff8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eb1aec4f9ee3ede46917707180b04618, type: 2}
     - target: {fileID: 1883476907042918875, guid: f10c15c2cc112d648bfb0796eeac9ff8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.002
@@ -1421,6 +1429,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1082366055, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 36eaa50a22eaf7248bd84f8a06a5ded0, type: 2}
     - target: {fileID: 3500763946031457626, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
       propertyPath: firePoint
       value: 
@@ -2123,6 +2135,10 @@ PrefabInstance:
         already bound by a Humanoid avatar. These transforms can only be changed
         by Humanoid clips.\n\tTransform 'Root'\n\tFrom animation clip 'Idle'"
       objectReference: {fileID: 0}
+    - target: {fileID: 8429799296451136197, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0581766db3631f94f9974f325f5c4332, type: 2}
     m_RemovedComponents:
     - {fileID: 8429799296446968913, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
     m_RemovedGameObjects: []
@@ -2225,6 +2241,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.2425948, z: 0.9943128}
   m_Center: {x: -1.5832287e-15, y: 0.6394587, z: -0.38859007}
+--- !u!114 &933963071 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3500763946031457626, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
+  m_PrefabInstance: {fileID: 788789268}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933963064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b056f7a537e29345bdd2ce1d75cd3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireballSpawner
 --- !u!4 &933963072 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8429799296439278521, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
@@ -2274,7 +2301,7 @@ MonoBehaviour:
   spawnHeight: 4
   fallDelay: 0.2
   fireballFallSpeed: 5
-  fireRainChance: 1
+  fireRainChance: 0.5
   roarDuration: 2
   cameraShakeIntensity: 0.25
   cameraShakeDuration: 0.5
@@ -2387,7 +2414,7 @@ Transform:
   m_GameObject: {fileID: 952512236}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.47, y: 0.81, z: -3.49}
+  m_LocalPosition: {x: -13.08, y: 0.81, z: -3.49}
   m_LocalScale: {x: 0.5, y: 0.7, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2814,8 +2841,137 @@ Transform:
   m_GameObject: {fileID: 1026530264}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.475, y: 0.81, z: -3.49}
+  m_LocalPosition: {x: 13.1, y: 0.81, z: -3.49}
   m_LocalScale: {x: 0.5, y: 0.7, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1049301603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1049301605}
+  - component: {fileID: 1049301604}
+  m_Layer: 0
+  m_Name: Victory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1049301604
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049301603}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 93c4967554355ef43b1b8221d0de1db9, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1049301605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049301603}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.55945, y: 0, z: 7.40072}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2926,7 +3082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -411.9, y: -217.84}
+  m_AnchoredPosition: {x: -395.64, y: -220.7}
   m_SizeDelta: {x: -20.1504, y: 6.9981}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1172323859
@@ -2949,17 +3105,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DRACONICON
+  m_text: Velgrin, Lord of Cinders
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3014,7 +3170,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 4.5511107, z: -28.215755, w: 0}
+  m_margin: {x: -16.701302, y: 0.44944644, z: -28.215755, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3244,18 +3400,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinematicManager
   cameraTransform: {fileID: 304229393}
-  zoomTarget: {fileID: 1298817214}
-  gameplayTarget: {fileID: 227163023}
+  playerTarget: {fileID: 1298817214}
+  zoomOffset: {x: 0, y: 1.5, z: -2}
   zoomDuration: 9
-  spotlight: {fileID: 251217601}
-  environmentLights: []
-  darkAmbient: {r: 0.16470589, g: 0.11764706, b: 0.11764706, a: 1}
-  normalAmbient: {r: 1, g: 1, b: 1, a: 1}
+  pauseDuration: 2
   musicSource: {fileID: 474483906}
   introMusic: {fileID: 8300000, guid: 8c7fc0a34af3e0c4a97018573fcb252e, type: 3}
   bossMusic: {fileID: 8300000, guid: 0a01c18e1c0fcfe4bab742cd34e11ef9, type: 3}
+  spotlightSFX: {fileID: 0}
   player: {fileID: 1298817215}
   dragon: {fileID: 933963073}
+  fireballSpawner: {fileID: 933963071}
 --- !u!4 &1282822787
 Transform:
   m_ObjectHideFlags: 0
@@ -4348,6 +4503,59 @@ RectTransform:
   m_AnchoredPosition: {x: 538, y: 298.83334}
   m_SizeDelta: {x: 800, y: 444.36185}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2141025505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141025507}
+  - component: {fileID: 2141025506}
+  m_Layer: 0
+  m_Name: CurtainManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2141025506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141025505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c362a21d1f007f4180b7f4d440bf729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CurtainEndSequence
+  dragonHealth: {fileID: 933963068}
+  bossMusicSource: {fileID: 474483906}
+  victoryMusic: {fileID: 8300000, guid: 93c4967554355ef43b1b8221d0de1db9, type: 3}
+  leftCurtain: {fileID: 952512238}
+  rightCurtain: {fileID: 1026530266}
+  curtainShiftX: 8.42
+  closeSpeed: 2
+  sfxSource: {fileID: 0}
+  curtainSFX: {fileID: 0}
+--- !u!4 &2141025507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141025505}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.88308, y: -0.47814, z: -2.52972}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4373,3 +4581,5 @@ SceneRoots:
   - {fileID: 251217602}
   - {fileID: 474483907}
   - {fileID: 384119280}
+  - {fileID: 2141025507}
+  - {fileID: 1049301605}
