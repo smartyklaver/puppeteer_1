@@ -49,7 +49,7 @@ public class DragonController : MonoBehaviour, IDamageable
     public float spawnAreaDepth = 10f;    // diepte van het gebied
     public float spawnHeight = 12f;       // hoogte boven arena
     public float fallDelay = 0.2f;        // tijd tussen elke spawn
-    public float fireballFallSpeed = 15f; // val-snelheid
+    public float fireballFallSpeed = 5f; // val-snelheid
     public float fireRainChance = 0.25f;  // 25% kans
 
     [Header("Reaction")]
@@ -290,10 +290,6 @@ void HandleHeadAndBodyTracking()
 
         if (isRoaring) return;
 
-        if (Random.value < fireRainChance)
-        {
-            StartCoroutine(FireRain());
-        }
     
     StartCoroutine(RoarAndReact());
 }
@@ -313,6 +309,7 @@ IEnumerator RoarAndReact()
     Vector3 dir = (playerController.transform.position - transform.position).normalized;
     dir.y = 0.4f; // kleine boog omhoog
     playerController.ApplyKnockback(dir, knockbackForce);
+    DespawnAllFireballs();
     playerController.SetCanMove(false); // zet speler vast
 }
 
@@ -349,7 +346,10 @@ IEnumerator RoarAndReact()
     if (head != null)
         head.localRotation = Quaternion.Slerp(head.localRotation, headBaseLocalRot, 0.2f);
 
-    // (Later hier: trigger vallende vuurballen)
+           if (Random.value < fireRainChance)
+        {
+            StartCoroutine(FireRain());
+        }
 }
 
     IEnumerator CameraShake(float duration, float intensity)
@@ -376,60 +376,86 @@ IEnumerator RoarAndReact()
         OnHitByPlayer();
     }
 
-    IEnumerator FireRain()
+IEnumerator FireRain()
+{
+    Debug.Log("🌧️ FIRE RAIN activated (line fall)!");
+
+    int count = fireballsPerWave;
+    float startX = -6f;
+    float endX = 1f; // jij vroeg enkel tot x = 1
+    float zPos = -2.33f;
+    float yStart = 4f;
+
+    for (int i = 0; i < count; i++)
     {
-        Debug.Log("🌧️ FIRE RAIN activated (line fall)!");
+        // x-positie tussen -6 en 1
+        float t = (float)i / (count - 1);
+        float xPos = Mathf.Lerp(startX, endX, t);
+        Vector3 spawnPos = new Vector3(xPos, yStart, zPos);
 
-        int count = fireballsPerWave;
-        float startX = -6f;
-        float endX = 6f;
-        float zPos = -2.33f;
-        float yStart = 4f;
+        // spawn
+        GameObject fb = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
 
-        for (int i = 0; i < count; i++)
+        Fireball fScript = fb.GetComponent<Fireball>();
+        Rigidbody rb = fb.GetComponent<Rigidbody>();
+        Collider col = fb.GetComponent<Collider>();
+
+        if (col != null)
         {
-            // bereken positie op de lijn (x loopt geleidelijk van -6 naar 6)
-            float t = (float)i / (count - 1);
-            float xPos = Mathf.Lerp(startX, endX, t);
-
-            // spawn de fireball
-            Vector3 spawnPos = new Vector3(xPos, yStart, zPos);
-            GameObject fb = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
-
-            Rigidbody rb = fb.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.useGravity = false; // geen zwaartekracht
-                rb.isKinematic = false;
-
-                // willekeurige trage snelheid naar beneden
-                float fallSpeed = Random.Range(1.2f, 2.4f);
-
-                // laat de vuurbal traag naar beneden bewegen
-                StartCoroutine(SlowFall(fb, fallSpeed));
-            }
-
-            // kleine vertraging tussen spawns (mooi visueel effect)
-            yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
+            col.isTrigger = true;
+            col.enabled = true;
         }
 
-        Debug.Log("🔥 Fire rain finished!");
+        if (rb != null)
+        {
+            rb.useGravity = false;
+            rb.isKinematic = false;
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        }
+
+        if (fScript != null)
+        {
+            // zodat OnTriggerEnter werkt net als bij normale vuurballen
+            fScript.ownerTag = "Dragon";
+
+            // Laat hem langzaam naar beneden gaan, niet met zwaartekracht
+            Vector3 fallDir = Vector3.down;
+            float fallSpeed = Random.Range(1.2f, 2.4f);
+            fScript.Launch(fallDir, fallSpeed);
+        }
+
+        // kleine vertraging tussen spawns
+        yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
     }
+
+    Debug.Log("🔥 Fire rain finished!");
+}
+
 
 IEnumerator SlowFall(GameObject fireball, float speed)
 {
     Transform t = fireball.transform;
+    float fixedZ = -2.33f;
 
-    // blijf bewegen tot hij de grond (y=0) raakt of vernietigd wordt
-    while (fireball != null && t.position.y > 0.1f)
+    while (fireball != null)
+{
+    t.position += Vector3.down * speed * Time.deltaTime;
+
+    if (t.position.y <= 0.1f)
     {
-        t.position += Vector3.down * speed * Time.deltaTime;
-        yield return null;
+        Fireball fb = fireball.GetComponent<Fireball>();
+        if (fb != null && fb.hitEffect != null)
+            Instantiate(fb.hitEffect, t.position, Quaternion.identity);
+
+        Destroy(fireball);
+        yield break;
     }
+
+    yield return null;
+}
 
     if (fireball != null)
     {
-        // optioneel: spawn effect bij impact
         Fireball fb = fireball.GetComponent<Fireball>();
         if (fb != null && fb.hitEffect != null)
             Instantiate(fb.hitEffect, t.position, Quaternion.identity);
@@ -438,6 +464,25 @@ IEnumerator SlowFall(GameObject fireball, float speed)
     }
 }
 
+void DespawnAllFireballs()
+{
+    // Zoek alle actieve vuurballen in de scene
+    Fireball[] allFireballs = FindObjectsOfType<Fireball>();
+
+    foreach (Fireball fb in allFireballs)
+    {
+        if (fb != null)
+        {
+            // Eventueel visueel effect bij verwijderen
+            if (fb.hitEffect != null)
+                Instantiate(fb.hitEffect, fb.transform.position, Quaternion.identity);
+
+            Destroy(fb.gameObject);
+        }
+    }
+
+    Debug.Log("🔥 Alle vuurballen vernietigd door knockback event!");
+}
 
 
 

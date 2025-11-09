@@ -16,43 +16,81 @@ public class Fireball : MonoBehaviour
 
     private Rigidbody rb;
     private Collider col;
+    private const float fixedZ = -2.33f;
 
-    void Awake()
+   void Awake()
+{
+    rb = GetComponent<Rigidbody>();
+    col = GetComponent<Collider>();
+
+    if (rb == null)
+        rb = gameObject.AddComponent<Rigidbody>();
+
+    if (col == null)
+        col = gameObject.AddComponent<SphereCollider>();
+
+    // 🚀 Belangrijk: physics uitschakelen, alleen triggers gebruiken
+    rb.useGravity = false;
+    rb.isKinematic = false;
+    rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+    rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+    // 🔒 Zorg dat het ALTIJD een trigger is
+    col.isTrigger = true;
+    col.enabled = true;
+
+    // 🔧 Fysische afstoting vermijden
+    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+}
+
+void Start()
+{
+    // 🔥 Automatisch vernietigen na X seconden
+    Destroy(gameObject, lifeTime);
+
+    // 🚫 Negeer botsingen tussen vuurballen (veiligheidsnet)
+    Fireball[] others = FindObjectsOfType<Fireball>();
+    foreach (var other in others)
     {
-        rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
-
-        rb.useGravity = false;
-        rb.isKinematic = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-
-        // Zorg dat deze collider een trigger is
-        if (col != null)
-            col.isTrigger = true;
+        if (other != this && other.col != null && col != null)
+            Physics.IgnoreCollision(col, other.col);
     }
+}
 
-    void Start()
-    {
-        // 🔥 Automatisch vernietigen na X seconden
-        Destroy(gameObject, lifeTime);
-    }
 
     // 🔹 Richting en snelheid instellen
-    public void Launch(Vector3 direction, float initialSpeed)
+public void Launch(Vector3 direction, float initialSpeed)
     {
         direction.Normalize();
+        direction.z = 0; // 🔹 Zorg dat richting nooit Z bevat
         rb.linearVelocity = direction * initialSpeed;
 
-        // ✅ Zorg dat de fireball NIET botst met zijn eigenaar
         if (!string.IsNullOrEmpty(ownerTag))
         {
             GameObject owner = GameObject.FindGameObjectWithTag(ownerTag);
             if (owner != null)
             {
-                Collider[] ownerColliders = owner.GetComponentsInChildren<Collider>();
-                foreach (var oc in ownerColliders)
+                Collider[] ownerCols = owner.GetComponentsInChildren<Collider>();
+                foreach (var oc in ownerCols)
                     Physics.IgnoreCollision(col, oc, true);
             }
+        }
+    }
+
+    void Update()
+    {
+        // 🔹 Houd altijd vaste Z-positie
+        if (Mathf.Abs(transform.position.z - fixedZ) > 0.001f)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, fixedZ);
+        }
+
+        // 🔹 Verwijder ongewenste Z-beweging
+        if (rb.linearVelocity.z != 0)
+        {
+            Vector3 vel = rb.linearVelocity;
+            vel.z = 0;
+            rb.linearVelocity = vel;
         }
     }
 
@@ -62,7 +100,7 @@ public class Fireball : MonoBehaviour
         string tag = other.tag;
 
         // 🚫 Negeer collisie met eigenaar
-        if (!string.IsNullOrEmpty(ownerTag) && tag == ownerTag)
+        if (tag == "Dragon")
             return;
 
         // 🚫 Negeer zwaard (geen effect)
