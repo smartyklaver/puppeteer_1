@@ -1,41 +1,53 @@
 using UnityEngine;
+using System.Collections;
 
 public class SwordAttack : MonoBehaviour
 {
-    [Header("Damage Settings")]
-    public float damage = 5f;
+    public CinematicManager bossManager;
 
+    private Collider swordCollider;
 
-    
-
-    // wanneer het zwaard een vijand raakt
-    private void OnTriggerEnter(Collider other)
-{
-    // enkel damage op vijanden
-    if (other.CompareTag("Dragon"))
+    private void Awake()
     {
+        swordCollider = GetComponent<Collider>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Dragon"))
+            return;
+
         Debug.Log("⚔️ Sword hit dragon: " + other.name);
 
-        // 🔥 1️⃣ Probeer DragonController direct aan te roepen voor brul/knockback
-        DragonController dragon = other.GetComponentInParent<DragonController>();
-        if (dragon != null)
+        // QTE sword phase
+        if (bossManager != null && bossManager.IsSwordHitActive())
         {
-            Debug.Log("🐉 Triggering dragon reaction (OnHitByPlayer)");
-            dragon.OnHitByPlayer();
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ Dragon hit but no DragonController found!");
+            bossManager.RegisterSwordHit();   // ✔ ENIGE plaats waar damage gebeurt (via CMan)
+
+            // knockback en animatie
+            DragonController dragon = other.GetComponentInParent<DragonController>();
+            if (dragon != null)
+                dragon.OnHitByPlayer();
+
+            // SPAM fix
+            StartCoroutine(DisableColliderMoment());
+            return;
         }
 
-        // 💥 2️⃣ Pas schade toe via IDamageable (voor health vermindering)
-        var damageable = other.GetComponentInParent<IDamageable>();
-        if (damageable != null)
+        // tickle phase
+        if (bossManager != null && bossManager.IsTickleActive())
         {
-            Debug.Log($"🗡️ Hit enemy for {damage} damage!");
-            damageable.TakeDamage(damage);
+            Debug.Log("🫳 Sword hit ignored during tickle phase");
+            return;
         }
+
+        Debug.Log("⚠️ Sword hit ignored (not in QTE phase)");
     }
-}
 
+    private IEnumerator DisableColliderMoment()
+    {
+        swordCollider.enabled = false;
+        yield return new WaitForSeconds(0.2f);
+        swordCollider.enabled = true;
+    }
 }
