@@ -1,92 +1,162 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Fireball : MonoBehaviour
 {
     [Header("Motion")]
     public float speed = 12f;
-    public float lifeTime = 6f;
-    public float bounceDamping = 0.9f; // reduce speed on deflect
-    public int maxReflections = 3;
+    public float lifeTime = 12f;
 
     [Header("Damage")]
     public float damage = 10f;
-    public string ownerTag = "Player"; // set by spawner so it doesn't hit owner
+    public string ownerTag = "Dragon"; // wordt gezet door spawner
 
     [Header("VFX / SFX")]
     public ParticleSystem hitEffect;
     public AudioClip hitSound;
 
-    Rigidbody rb;
-    int reflections = 0;
+    private Rigidbody rb;
+    private Collider col;
+    private const float fixedZ = -2.33f;
 
-    void Awake()
+   void Awake()
+{
+    rb = GetComponent<Rigidbody>();
+    col = GetComponent<Collider>();
+
+    if (rb == null)
+        rb = gameObject.AddComponent<Rigidbody>();
+
+    if (col == null)
+        col = gameObject.AddComponent<SphereCollider>();
+
+    // 🚀 Belangrijk: physics uitschakelen, alleen triggers gebruiken
+    rb.useGravity = false;
+    rb.isKinematic = false;
+    rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+    rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+    // 🔒 Zorg dat het ALTIJD een trigger is
+    col.isTrigger = true;
+    col.enabled = true;
+
+    // 🔧 Fysische afstoting vermijden
+    rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
+}
+
+void Start()
+{
+    // 🔥 Automatisch vernietigen na X seconden
+    Destroy(gameObject, lifeTime);
+
+    // 🚫 Negeer botsingen tussen vuurballen (veiligheidsnet)
+    Fireball[] others = FindObjectsOfType<Fireball>();
+    foreach (var other in others)
     {
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        if (other != this && other.col != null && col != null)
+            Physics.IgnoreCollision(col, other.col);
     }
+}
 
-    void Start()
-    {
-        Destroy(gameObject, lifeTime);
-    }
 
-    // Call this to fire the projectile
-    public void Launch(Vector3 direction, float initialSpeed)
+    // 🔹 Richting en snelheid instellen
+public void Launch(Vector3 direction, float initialSpeed)
     {
-        direction = direction.normalized;
+        direction.Normalize();
+        direction.z = 0; // 🔹 Zorg dat richting nooit Z bevat
         rb.linearVelocity = direction * initialSpeed;
+
+        if (!string.IsNullOrEmpty(ownerTag))
+        {
+            GameObject owner = GameObject.FindGameObjectWithTag(ownerTag);
+            if (owner != null)
+            {
+                Collider[] ownerCols = owner.GetComponentsInChildren<Collider>();
+                foreach (var oc in ownerCols)
+                    Physics.IgnoreCollision(col, oc, true);
+            }
+        }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void Update()
     {
-        GameObject other = collision.gameObject;
-        // ignore hitting the owner
-        if (!string.IsNullOrEmpty(ownerTag) && other.CompareTag(ownerTag))
+        // 🔹 Houd altijd vaste Z-positie
+        if (Mathf.Abs(transform.position.z - fixedZ) > 0.001f)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, fixedZ);
+        }
+
+        // 🔹 Verwijder ongewenste Z-beweging
+        if (rb.linearVelocity.z != 0)
+        {
+            Vector3 vel = rb.linearVelocity;
+            vel.z = 0;
+            rb.linearVelocity = vel;
+        }
+    }
+
+    // 🔥 Triggers voor damage & vernietiging
+    private void OnTriggerEnter(Collider other)
+    {
+        string tag = other.tag;
+
+        // 🚫 Negeer collisie met eigenaar
+        if (tag == "Dragon")
             return;
 
-        // If collides with shield -> reflect
-        if (other.CompareTag("Shield"))
-        {
-            ContactPoint contact = collision.contacts[0];
-            Vector3 incoming = rb.linearVelocity.normalized;
-            Vector3 reflectDir = Vector3.Reflect(incoming, contact.normal).normalized;
+        // 🚫 Negeer zwaard (geen effect)
+        if (tag == "Sword")
+            return;
 
-            reflections++;
-            if (reflections > maxReflections)
+        // 🚫 Negeer andere fireballs (regen mag elkaar niet raken)
+        if (tag == "Fireball")
+            return;
+
+        // ✅ Schild → blokkeert en vernietigt
+        if (tag == "Shield")
+        {
+            Explode(other.transform.position);
+            return;
+        }
+
+        // ✅ Speler → damage + vernietig
+        if (tag == "Player")
+        {
+            var damageable = other.GetComponentInParent<IDamageable>();
+            if (damageable != null)
             {
-                Explode(contact.point);
-                return;
+                Debug.Log($"🔥 {other.name} takes {damage} damage!");
+                damageable.TakeDamage(damage);
             }
 
-            // optional: change color/emissive on deflect (if you have a Material)
-            rb.linearVelocity = reflectDir * rb.linearVelocity.magnitude * bounceDamping;
-
-            // change owner so reflected ball can hit original shooter (optional)
-            ownerTag = other.tag; // or set to null to allow hitting anyone
-
-            // small sound
-            if (hitSound != null)
-                AudioSource.PlayClipAtPoint(hitSound, transform.position);
+            Explode(other.transform.position);
             return;
         }
 
-        // If hits something else (environment, enemy, player):
-        // apply damage if the other has a damageable component — otherwise explode
-        var damageable = other.GetComponent<IDamageable>();
-        if (damageable != null && (string.IsNullOrEmpty(ownerTag) || !other.CompareTag(ownerTag)))
+        // ✅ Grond → vernietig
+        if (tag == "Ground")
         {
-            damageable.TakeDamage(damage);
+            Explode(transform.position);
+            return;
         }
 
-        // explode visually
-        Explode(collision.contacts[0].point);
+        // ✅ Muren / plafonds → vernietig
+        if (tag == "Wall" || tag == "Ceiling")
+        {
+            Explode(transform.position);
+            return;
+        }
+
+        // Andere dingen? Veilig negeren
     }
 
-    void Explode(Vector3 atPosition)
+    // 💥 Explosie en vernietiging
+    void Explode(Vector3 at)
     {
         if (hitEffect != null)
-            Instantiate(hitEffect, atPosition, Quaternion.identity);
+            Instantiate(hitEffect, at, Quaternion.identity);
+
+        if (hitSound != null)
+            AudioSource.PlayClipAtPoint(hitSound, at);
 
         Destroy(gameObject);
     }

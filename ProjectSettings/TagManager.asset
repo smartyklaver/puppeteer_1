@@ -5,11 +5,15 @@ TagManager:
   serializedVersion: 3
   tags:
   - Shield
+  - Dragon
+  - Floor
+  - Ground
+  - Sword
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
