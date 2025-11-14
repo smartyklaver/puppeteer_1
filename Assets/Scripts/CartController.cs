@@ -7,11 +7,15 @@ public class CartController : MonoBehaviour
     public float speed = 0.1f;
     public float xstop = 2.43f;
     private AudioSource wheels;
+    private AudioSource arrival;
     void Start()
 
     {
-        wheels = GetComponent<AudioSource>();
+        AudioSource[] sources = GetComponents<AudioSource>();
+        wheels = sources[0]; 
+        arrival = sources[1];   
     }
+    
 
     public void StartMoving(){
         startmoving = true;
@@ -32,6 +36,7 @@ public class CartController : MonoBehaviour
             {
                 startmoving = false;
                 wheels.Stop();
+                arrival.Play();
             }
         }
     }
