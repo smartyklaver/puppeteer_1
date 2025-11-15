@@ -40,4 +40,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         // eventueel: healthBar.gameObject.SetActive(false);
         Destroy(gameObject);
     }
+
+    public void TakeQTEHit(float amount)
+{
+    TakeDamage(amount);
 }
+
+}
+

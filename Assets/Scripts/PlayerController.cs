@@ -10,30 +10,28 @@ public class PlayerController : MonoBehaviour
 
     [Header("Knockback")]
     public bool canMove = true;
-    private Rigidbody rb;
+    public Rigidbody rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+void Update()
+{
+    if (!canMove) return;
+
+    float h = Input.GetAxis("Horizontal");
+    float v = Input.GetAxis("Vertical");
+
+    Vector3 move = new Vector3(h, 0, v).normalized;
+
+    if (move.magnitude > 0.1f)
     {
-        if (!canMove) return; // ⛔ Geen input tijdens cinematic
-
-        Vector3 move = Vector3.zero;
-
-    // Enkel links en rechts
-    if (Input.GetKey(KeyCode.LeftArrow)) move += Vector3.left;
-    if (Input.GetKey(KeyCode.RightArrow)) move += Vector3.right;
-
-    move.Normalize();
-
-    Vector3 vel = rb.linearVelocity;
-    Vector3 targetVel = move * moveSpeed;
-
-    rb.linearVelocity = new Vector3(targetVel.x, vel.y, 0f);
+        rb.linearVelocity = move * moveSpeed;
     }
+}
+
 
     // 🎯 Externe knockback (aangeroepen door draak)
     public void ApplyKnockback(Vector3 direction, float force)
