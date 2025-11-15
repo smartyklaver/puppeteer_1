@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public class UdpReceiver : MonoBehaviour
 {
@@ -15,6 +16,17 @@ public class UdpReceiver : MonoBehaviour
         public float rightShoulderValue;
         public float torsoBend;
     }
+
+    [System.Serializable]
+    public class FrameData
+    {
+        public float timeStamp;
+        public float leftShoulder;
+        public float rightShoulder;
+        public float torsoBend;
+    }
+
+    public List<FrameData> recordedFrames = new List<FrameData>();
 
     [Header("UDP Settings")]
     public int port = 56000;
@@ -62,6 +74,15 @@ public class UdpReceiver : MonoBehaviour
                 {
                     LatestData = data;
                     Debug.Log($"[UDP] Updated: L={data.leftShoulderValue}, R={data.rightShoulderValue}, torso={data.torsoBend}");
+
+              
+                    recordedFrames.Add(new FrameData
+                    {
+                        timeStamp = Time.time,
+                        leftShoulder = data.leftShoulderValue,
+                        rightShoulder = data.rightShoulderValue,
+                        torsoBend = data.torsoBend
+                    });
                 }
             }
             catch (Exception ex)
@@ -69,6 +90,16 @@ public class UdpReceiver : MonoBehaviour
                 Debug.LogWarning($"[UDP] Receive failed: {ex.Message}");
             }
         }
+    }
+
+    public void ClearRecording()
+    {
+        recordedFrames.Clear();
+    }
+
+    public List<FrameData> GetRecordedData()
+    {
+        return recordedFrames;
     }
 
     void OnApplicationQuit() => Shutdown();

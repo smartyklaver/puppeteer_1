@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ShoulderController1 : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class ShoulderController1 : MonoBehaviour
     private float rightYAngle;
     
     private UdpReceiver udp;
+    private List<UdpReceiver.FrameData> allFrames;  
+    public bool Replay = false;
+    private float replayStartTime;
+    private float currentReplayTime;
+    private int frameindex;
 
     void Start()
     {
@@ -27,6 +33,14 @@ public class ShoulderController1 : MonoBehaviour
             rightYAngle = rightShoulder.localEulerAngles.z;
 
         udp = FindObjectOfType<UdpReceiver>();
+         allFrames = udp.GetRecordedData();
+    }
+
+    public void ReplayPuppetShoulders()
+    {
+        replayStartTime = Time.time;
+        Replay = true;
+        frameindex = 0;
     }
 
     void Update()
@@ -38,8 +52,24 @@ public class ShoulderController1 : MonoBehaviour
             //     leftYAngle += rotationSpeed * Time.deltaTime;
             // if (Input.GetKey(leftCounterKey))
             //     leftYAngle -= rotationSpeed * Time.deltaTime;
-             leftYAngle =  udp.LatestData.leftShoulderValue + 90f ;
+            if(!Replay){
+                leftYAngle =  udp.LatestData.leftShoulderValue + 90f ;
 
+            }
+            else
+            {
+                currentReplayTime = Time.time - replayStartTime;
+                while (frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime)
+                {
+                    frameindex++;
+                }
+                leftYAngle = allFrames[frameindex].leftShoulder + 90f ;
+                if (frameindex >= allFrames.Count - 1)
+                {
+                    Replay = false;
+                }
+            }
+            
             // 360° rotatie behouden
             if (leftYAngle > 360f) leftYAngle -= 360f;
             if (leftYAngle < 0f) leftYAngle += 360f;
@@ -57,7 +87,23 @@ public class ShoulderController1 : MonoBehaviour
             // if (Input.GetKey(rightCounterKey))
             //     rightYAngle -= rotationSpeed * Time.deltaTime;
 
-            rightYAngle =   90f + udp.LatestData.rightShoulderValue;
+            if(!Replay){
+                rightYAngle =  udp.LatestData.rightShoulderValue +90f;
+
+            }
+            else
+            {
+                currentReplayTime = Time.time - replayStartTime;
+                while (frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime)
+                {
+                    frameindex++;
+                }
+                rightYAngle = allFrames[frameindex].rightShoulder +90f;
+                if (frameindex >= allFrames.Count - 1)
+                {
+                    Replay = false;
+                }
+            }
 
             if (rightYAngle > 360f) rightYAngle -= 360f;
             if (rightYAngle < 0f) rightYAngle += 360f;

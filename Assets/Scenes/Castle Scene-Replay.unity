@@ -970,43 +970,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87557546a147bff4f8bab8c8f178e057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurtainMove
-  cartController: {fileID: 1627033370}
-  spinecontroller: {fileID: 1335519582}
-  shouldercontroller: {fileID: 1335519581}
-  OnCurtainOpened:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1627033370}
-        m_TargetAssemblyTypeName: CartController, Assembly-CSharp
-        m_MethodName: StartMoving
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnReset:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1627033370}
-        m_TargetAssemblyTypeName: CartController, Assembly-CSharp
-        m_MethodName: Reset
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  cartController: {fileID: 0}
   closedPosition: {x: -4, y: 0.81, z: -3.49}
   openOffset: {x: -10, y: 0.81, z: -3.49}
   speed: 2
-  RestartKey: 114
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1112,6 @@ GameObject:
   - component: {fileID: 1026530266}
   - component: {fileID: 1026530265}
   - component: {fileID: 1026530267}
-  - component: {fileID: 1026530268}
   m_Layer: 0
   m_Name: curtain1
   m_TagString: Untagged
@@ -1239,59 +1205,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurtainMove
   cartController: {fileID: 1627033370}
-  spinecontroller: {fileID: 1335519582}
-  shouldercontroller: {fileID: 1335519581}
-  OnCurtainOpened:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1627033370}
-        m_TargetAssemblyTypeName: CartController, Assembly-CSharp
-        m_MethodName: StartMoving
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnReset:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1627033370}
-        m_TargetAssemblyTypeName: CartController, Assembly-CSharp
-        m_MethodName: Reset
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   closedPosition: {x: 4, y: 0.81, z: -3.49}
   openOffset: {x: 10, y: 0.81, z: -3.49}
   speed: 2
-  RestartKey: 114
---- !u!320 &1026530268
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1026530264}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 07b83e18a9cc7944a9938be134e78b77, type: 2}
-  m_InitialState: 1
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings: []
-  m_ExposedReferences:
-    m_References: []
 --- !u!1001 &1289615591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1314,7 +1230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6431105003458085469, guid: d8bb925d7e46e2340bf37173c0834366, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.39
+      value: 10.6
       objectReference: {fileID: 0}
     - target: {fileID: 6431105003458085469, guid: d8bb925d7e46e2340bf37173c0834366, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1392,7 +1308,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShoulderController1
   leftShoulder: {fileID: 130063178}
   rightShoulder: {fileID: 1898435937}
-  Replay: 0
 --- !u!114 &1335519582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1407,8 +1322,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpineController1
   spine: {fileID: 608837178}
   initialStartAngle: 0
-  bendBackwardKey: 113
-  Replay: 0
 --- !u!1001 &1457334339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2621,7 +2534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd1c5e7af7b4454291d6c1cc3958681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
-  recordedFrames: []
   port: 56000
 --- !u!4 &2022151686
 Transform:

@@ -1,39 +1,63 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class CurtainMove : MonoBehaviour
 {
-    public CartController cartController;
+    public SpineController1 spinecontroller;
+    public ShoulderController1 shouldercontroller;
+
+    public UnityEvent OnCurtainOpened;
+    public UnityEvent OnReset;
     
     [Header("Curtain Settings")]
-    public Vector3 closedPosition = new Vector3(0f, 0f, 0f);  // where the curtain starts
-    public Vector3 openOffset = new Vector3(3f, 0f, 0f);      // how far to move right
-    public float speed = 2f;                                  // movement speed
+    public Vector3 closedPosition = new Vector3(0f, 0f, 0f);
+    public Vector3 openOffset = new Vector3(3f, 0f, 0f);
+    public float speed = 2f;
 
     private Vector3 openPosition;
 
+    public KeyCode RestartKey = KeyCode.R;
+
+    private Coroutine curtainRoutine;
+
+    private int framecounter = 0; 
+
     void Start()
     {
-        // Force the curtain to start closed
         transform.position = closedPosition;
-
-        // Calculate the open position (right side)
         openPosition = closedPosition + openOffset;
 
-        // Start opening the curtain
-        StartCoroutine(OpenCurtain());
+        curtainRoutine = StartCoroutine(OpenCurtain());
     }
 
     IEnumerator OpenCurtain()
     {
+        int framecounter = 0; 
+        transform.position = closedPosition;
+
         while (Vector3.Distance(transform.position, openPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, openPosition, speed * Time.deltaTime);
             yield return null;
         }
 
-        // Snap exactly to final position
         transform.position = openPosition;
-        cartController.StartMoving();
+        OnCurtainOpened?.Invoke();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(RestartKey))
+        {
+            // Stop current coroutine if active
+            if (curtainRoutine != null)
+                StopCoroutine(curtainRoutine);
+
+            spinecontroller.ReplayPuppetSpine();
+            shouldercontroller.ReplayPuppetShoulders();
+            OnReset?.Invoke();
+            curtainRoutine = StartCoroutine(OpenCurtain());
+        }
     }
 }

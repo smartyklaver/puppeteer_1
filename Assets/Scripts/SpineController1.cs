@@ -1,10 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SpineController1 : MonoBehaviour
 {
     [Header("Spine Setup")]
-    public Transform spine;          // Sleep hier het Spine object in (Armature/Hips/Spine)
-  //  public float rotationSpeed = 50f;
+    public Transform spine;
     public float initialStartAngle = 0f;
 
     private float currentAngle;
@@ -14,16 +14,25 @@ public class SpineController1 : MonoBehaviour
 
     private UdpReceiver udp;
 
-    // [Header("Input Toetsen")]
-    // public KeyCode bendForwardKey = KeyCode.A;
-    // public KeyCode bendBackwardKey = KeyCode.Q;
+    private List<UdpReceiver.FrameData> allFrames;  
+
+    public KeyCode bendBackwardKey = KeyCode.Q;
+
+    public bool Replay = false;
+    private float torsoRaw =0;
+    private float replayStartTime;
+    private float currentReplayTime;
+    private int frameindex;
 
     void Start()
     {
         udp = FindObjectOfType<UdpReceiver>();
+
+        
+        allFrames = udp.GetRecordedData();
+
         if (spine != null)
         {
-            // lees huidige rotatie
             Vector3 startRotation = spine.localEulerAngles;
             fixedXAngle = startRotation.x;
             fixedYAngle = startRotation.y;
@@ -33,22 +42,37 @@ public class SpineController1 : MonoBehaviour
         }
     }
 
+    public void ReplayPuppetSpine()
+    {
+        replayStartTime = Time.time;
+        Replay = true;
+        frameindex = 0;
+    }
+
+
     void Update()
     {
         if (spine == null) return;
 
-        // // Draai vooruit/achteruit
-        // if (Input.GetKey(bendForwardKey))
-        //     currentAngle += rotationSpeed * Time.deltaTime;
-
-        // if (Input.GetKey(bendBackwardKey))
-        //     currentAngle -= rotationSpeed * Time.deltaTime;
-
-        float torsoRaw = udp.LatestData.torsoBend;
-      //  float torsoNorm = Mathf.InverseLerp(1, 0.46f, torsoRaw); 
+        if(!Replay){
+            torsoRaw = udp.LatestData.torsoBend;
+        }
+        else
+        {
+            currentReplayTime = Time.time - replayStartTime;
+            while (frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime)
+            {
+                frameindex++;
+            }
+            torsoRaw = allFrames[frameindex].torsoBend;
+            if (frameindex >= allFrames.Count - 1)
+            {
+                Replay = false;
+            }
+        }
+        
         currentAngle = Mathf.Lerp(-20f, 90f, torsoRaw);
 
-        // Pas de rotatie toe alleen in Z
         spine.localRotation = Quaternion.Euler(
             fixedXAngle,
             fixedYAngle,
