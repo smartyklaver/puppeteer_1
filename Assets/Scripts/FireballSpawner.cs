@@ -11,8 +11,13 @@ public class FireballSpawner : MonoBehaviour
     public Animator animator;
     public string spitTriggerName = "Spit";
     private Coroutine spawnRoutine;
+    public bool paused = false;
 
+ void Update()
+    {
+        if (paused) return;
 
+    }
     void OnEnable()
     {
         // start spawning when enabled
@@ -53,7 +58,7 @@ public class FireballSpawner : MonoBehaviour
         {
             fb.ownerTag = shooterTag;
             Vector3 dir = mouthTransform.forward;
-            dir.z = 0f;                       
+            dir.z = 0f;
             dir.Normalize();
             fb.Launch(dir, launchSpeed);
 
@@ -69,4 +74,24 @@ public class FireballSpawner : MonoBehaviour
         if (animator != null && !string.IsNullOrEmpty(spitTriggerName))
             animator.SetTrigger(spitTriggerName);
     }
+
+    public void Pause()
+    {
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+            paused = true;
+        }
+    }
+
+
+
+public void Resume()
+{
+        paused = false;
+        OnEnable();
+}
+
+
 }

@@ -62,6 +62,8 @@ public class DragonController : MonoBehaviour, IDamageable
     public PlayerController playerController;
 
     public Camera mainCamera;
+    public bool forceGround = false;
+
 
     private bool isFlying = false;
     private bool isRoaring = false;
@@ -78,12 +80,6 @@ public class DragonController : MonoBehaviour, IDamageable
 
     void Start()
     {
-
-        //Debug.DrawRay(head.position, head.forward * 2f, Color.blue, 10f);
-        //Debug.DrawRay(head.position, head.up * 2f, Color.green, 10f);
-        //Debug.DrawRay(head.position, head.right * 2f, Color.red, 10f);
-
-
         groundPos = transform.position;
         bodyBaseRot = transform.rotation;
 
@@ -145,12 +141,13 @@ public class DragonController : MonoBehaviour, IDamageable
         Vector3 desired = new Vector3(transform.position.x + walkSpeed * Time.deltaTime, groundPos.y, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, desired, Time.deltaTime * flySpeed);
 
-        if (groundTimer >= groundDuration)
-        {
-            groundTimer = 0f;
-            isFlying = true;
-            flyTimer = 0f;
-        }
+        if (!forceGround && groundTimer >= groundDuration)
+    {
+    groundTimer = 0f;
+    isFlying = true;
+    flyTimer = 0f;
+}
+
     }
 }
 
@@ -211,7 +208,7 @@ public class DragonController : MonoBehaviour, IDamageable
         playerController.SetCanMove(true);
 }
 
-    // 🦵 Beenanimatie op grond
+ 
     void HandleLegsAndBodyBob()
     {
         if (isFlying)
