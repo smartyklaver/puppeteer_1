@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321d5dbeb4e95b242a577312a5fb317e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShoulderController1
-  leftShoulder: {fileID: 383406125}
+  leftShoulder: {fileID: 620207943}
   rightShoulder: {fileID: 326778801}
 --- !u!114 &100414251
 MonoBehaviour:
@@ -570,11 +570,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f3606708efd82c4bab30d262bf34ae6, type: 3}
---- !u!4 &383406125 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2854992848244320496, guid: d1ae99203e069534385820e63435a901, type: 3}
-  m_PrefabInstance: {fileID: 1574818826}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &468831698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -601,15 +596,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1574088110406686254, guid: 2784b57beee0965448bd13a9f2a0dae2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.18406
+      value: 0.185
       objectReference: {fileID: 0}
     - target: {fileID: 1574088110406686254, guid: 2784b57beee0965448bd13a9f2a0dae2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.0281
+      value: -2.076
       objectReference: {fileID: 0}
     - target: {fileID: 1574088110406686254, guid: 2784b57beee0965448bd13a9f2a0dae2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.0485
+      value: -2.999
       objectReference: {fileID: 0}
     - target: {fileID: 1574088110406686254, guid: 2784b57beee0965448bd13a9f2a0dae2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -807,6 +802,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2854992848244320400, guid: d1ae99203e069534385820e63435a901, type: 3}
   m_PrefabInstance: {fileID: 1574818826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &620207943 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3460278577302543945, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+  m_PrefabInstance: {fileID: 1710855355}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &728424929
 PrefabInstance:
@@ -1717,6 +1717,51 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 100414250}
   m_SourcePrefab: {fileID: 100100000, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+--- !u!1 &1794345323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1794345325}
+  - component: {fileID: 1794345324}
+  m_Layer: 0
+  m_Name: UDPManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1794345324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794345323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd1c5e7af7b4454291d6c1cc3958681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
+  port: 56000
+--- !u!4 &1794345325
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794345323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.28193, y: -3.8761, z: 10.86384}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2001933830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,3 +2011,4 @@ SceneRoots:
   - {fileID: 1574818826}
   - {fileID: 265784060}
   - {fileID: 1705329064}
+  - {fileID: 1794345325}
