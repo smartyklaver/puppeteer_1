@@ -49,6 +49,11 @@ public class SpineController1 : MonoBehaviour
         frameindex = 0;
     }
 
+    public float GetCurrentTorsoValue()
+    {
+    return currentAngle;
+    }
+
 
     void Update()
     {
@@ -71,7 +76,7 @@ public class SpineController1 : MonoBehaviour
             }
         }
         
-        currentAngle = Mathf.Lerp(-20f, 90f, torsoRaw);
+        currentAngle = Mathf.Lerp(-40f, 120f, torsoRaw);
 
         spine.localRotation = Quaternion.Euler(
             fixedXAngle,

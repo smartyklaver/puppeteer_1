@@ -9,31 +9,38 @@ public class CurtainMove : MonoBehaviour
 
     public UnityEvent OnCurtainOpened;
     public UnityEvent OnReset;
-    
+
     [Header("Curtain Settings")]
     public Vector3 closedPosition = new Vector3(0f, 0f, 0f);
     public Vector3 openOffset = new Vector3(3f, 0f, 0f);
     public float speed = 2f;
 
     private Vector3 openPosition;
-
-    public KeyCode RestartKey = KeyCode.R;
-
     private Coroutine curtainRoutine;
 
-    private int framecounter = 0; 
-
-    void Start()
+    void Awake()
     {
-        transform.position = closedPosition;
         openPosition = closedPosition + openOffset;
+    }
+
+    // Timeline can call this
+    public void StartCurtain()
+    {
+        if (curtainRoutine != null)
+            StopCoroutine(curtainRoutine);
 
         curtainRoutine = StartCoroutine(OpenCurtain());
     }
 
+    // Timeline can call this too
+    public void ResetCurtain()
+    {
+        transform.position = closedPosition;
+        OnReset?.Invoke();
+    }
+
     IEnumerator OpenCurtain()
     {
-        int framecounter = 0; 
         transform.position = closedPosition;
 
         while (Vector3.Distance(transform.position, openPosition) > 0.01f)
@@ -43,21 +50,13 @@ public class CurtainMove : MonoBehaviour
         }
 
         transform.position = openPosition;
-        OnCurtainOpened?.Invoke();
+      //  OnCurtainOpened?.Invoke();
     }
 
-    void Update()
+    // Timeline can call this
+    public void ReplayEverything()
     {
-        if (Input.GetKeyDown(RestartKey))
-        {
-            // Stop current coroutine if active
-            if (curtainRoutine != null)
-                StopCoroutine(curtainRoutine);
-
-            spinecontroller.ReplayPuppetSpine();
-            shouldercontroller.ReplayPuppetShoulders();
-            OnReset?.Invoke();
-            curtainRoutine = StartCoroutine(OpenCurtain());
-        }
+        spinecontroller.ReplayPuppetSpine();
+        shouldercontroller.ReplayPuppetShoulders();
     }
 }
