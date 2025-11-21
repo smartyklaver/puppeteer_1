@@ -10,9 +10,12 @@ public class TimelineRestarter : MonoBehaviour
     public CurtainsOpenSceneOne curtain1;
     public CurtainsOpenSceneOne curtain2;
     public CameraMovetoValue cameraController;
+    public SpineController1 spinecontroller;
+    public ShoulderController1 shouldercontroller;
 
     void Start()
     {
+        
         // 🌟 NEW: This makes the Timeline start playing automatically once, 
         // as soon as the scene loads.
         if (director != null)
@@ -25,6 +28,8 @@ public class TimelineRestarter : MonoBehaviour
     public void RestartTimeline()
     {
         // The Spacebar press triggers both the immediate reset and the playback restart.
+        spinecontroller.ReplayPuppetSpine();
+        shouldercontroller.ReplayPuppetShoulders();
         PerformInstantReset();
         ExecuteTimelineControl();
     }
