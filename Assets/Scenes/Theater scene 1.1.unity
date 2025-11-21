@@ -298,51 +298,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302544155, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
   m_PrefabInstance: {fileID: 1710855355}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &265784058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 265784060}
-  - component: {fileID: 265784059}
-  m_Layer: 0
-  m_Name: audio1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &265784059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 265784058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52453666273e39540ba4e75f05a0054f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayAudioDelayed
-  audioSource: {fileID: 1705329063}
---- !u!4 &265784060
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 265784058}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8715, y: 0, z: 0.95606}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &304229390
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,6 +865,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0087482ea7a82249b56927900cabff9, type: 3}
+--- !u!1 &923540669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 407389675392296560, guid: a231f659a371a2642934d1c9a019ed9b, type: 3}
+  m_PrefabInstance: {fileID: 2134502840}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &952512236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,7 +974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ac0e29b33388247a3ed4edb8fc4804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurtainsOpenSceneOne
-  cartController: {fileID: 0}
   closedPosition: {x: -4, y: 0, z: -4}
   openOffset: {x: -7, y: 0, z: -4}
   speed: 2
@@ -1046,6 +1005,7 @@ GameObject:
   m_Component:
   - component: {fileID: 975510066}
   - component: {fileID: 975510065}
+  - component: {fileID: 975510067}
   m_Layer: 0
   m_Name: Timeline
   m_TagString: Untagged
@@ -1063,8 +1023,8 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
-  m_InitialState: 1
-  m_WrapMode: 2
+  m_InitialState: 0
+  m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -1072,6 +1032,10 @@ PlayableDirector:
     value: {fileID: 1026530269}
   - key: {fileID: 7231233496938372887, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
     value: {fileID: 304229398}
+  - key: {fileID: 5627663655750575097, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
+    value: {fileID: 1705329063}
+  - key: {fileID: -4734139738373960313, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
+    value: {fileID: 1613575358}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &975510066
@@ -1089,6 +1053,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975510067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975510064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276f535f7d4d2aa4b9a485af375c46aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimelineRestarter
+  director: {fileID: 975510065}
+  curtain1: {fileID: 1026530268}
+  curtain2: {fileID: 952512239}
+  cameraController: {fileID: 304229397}
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,7 +1305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ac0e29b33388247a3ed4edb8fc4804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurtainsOpenSceneOne
-  cartController: {fileID: 0}
   closedPosition: {x: 4, y: 0, z: -4}
   openOffset: {x: 7, y: 0, z: -4}
   speed: 2
@@ -1637,8 +1616,49 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2854992848244320400, guid: d1ae99203e069534385820e63435a901, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1006910374}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1613575360}
   m_SourcePrefab: {fileID: 100100000, guid: d1ae99203e069534385820e63435a901, type: 3}
+--- !u!1 &1613575357 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
+  m_PrefabInstance: {fileID: 1574818826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1613575358 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2854992848237152090, guid: d1ae99203e069534385820e63435a901, type: 3}
+  m_PrefabInstance: {fileID: 1574818826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1613575360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613575357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1732303fbdf6c2a428abfe8d1442ce09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LetterRemove
+  letterObject: {fileID: 923540669}
+  OnSpacebarPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 975510067}
+        m_TargetAssemblyTypeName: TimelineRestarter, Assembly-CSharp
+        m_MethodName: RestartTimeline
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1705329062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,7 +1687,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 2033c97f432e80545995e7c931e34eda, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2156,7 +2176,6 @@ SceneRoots:
   - {fileID: 343512605}
   - {fileID: 728424929}
   - {fileID: 1574818826}
-  - {fileID: 265784060}
   - {fileID: 1705329064}
   - {fileID: 1794345325}
   - {fileID: 975510066}

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class CurtainsOpenSceneOne : MonoBehaviour
 {
-    public CartController cartController;
+    // You can remove this reference if not used:
+    // public CartController cartController;
 
     [Header("Curtain Settings")]
     public Vector3 closedPosition = new Vector3(0f, 0f, 0f);
@@ -14,13 +15,24 @@ public class CurtainsOpenSceneOne : MonoBehaviour
 
     void Start()
     {
-        transform.position = closedPosition;
-        openPosition = closedPosition + openOffset;
+        // Set the initial position on start
+        ResetForTimeline();
     }
 
-    // This is the method Timeline will call
+    // Called IMMEDIATELY by TimelineRestarter when Spacebar is pressed.
+    // Snaps the curtain back to the starting point.
+    public void ResetForTimeline()
+    {
+        transform.position = closedPosition;
+        openPosition = closedPosition + openOffset;
+        opening = false;
+    }
+
+    // Called by the Timeline Signal Emitter to start the opening movement.
     public void StartCurtains()
     {
+        // We assume ResetForTimeline() has already been called via the button press,
+        // so we just set the flag to start moving.
         opening = true;
     }
 
