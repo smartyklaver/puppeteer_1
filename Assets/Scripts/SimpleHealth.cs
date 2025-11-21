@@ -33,8 +33,8 @@ public class SimpleHealth : MonoBehaviour, IDamageable
 
         UpdateHealthUI();
 
-        if (currentHealth <= 0)
-            Die();
+       // if (currentHealth <= 0)
+           // Die();
     }
 
     void UpdateHealthUI()

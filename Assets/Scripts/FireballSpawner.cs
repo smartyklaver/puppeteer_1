@@ -1,55 +1,20 @@
 using UnityEngine;
-using System.Collections;
 
 public class FireballSpawner : MonoBehaviour
 {
+    [Header("Setup")]
     public Transform mouthTransform;
     public GameObject fireballPrefab;
     public float launchSpeed = 14f;
     public float spawnOffset = 0.3f;
     public string shooterTag = "Dragon";
-    public Animator animator;
-    public string spitTriggerName = "Spit";
-    private Coroutine spawnRoutine;
-    public bool paused = false;
 
- void Update()
+    // Spawns and RETURNS the Fireball so Dragon can animate it
+    public Fireball Spit()
     {
-        if (paused) return;
+        if (fireballPrefab == null || mouthTransform == null)
+            return null;
 
-    }
-    void OnEnable()
-    {
-        // start spawning when enabled
-        spawnRoutine = StartCoroutine(SpitLoop());
-    }
-
-    void OnDisable()
-    {
-        // stop all coroutines when disabled
-        if (spawnRoutine != null)
-        {
-            StopCoroutine(spawnRoutine);
-            spawnRoutine = null;
-        }
-    }
-
-    IEnumerator SpitLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1);
-            Spit();
-            yield return new WaitForSeconds(4);
-            
-        }
-    }
-
-    public void Spit()
-    {
-        if (fireballPrefab == null || mouthTransform == null) return;
-
-        // Spawn iets voor de mond
         Vector3 spawnPos = mouthTransform.position + mouthTransform.forward * spawnOffset;
         GameObject fbObj = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
 
@@ -57,41 +22,35 @@ public class FireballSpawner : MonoBehaviour
         if (fb != null)
         {
             fb.ownerTag = shooterTag;
+
             Vector3 dir = mouthTransform.forward;
             dir.z = 0f;
             dir.Normalize();
+
             fb.Launch(dir, launchSpeed);
 
-            // 🔥 Belangrijk: negeer collision tussen draak en vuurbal
-            Collider[] dragonColliders = GetComponentsInParent<Collider>();
-            Collider fbCollider = fb.GetComponent<Collider>();
-            foreach (var col in dragonColliders)
+            // dragon doesn't collide with its own projectile
+            GameObject owner = GameObject.FindGameObjectWithTag(shooterTag);
+            if (owner != null)
             {
-                Physics.IgnoreCollision(col, fbCollider, true);
+                Collider[] ownerCols = owner.GetComponentsInChildren<Collider>();
+                Collider fbCol = fbObj.GetComponent<Collider>();
+                if (fbCol != null)
+                {
+                    foreach (var c in ownerCols)
+                        Physics.IgnoreCollision(c, fbCol, true);
+                }
             }
         }
 
-        if (animator != null && !string.IsNullOrEmpty(spitTriggerName))
-            animator.SetTrigger(spitTriggerName);
+        return fb;
     }
 
-    public void Pause()
+    // Utility for cinematic resets
+    public void DespawnAllFireballs()
     {
-        if (spawnRoutine != null)
-        {
-            StopCoroutine(spawnRoutine);
-            spawnRoutine = null;
-            paused = true;
-        }
+        Fireball[] all = FindObjectsOfType<Fireball>();
+        foreach (var f in all)
+            Destroy(f.gameObject);
     }
-
-
-
-public void Resume()
-{
-        paused = false;
-        OnEnable();
-}
-
-
 }
