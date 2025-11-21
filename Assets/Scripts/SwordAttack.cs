@@ -27,7 +27,7 @@ public class SwordAttack : MonoBehaviour
             // knockback en animatie
             DragonController dragon = other.GetComponentInParent<DragonController>();
             if (dragon != null)
-                dragon.OnHitByPlayer();
+                //dragon.OnHitByPlayer();
 
             // SPAM fix
             StartCoroutine(DisableColliderMoment());
