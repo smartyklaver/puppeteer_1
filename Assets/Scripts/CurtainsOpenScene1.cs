@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class CurtainsOpenSceneOne : MonoBehaviour
 {
@@ -10,30 +9,37 @@ public class CurtainsOpenSceneOne : MonoBehaviour
     public Vector3 openOffset = new Vector3(3f, 0f, 0f);
     public float speed = 2f;
 
-    public float delayBeforeOpening = 6f;
-
     private Vector3 openPosition;
+    private bool opening = false;
 
     void Start()
     {
         transform.position = closedPosition;
         openPosition = closedPosition + openOffset;
-
-        StartCoroutine(OpenCurtain());
     }
 
-    IEnumerator OpenCurtain()
+    // This is the method Timeline will call
+    public void StartCurtains()
     {
-        //Wait before moving the curtain
-        yield return new WaitForSeconds(delayBeforeOpening);
+        opening = true;
+    }
 
-        // Now start moving the curtain
-        while (Vector3.Distance(transform.position, openPosition) > 0.01f)
+    void Update()
+    {
+        if (!opening) return;
+
+        // Move curtain smoothly toward the open position
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            openPosition,
+            speed * Time.deltaTime
+        );
+
+        // Stop when reached
+        if (Vector3.Distance(transform.position, openPosition) < 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, openPosition, speed * Time.deltaTime);
-            yield return null;
+            transform.position = openPosition;
+            opening = false;
         }
-
-        transform.position = openPosition;
     }
 }

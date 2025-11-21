@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShoulderController1
   leftShoulder: {fileID: 620207943}
   rightShoulder: {fileID: 326778801}
+  Replay: 0
 --- !u!114 &100414251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpineController1
   spine: {fileID: 250264145}
   initialStartAngle: 0
+  bendBackwardKey: 113
+  Replay: 0
 --- !u!1001 &153509813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -353,6 +356,7 @@ GameObject:
   - component: {fileID: 304229391}
   - component: {fileID: 304229394}
   - component: {fileID: 304229397}
+  - component: {fileID: 304229398}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -490,12 +494,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c16ad42e88a21418bf6b32149f2f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraMoveBetweenPoints
-  delay: 5
   moveTime: 3
   startPosition: {x: 0, y: 1, z: -10}
   startRotation: {x: 0, y: 0, z: 0}
   endPosition: {x: -0.7, y: -1.1, z: -5.7}
   endRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &304229398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304229390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 8f9b13d00a715034cb8f78bdc410883c, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 304229397}
+          m_TargetAssemblyTypeName: CameraMovetoValue, Assembly-CSharp
+          m_MethodName: BeginMove
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!4 &326778801 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
@@ -888,6 +921,7 @@ GameObject:
   - component: {fileID: 952512238}
   - component: {fileID: 952512237}
   - component: {fileID: 952512239}
+  - component: {fileID: 952512240}
   m_Layer: 0
   m_Name: curtain2
   m_TagString: Untagged
@@ -984,7 +1018,77 @@ MonoBehaviour:
   closedPosition: {x: -4, y: 0, z: -4}
   openOffset: {x: -7, y: 0, z: -4}
   speed: 2
-  delayBeforeOpening: 3
+--- !u!114 &952512240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952512236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: e74b0b6a3c9b98748bb01ab6ece7671b, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls: []
+--- !u!1 &975510064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 975510066}
+  - component: {fileID: 975510065}
+  m_Layer: 0
+  m_Name: Timeline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!320 &975510065
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975510064}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -7255342072366816806, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
+    value: {fileID: 1026530269}
+  - key: {fileID: 7231233496938372887, guid: 02029e22302bec74493ff4073fe420a1, type: 2}
+    value: {fileID: 304229398}
+  m_ExposedReferences:
+    m_References: []
+--- !u!4 &975510066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975510064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,6 +1232,7 @@ GameObject:
   - component: {fileID: 1026530266}
   - component: {fileID: 1026530265}
   - component: {fileID: 1026530268}
+  - component: {fileID: 1026530269}
   m_Layer: 0
   m_Name: curtain1
   m_TagString: Untagged
@@ -1224,7 +1329,48 @@ MonoBehaviour:
   closedPosition: {x: 4, y: 0, z: -4}
   openOffset: {x: 7, y: 0, z: -4}
   speed: 2
-  delayBeforeOpening: 3
+--- !u!114 &1026530269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026530264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: e74b0b6a3c9b98748bb01ab6ece7671b, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1026530268}
+          m_TargetAssemblyTypeName: CurtainsOpenSceneOne, Assembly-CSharp
+          m_MethodName: StartCurtains
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 952512239}
+          m_TargetAssemblyTypeName: CurtainsOpenSceneOne, Assembly-CSharp
+          m_MethodName: StartCurtains
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1001 &1574818826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1746,6 +1892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd1c5e7af7b4454291d6c1cc3958681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
+  recordedFrames: []
   port: 56000
 --- !u!4 &1794345325
 Transform:
@@ -2012,3 +2159,4 @@ SceneRoots:
   - {fileID: 265784060}
   - {fileID: 1705329064}
   - {fileID: 1794345325}
+  - {fileID: 975510066}
