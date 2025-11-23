@@ -2607,7 +2607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::KingBowChecker
   spine: {fileID: 1335519582}
   requiredBend: 50
-  canReset: 0
+  StartChecking: 0
   restarter: {fileID: 1863744531}
 --- !u!114 &1713326258
 MonoBehaviour:

@@ -4,27 +4,36 @@ public class KingBowChecker  : MonoBehaviour
 {
     public SpineController1 spine;   
     public float requiredBend = 0.45f;
-    public bool canReset = false;
+    public bool StartChecking;
     public TimelineRestarter restarter;
+
+
+    void Start(){
+        StartChecking = false; 
+    }
 
     public void CheckBow()
     {
+        StartChecking = true;
+        
+    }
+
+    void Update()
+    {
         float torsoValue = spine.GetCurrentTorsoValue();
-        Debug.Log("checking");
+        Debug.Log("checking bowing");
         Debug.Log(torsoValue);
         if (torsoValue >= requiredBend)
         {
-            Debug.Log("Koning: goed gebogen!");
-            canReset = true; 
-            if (Input.GetKeyDown(KeyCode.Space))
+ 
+            if (Input.GetKeyDown(KeyCode.Space) && StartChecking)
             {
             restarter.RestartTimeline();
             }
         }
         else
         {
-            Debug.Log("Koning: buig dieper!");
-            canReset = false;
+
         }
     }
 }
