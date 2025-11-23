@@ -1623,13 +1623,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1613575360}
-    - targetCorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1613575362}
     - targetCorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1613575361}
+    - targetCorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1613575363}
   m_SourcePrefab: {fileID: 100100000, guid: d1ae99203e069534385820e63435a901, type: 3}
 --- !u!1 &1613575357 stripped
 GameObject:
@@ -1641,36 +1641,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2854992848237152090, guid: d1ae99203e069534385820e63435a901, type: 3}
   m_PrefabInstance: {fileID: 1574818826}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1613575360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613575357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1732303fbdf6c2a428abfe8d1442ce09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LetterRemove
-  letterObject: {fileID: 923540669}
-  OnResetReady:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 975510067}
-        m_TargetAssemblyTypeName: TimelineRestarter, Assembly-CSharp
-        m_MethodName: RestartTimeline
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  resetAudioSource: {fileID: 1705329063}
-  resetClip: {fileID: 8300000, guid: 7942f04acc663aa488c3d4f8171539df, type: 3}
 --- !u!114 &1613575361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1717,6 +1687,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LetterVisibilityController
   letterObject: {fileID: 923540669}
+--- !u!114 &1613575363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613575357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1732303fbdf6c2a428abfe8d1442ce09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputRemover
+  letterObject: {fileID: 0}
+  OnResetReady:
+    m_PersistentCalls:
+      m_Calls: []
+  restarter: {fileID: 0}
+  resetAudioSource: {fileID: 0}
+  resetClip: {fileID: 0}
 --- !u!1 &1705329062
 GameObject:
   m_ObjectHideFlags: 0
