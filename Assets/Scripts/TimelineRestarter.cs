@@ -1,57 +1,69 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
+using System.Collections;
 
 public class TimelineRestarter : MonoBehaviour
 {
-    // Timeline Director reference
+    // MOETEN worden ingevuld in de Inspector!
     public PlayableDirector director;
-
-    // References for immediate reset (must be linked in Inspector)
     public CurtainsOpenSceneOne curtain1;
     public CurtainsOpenSceneOne curtain2;
     public CameraMovetoValue cameraController;
     public SpineController1 spinecontroller;
     public ShoulderController1 shouldercontroller;
+    public LetterRemove LetterRemove;
+
+    private float recordingStartTime = 0f;
 
     void Start()
     {
-        
-        // 🌟 NEW: This makes the Timeline start playing automatically once, 
-        // as soon as the scene loads.
-        if (director != null)
+        director.Play();
+
+        recordingStartTime = Time.time;
+
+        LetterRemove.ShowLetter();
+    }
+
+    public void RestartTimeline()
+    {
+        LetterRemove.ShowLetter();
+
+        float timeOfPress = LetterRemove.timeOfSpacebarPress;
+
+        // Berekende duur: Tijd tussen start opname en spatiebalk-druk
+        float recordedDuration = timeOfPress - recordingStartTime;
+
+        // Start de replay van de animatie controllers
+        spinecontroller.ReplayPuppetSpine();
+        shouldercontroller.ReplayPuppetShoulders();
+
+        PerformInstantReset();
+        ExecuteTimelineControl();
+
+        if (recordedDuration > 0)
         {
-            director.Play();
+            StopAllCoroutines();
+            StartCoroutine(HideLetterAfterDelay(recordedDuration));
         }
     }
 
-    // This function is called by the UnityEvent from InputRemover (Spacebar)
-    public void RestartTimeline()
-    {
-        // The Spacebar press triggers both the immediate reset and the playback restart.
-        spinecontroller.ReplayPuppetSpine();
-        shouldercontroller.ReplayPuppetShoulders();
-        PerformInstantReset();
-        ExecuteTimelineControl();
-    }
-
-    // --- Helper Methods for Clarity ---
-
     private void PerformInstantReset()
     {
-        // 1. **IMMEDIATE RESET** of all managed objects (snaps them to start position)
-        if (curtain1 != null) curtain1.ResetForTimeline();
-        if (curtain2 != null) curtain2.ResetForTimeline();
-        if (cameraController != null) cameraController.ResetForTimeline();
+        curtain1.ResetForTimeline();
+        curtain2.ResetForTimeline();
+        cameraController.ResetForTimeline();
     }
 
     private void ExecuteTimelineControl()
     {
-        // 2. Timeline Control (Stops, rewinds, and plays)
-        if (director != null)
-        {
-            director.Stop();
-            director.time = 0;
-            director.Play();
-        }
+        director.Stop();
+        director.time = 0;
+        director.Play();
+    }
+
+    private IEnumerator HideLetterAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        LetterRemove.HideLetter();
     }
 }

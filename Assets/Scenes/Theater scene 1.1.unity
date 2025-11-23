@@ -1073,6 +1073,7 @@ MonoBehaviour:
   cameraController: {fileID: 304229397}
   spinecontroller: {fileID: 100414251}
   shouldercontroller: {fileID: 100414250}
+  LetterRemove: {fileID: 1613575365}
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,7 +1630,7 @@ PrefabInstance:
       addedObject: {fileID: 1613575361}
     - targetCorrespondingSourceObject: {fileID: 2854992848244552850, guid: d1ae99203e069534385820e63435a901, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1613575363}
+      addedObject: {fileID: 1613575365}
   m_SourcePrefab: {fileID: 100100000, guid: d1ae99203e069534385820e63435a901, type: 3}
 --- !u!1 &1613575357 stripped
 GameObject:
@@ -1687,7 +1688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LetterVisibilityController
   letterObject: {fileID: 923540669}
---- !u!114 &1613575363
+--- !u!114 &1613575365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1698,7 +1699,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1732303fbdf6c2a428abfe8d1442ce09, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputRemover
+  m_EditorClassIdentifier: Assembly-CSharp::LetterRemove
   letterObject: {fileID: 923540669}
   OnResetReady:
     m_PersistentCalls:
@@ -1717,6 +1718,7 @@ MonoBehaviour:
         m_CallState: 2
   resetAudioSource: {fileID: 1705329063}
   resetClip: {fileID: 8300000, guid: 7942f04acc663aa488c3d4f8171539df, type: 3}
+  timeOfSpacebarPress: -1
 --- !u!1 &1705329062
 GameObject:
   m_ObjectHideFlags: 0

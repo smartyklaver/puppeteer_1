@@ -1,57 +1,112 @@
+
 using UnityEngine;
+
 using UnityEngine.Events;
 
-public class InputRemover : MonoBehaviour
+using System.Collections; // Nieuwe import voor Coroutine
+
+
+
+public class LetterRemove : MonoBehaviour
+
 {
-    // --- Letter/Signal Components ---
+
     public GameObject letterObject;
-    // NOTE: We change this event name for clarity to reflect the delay:
+
     public UnityEvent OnResetReady = new UnityEvent();
 
-    // --- Audio Components (NEW) ---
+
+
     [Header("Audio Delay Settings")]
-    public AudioSource resetAudioSource; // ?? Drag an AudioSource component here
-    public AudioClip resetClip;         // ?? Drag the sound file here
+
+    public AudioSource resetAudioSource;
+
+    public AudioClip resetClip;
+
+
+
+    // Nieuw: Slaat de absolute tijd op waarop de spatiebalk werd ingedrukt
+
+    [HideInInspector]
+
+    public float timeOfSpacebarPress = -1f;
+
+
 
     void Update()
+
     {
+
         if (Input.GetKeyDown(KeyCode.Space))
+
         {
-            // Call the function that handles the delay
+
+            // Vang de tijd van de druk op de spatiebalk op
+
+            timeOfSpacebarPress = Time.time;
+
             PerformActionAndDelayReset();
+
         }
+
     }
+
+
 
     public void PerformActionAndDelayReset()
+
     {
-        // 1. Hide the letter immediately
-        if (letterObject != null)
-        {
-            letterObject.SetActive(false);
-            Debug.Log("Letter removed.");
-        }
+        SignalResetComplete();
 
-        // 2. Play the sound and schedule the reset
-        if (resetAudioSource != null && resetClip != null)
-        {
-            resetAudioSource.PlayOneShot(resetClip);
-
-            // Invoke the final signal after the duration of the audio clip.
-            // This is the pause!
-            Invoke(nameof(SignalResetComplete), resetClip.length);
-        }
-        else
-        {
-            // 3. Fail-safe: If audio components are missing, reset immediately
-            Debug.LogWarning("Reset Audio is missing or incomplete. Resetting immediately.");
-            OnResetReady.Invoke();
-        }
     }
 
-    // 4. This function is called by Invoke() after the sound has finished playing
+
+
     private void SignalResetComplete()
+
     {
-        // Send the signal to the TimelineRestarter
+
+        // Stuurt het signaal naar de TimelineRestarter (die de replay start)
+
         OnResetReady.Invoke();
+
     }
+
+
+
+    // NIEUW: Functie om de letter zichtbaar te maken bij de start van de replay
+
+    public void ShowLetter()
+
+    {
+
+        if (letterObject != null)
+
+        {
+
+            letterObject.SetActive(true);
+
+        }
+
+    }
+
+
+
+    // NIEUW: Functie om de letter onzichtbaar te maken na de replay
+
+    public void HideLetter()
+
+    {
+
+        if (letterObject != null)
+
+        {
+
+            letterObject.SetActive(false);
+
+        }
+        resetAudioSource.PlayOneShot(resetClip);
+
+    }
+
 }
