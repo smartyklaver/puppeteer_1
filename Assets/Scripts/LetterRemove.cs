@@ -94,7 +94,7 @@ public class LetterRemove : MonoBehaviour
 
     // NIEUW: Functie om de letter onzichtbaar te maken na de replay
 
-    public void HideLetter()
+    public float HideLetterAndPlayAudio()
 
     {
 
@@ -106,6 +106,7 @@ public class LetterRemove : MonoBehaviour
 
         }
         resetAudioSource.PlayOneShot(resetClip);
+        return resetClip.length;
 
     }
 

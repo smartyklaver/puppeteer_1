@@ -63,7 +63,22 @@ public class TimelineRestarter : MonoBehaviour
 
     private IEnumerator HideLetterAfterDelay(float delay)
     {
+        // Wacht de duur van de opgenomen actie af
         yield return new WaitForSeconds(delay);
-        LetterRemove.HideLetter();
+
+        // Verberg de letter
+        float audioDelay = LetterRemove.HideLetterAndPlayAudio();
+
+        yield return new WaitForSeconds(audioDelay);
+
+        // Sluit de gordijnen
+        CloseCurtainsAndZoomOut();
+    }
+
+    private void CloseCurtainsAndZoomOut()
+    {
+        curtain1.CloseCurtains();
+        curtain2.CloseCurtains();
+        cameraController.ReturnToStart();
     }
 }
