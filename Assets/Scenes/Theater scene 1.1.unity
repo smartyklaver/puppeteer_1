@@ -1699,13 +1699,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1732303fbdf6c2a428abfe8d1442ce09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputRemover
-  letterObject: {fileID: 0}
+  letterObject: {fileID: 923540669}
   OnResetReady:
     m_PersistentCalls:
-      m_Calls: []
-  restarter: {fileID: 0}
-  resetAudioSource: {fileID: 0}
-  resetClip: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 975510067}
+        m_TargetAssemblyTypeName: TimelineRestarter, Assembly-CSharp
+        m_MethodName: RestartTimeline
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  resetAudioSource: {fileID: 1705329063}
+  resetClip: {fileID: 8300000, guid: 7942f04acc663aa488c3d4f8171539df, type: 3}
 --- !u!1 &1705329062
 GameObject:
   m_ObjectHideFlags: 0
