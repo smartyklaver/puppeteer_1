@@ -1,67 +1,59 @@
+// PlayerController.cs
 using UnityEngine;
 using System.Collections;
-
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
+    public bool inputEnabled = true;
 
-    [Header("Knockback")]
-    public bool canMove = true;
+    [Header("References")]
     public Rigidbody rb;
 
-    void Start()
+    void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        if (rb == null) rb = GetComponent<Rigidbody>();
     }
 
-void Update()
-{
-    if (!canMove) return;
-
-    float h = Input.GetAxis("Horizontal");
-    float v = Input.GetAxis("Vertical");
-
-    Vector3 move = new Vector3(h, 0, v).normalized;
-
-    if (move.magnitude > 0.1f)
+    void Update()
     {
-        rb.linearVelocity = move * moveSpeed;
+        if (!inputEnabled) return;
+
     }
-}
 
+    // External API ------------------------------------------------
+    public void SetCanMove(bool enabled)
+    {
+        inputEnabled = enabled;
+        if (!enabled && rb != null)
+            rb.linearVelocity = Vector3.zero;
+    }
 
-    // 🎯 Externe knockback (aangeroepen door draak)
-    public void ApplyKnockback(Vector3 direction, float force)
+    // Deterministic knockback (used by cinematic)
+    public void ApplyKnockback(Vector3 direction, float force, float stunSeconds = 0.6f)
     {
         if (rb == null) return;
-        rb.linearVelocity = Vector3.zero; // reset huidige beweging
-        rb.AddForce(direction * force, ForceMode.VelocityChange);
-        StartCoroutine(ForceGroundedAfter(0.3f)); // wacht een fractie seconde
-
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(direction.normalized * force, ForceMode.VelocityChange);
+        StartCoroutine(ForceGroundedThenEnable(stunSeconds));
     }
 
-    IEnumerator ForceGroundedAfter(float delay)
-{
-    yield return new WaitForSeconds(delay);
-
-    if (rb != null)
+    IEnumerator ForceGroundedThenEnable(float wait)
     {
-        Vector3 v = rb.linearVelocity;
-        if (v.y > 0f)
-        rb.linearVelocity = new Vector3(v.x, 0f, v.z); // verwijder "zweef"
-        rb.useGravity = true;
-    }
-}
+        // disable input while in knockback
+        inputEnabled = false;
+        yield return new WaitForSeconds(wait);
 
+        // ensure player is on ground (zero vertical velocity) to avoid hovering
+        if (rb != null)
+        {
+            Vector3 v = rb.linearVelocity;
+            rb.linearVelocity = new Vector3(v.x, 0f, v.z);
+            rb.useGravity = true;
+        }
 
-    // ⏸️ Speler tijdelijk vastzetten
-    public void SetCanMove(bool value)
-    {
-        canMove = value;
-        if (!canMove)
-            rb.linearVelocity = Vector3.zero;
+        inputEnabled = true;
     }
 }

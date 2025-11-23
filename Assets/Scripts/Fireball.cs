@@ -3,7 +3,7 @@ using UnityEngine;
 public class Fireball : MonoBehaviour
 {
     [Header("Motion")]
-    public float speed = 12f;
+    public float speed = 20f;
     public float lifeTime = 12f;
 
     [Header("Damage")]
