@@ -1,486 +1,191 @@
 using UnityEngine;
 using System.Collections;
 
-public class DragonController : MonoBehaviour, IDamageable
+public class DragonController : MonoBehaviour
 {
-
-    public Transform body; // hoofdlichaam van de draak (bijv. de romp)
-
-    [Header("Audio")]
-    public AudioSource roarSound;
-    public AudioSource wingFlapSound;
-
-    private bool playerCanMove = true;
-
-    [Header("Movement")]
-    public float walkSpeed = 1f;
-    public float flyHeight = 3f;
-    public float flySpeed = 1.5f;
-    public float flyDuration = 15f;
-    public float groundDuration = 8f;
-    public float descendSpeed = 2f;
-
-    [Header("Head & Body Tracking")]
-    public Transform head;
-    public Transform mouth;
-    public Transform player;
-    public float headTrackSpeed = 3f;
-    public float headPitchLimit = 40f;
-    public float bodyPitchFollow = 0.5f;   // Hoeveel van hoofdrotatie overgenomen wordt door lichaam
-    public float bodyPitchReturnSpeed = 2f;
-    public float bodyTurnSpeed = 1.5f;
-    public float bodyAssistThreshold = 35f;
-
-    [Header("Head Movement")]
-    public float headBobAmount = 0.03f;
-    public float headBobSpeed = 1.5f;
-
-    [Header("Leg Animation (Transform-based)")]
-    public Transform leftLeg;
-    public Transform rightLeg;
-    public float legSwingAngle = 15f;
-    public float legSwingSpeed = 3f;
-    public float bodyBobAmount = 0.05f;
-
-    [Header("Meteor Shower Settings")]
-    public GameObject fireballPrefab;
-    public int fireballsPerWave = 15;     // aantal vallende vuurballen
-    public float spawnAreaWidth = 20f;    // breedte van het gebied
-    public float spawnAreaDepth = 10f;    // diepte van het gebied
-    public float spawnHeight = 12f;       // hoogte boven arena
-    public float fallDelay = 0.2f;        // tijd tussen elke spawn
-    public float fireballFallSpeed = 5f; // val-snelheid
-    public float fireRainChance = 0.25f;  // 25% kans
-
-    [Header("Reaction")]
-    public float roarDuration = 1.2f;
-    public float cameraShakeIntensity = 0.2f;
-    public float cameraShakeDuration = 0.4f;
-    public float knockbackForce = 20f;
-
     [Header("References")]
     public PlayerController playerController;
+    public FireballSpawner fireballSpawner;
+    public Transform head;
+    public Camera playerCamera;
 
-    public Camera mainCamera;
-    public bool forceGround = false;
+    [Header("Movement")]
+    public float knockbackForce = 14f;
 
+    [Header("Camera Shake")]
+    public float cameraShakeDuration = 0.4f;
+    public float cameraShakeIntensity = 0.2f;
 
-    private bool isFlying = false;
-    private bool isRoaring = false;
-    private float flyTimer = 0f;
-    private float groundTimer = 0f;
-    private Vector3 groundPos;
-    private float legTimer = 0f;
-    private Vector3 headBaseLocalPos;
-    private Quaternion headBaseLocalRot;
-    private Quaternion leftLegBaseRot;
-    private Quaternion rightLegBaseRot;
-    private Quaternion bodyBaseRot;
-    private bool wingSoundPlaying = false;
+    [Header("Roar & Animation")]
+    public AudioSource roarAudio;
+    public float roarDuration = 2.5f;
+    bool isRoaring = false;
+
+    Quaternion headBaseRot;
 
     void Start()
     {
-        groundPos = transform.position;
-        bodyBaseRot = transform.rotation;
-
         if (head != null)
-        {
-            headBaseLocalPos = head.localPosition;
-            headBaseLocalRot = head.localRotation;
-        }
-        if (leftLeg != null) leftLegBaseRot = leftLeg.localRotation;
-        if (rightLeg != null) rightLegBaseRot = rightLeg.localRotation;
-        if (mainCamera == null) mainCamera = Camera.main;
+            headBaseRot = head.localRotation;
     }
 
-    void Update()
+    // Called by CinematicManager after a hit moment
+    public void OnHitByPlayer()
     {
-        if (isRoaring) return; 
-        HandleFlightCycle();
-        HandleLegsAndBodyBob();
-        HandleHeadAndBodyTracking();
-    }
-
-    // ✈️ Beweging met zachte stijging en landing
-    void HandleFlightCycle()
-{
-    if (isFlying)
-    {
-        flyTimer += Time.deltaTime;
-
-        // start looping wing sound when we enter flying state
-        if (!wingSoundPlaying && wingFlapSound != null)
-        {
-            wingFlapSound.loop = true;
-            wingFlapSound.Play();
-            wingSoundPlaying = true;
-        }
-
-        // zachte opstijging
-        float targetY = groundPos.y + flyHeight;
-        Vector3 desired = new Vector3(transform.position.x + walkSpeed * Time.deltaTime, targetY, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, desired, Time.deltaTime * flySpeed);
-
-        if (flyTimer >= flyDuration)
-        {
-            flyTimer = 0f;
-            StartCoroutine(FlyDownSmoothly());
-        }
-    }
-    else
-    {
-        // stop wing-loop if we're on ground
-        if (wingSoundPlaying && wingFlapSound != null)
-        {
-            wingFlapSound.loop = false;
-            wingFlapSound.Stop();
-            wingSoundPlaying = false;
-        }
-
-        groundTimer += Time.deltaTime;
-        Vector3 desired = new Vector3(transform.position.x + walkSpeed * Time.deltaTime, groundPos.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, desired, Time.deltaTime * flySpeed);
-
-        if (!forceGround && groundTimer >= groundDuration)
-    {
-    groundTimer = 0f;
-    isFlying = true;
-    flyTimer = 0f;
-}
-
-    }
-}
-
-    // 🕊️ Zachte landing
-    IEnumerator FlyDownSmoothly()
-    {
-        isFlying = false;
-        float targetY = groundPos.y;
-        float startY = transform.position.y;
-        float t = 0f;
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime * (descendSpeed / Mathf.Max(0.1f, flyHeight));
-            float newY = Mathf.Lerp(startY, targetY, Mathf.SmoothStep(0, 1, t));
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-
-            // terwijl hij daalt → geleidelijk lichaam terug rechtzetten
-            Quaternion upright = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-            transform.rotation = Quaternion.Slerp(transform.rotation, upright, Time.deltaTime * bodyPitchReturnSpeed);
-
-            yield return null;
-        }
-
-        transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
-        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-
-        transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
-        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-
-        // STOP wing loop (if still playing) and play landing impact
-        if (wingSoundPlaying && wingFlapSound != null)
-        {
-            wingFlapSound.loop = false;
-            wingFlapSound.Stop();
-            wingSoundPlaying = false;
-        }
-
-
-        // APPLY KNOCKBACK WHEN DRAGON LANDS
-        if (playerController != null)
-        {
-            // direction from dragon to player (away from dragon)
-            Vector3 dir = (playerController.transform.position - transform.position).normalized;
-            dir.y = 0.5f; // give a little upward push
-            playerController.ApplyKnockback(dir, knockbackForce);
-            // optionally briefly disable player movement during impact
-            playerController.SetCanMove(false);
-            // re-enable after a short delay
-            StartCoroutine(ReenablePlayerAfter(0.6f)); // 0.6s stun from landing
-        }
-
-    }
-    IEnumerator ReenablePlayerAfter(float seconds)
-{
-    yield return new WaitForSeconds(seconds);
-    if (playerController != null)
-        playerController.SetCanMove(true);
-}
-
- 
-    void HandleLegsAndBodyBob()
-    {
-        if (isFlying)
-        {
-            ResetLeg(leftLeg, leftLegBaseRot);
-            ResetLeg(rightLeg, rightLegBaseRot);
-            return;
-        }
-
-        legTimer += Time.deltaTime * legSwingSpeed;
-        float swing = Mathf.Sin(legTimer);
-        if (leftLeg != null)
-            leftLeg.localRotation = leftLegBaseRot * Quaternion.Euler(0, swing * legSwingAngle, 0);
-        if (rightLeg != null)
-            rightLeg.localRotation = rightLegBaseRot * Quaternion.Euler(0, -swing * legSwingAngle, 0);
-
-        float bob = Mathf.Abs(swing) * bodyBobAmount;
-        transform.localPosition = new Vector3(transform.localPosition.x, groundPos.y + bob, transform.localPosition.z);
-    }
-
-    void ResetLeg(Transform leg, Quaternion baseRot)
-    {
-        if (leg == null) return;
-        leg.localRotation = Quaternion.Slerp(leg.localRotation, baseRot, Time.deltaTime * 5f);
-    }
-
-    // 🧠 Hoofd en lichaam volgen speler, inclusief X-rotatie van lichaam
-    // 🧠 Hoofd en lichaam volgen speler + constante op/neer rotatie
-void HandleHeadAndBodyTracking()
-{
-    if (player == null || head == null || body == null) return;
-
-    // === Direction to player ===
-    Vector3 toPlayer = (player.position - head.position).normalized;
-
-    // Flatten direction for yaw (rotation around Y)
-    Vector3 toPlayerFlat = new Vector3(toPlayer.x, 0f, toPlayer.z).normalized;
-
-    float yaw = Mathf.Atan2(toPlayerFlat.x, toPlayerFlat.z) * Mathf.Rad2Deg;
-    float pitch = -Mathf.Atan2(toPlayer.y, toPlayerFlat.magnitude) * Mathf.Rad2Deg;
-
-    // === Breathing / idle nodding ===
-    float breathing = Mathf.Sin(Time.time * 2f) * 15f; // ±15°
-
-    // Clamp pitch
-    float targetPitch = Mathf.Clamp(pitch + breathing, -40f, 40f);
-
-    // 🧭 Apply only X-rotation (pitch), no sideways roll
-    // Use headBaseLocalRot to keep its natural orientation (so we don’t flip axes)
-    Quaternion targetHeadRot = headBaseLocalRot * Quaternion.Euler(targetPitch, 0f, 0f);
-
-    // Smooth rotation
-    head.localRotation = Quaternion.Slerp(head.localRotation, targetHeadRot, Time.deltaTime * headTrackSpeed);
-
-    // 🦴 Lichaam volgt licht mee (alleen X-rotatie)
-    if (isFlying)
-    {
-        float bodyTilt = targetPitch * bodyPitchFollow;
-        Quaternion targetBodyRot = bodyBaseRot * Quaternion.Euler(bodyTilt, 0f, 0f);
-        body.localRotation = Quaternion.Slerp(body.localRotation, targetBodyRot, Time.deltaTime * bodyTurnSpeed);
-    }
-    else
-    {
-        // Terug naar neutraal bij landing
-        body.localRotation = Quaternion.Slerp(body.localRotation, bodyBaseRot, Time.deltaTime * bodyPitchReturnSpeed);
-    }
-
-    // Debug info
-    //Debug.Log($"pitch={pitch:F1}, targetPitch={targetPitch:F1}, headLocalRot={head.localEulerAngles}");
-}
-
-
-
-    public void OnHitByPlayer(){
-        Debug.Log("⚔️ Draak is geraakt door speler!");
-
         if (isRoaring) return;
 
-    
-    StartCoroutine(RoarAndReact());
-}
-
-IEnumerator RoarAndReact()
-{
-    isRoaring = true;
-    playerCanMove = false; // ⛔ speler kan niet bewegen
-    float roarTime = 8f;   // duur van brul
-
-    // 🎵 Vleugelslaggeluid
-    if (wingFlapSound != null)
-        wingFlapSound.Play();
-
-    if (playerController != null)
-{
-    Vector3 dir = (playerController.transform.position - transform.position).normalized;
-    dir.y = 0.4f; // kleine boog omhoog
-    playerController.ApplyKnockback(dir, knockbackForce);
-    DespawnAllFireballs();
-    playerController.SetCanMove(false); // zet speler vast
-}
-
-    // 🎥 Camera shake voor impact
-    yield return StartCoroutine(CameraShake(cameraShakeDuration, cameraShakeIntensity));
-
-    // 🦴 Hoofd omhoog richten (cinematic houding)
-    Quaternion lookUpRot = headBaseLocalRot * Quaternion.Euler(-70f, 0f, 0f); // hoofd naar boven
-    float t = 0f;
-    while (t < 1f)
-    {
-        t += Time.deltaTime * 1.5f;
-        if (head != null)
-            head.localRotation = Quaternion.Slerp(head.localRotation, lookUpRot, t);
-        yield return null;
+        Debug.Log("⚔️ Dragon hit by player!");
+        StartCoroutine(RoarAndReact());
     }
 
-    // 🎵 Speel brulg geluid (duurt ±8 sec)
-    if (roarSound != null)
-        roarSound.Play();
-
-    // 🕒 wacht 8 seconden brultijd
-    yield return new WaitForSeconds(roarTime);
-
-    // 🎯 Klaar met brullen → vliegmodus activeren
-    isRoaring = false;
-    
-    playerController.SetCanMove(true);
-    isFlying = true;
-    flyTimer = 0f;
-    groundTimer = 0f; // reset zodat het niet blokkeert
-
-    // Reset hoofdpositie terug naar normaal
-    if (head != null)
-        head.localRotation = Quaternion.Slerp(head.localRotation, headBaseLocalRot, 0.2f);
-
-           if (Random.value < fireRainChance)
-        {
-            StartCoroutine(FireRain());
-        }
-}
-
-    IEnumerator CameraShake(float duration, float intensity)
+    IEnumerator RoarAndReact()
     {
-        if (mainCamera == null) yield break;
-        Vector3 original = mainCamera.transform.localPosition;
-        float elapsed = 0f;
+        isRoaring = true;
 
-        while (elapsed < duration)
+        // Knal de speler terug (gebruik player controller)
+        if (playerController != null)
         {
-            float x = Random.Range(-1f, 1f) * intensity;
-            float y = Random.Range(-1f, 1f) * intensity;
-            mainCamera.transform.localPosition = original + new Vector3(x, y, 0);
-            elapsed += Time.deltaTime;
+            Vector3 dir = (playerController.transform.position - transform.position).normalized;
+            dir.y = 0.4f; // small upward arc
+            playerController.ApplyKnockback(dir, knockbackForce, 0.8f);
+        }
+
+        // Camera shake
+        if (playerCamera != null)
+            StartCoroutine(CameraShake(cameraShakeDuration, cameraShakeIntensity));
+
+        // Animate head up
+        Quaternion targetHeadRot = headBaseRot * Quaternion.Euler(-60f, 0f, 0f);
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 2f;
+            if (head != null)
+                head.localRotation = Quaternion.Slerp(head.localRotation, targetHeadRot, t);
             yield return null;
         }
 
-        mainCamera.transform.localPosition = original;
+        // Play roar sound
+        if (roarAudio != null)
+            roarAudio.Play();
+
+        yield return new WaitForSeconds(roarDuration);
+
+        // Return head
+        if (head != null)
+            head.localRotation = headBaseRot;
+
+        isRoaring = false;
     }
 
-    public void TakeDamage(float amount)
-    {
-        Debug.Log($"🐲 DragonController received {amount} damage!");
-        OnHitByPlayer();
-    }
-
-IEnumerator FireRain()
+    // Fireball over player cinematic
+public void FireballOverPlayer()
 {
-    Debug.Log("🌧️ FIRE RAIN activated (line fall)!");
-
-    int count = fireballsPerWave;
-    float startX = -6f;
-    float endX = 1f; // jij vroeg enkel tot x = 1
-    float zPos = -2.33f;
-    float yStart = 4f;
-
-    for (int i = 0; i < count; i++)
+    if (fireballSpawner == null)
     {
-        // x-positie tussen -6 en 1
-        float t = (float)i / (count - 1);
-        float xPos = Mathf.Lerp(startX, endX, t);
-        Vector3 spawnPos = new Vector3(xPos, yStart, zPos);
-
-        // spawn
-        GameObject fb = Instantiate(fireballPrefab, spawnPos, Quaternion.identity);
-
-        Fireball fScript = fb.GetComponent<Fireball>();
-        Rigidbody rb = fb.GetComponent<Rigidbody>();
-        Collider col = fb.GetComponent<Collider>();
-
-        if (col != null)
-        {
-            col.isTrigger = true;
-            col.enabled = true;
-        }
-
-        if (rb != null)
-        {
-            rb.useGravity = false;
-            rb.isKinematic = false;
-            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        }
-
-        if (fScript != null)
-        {
-            // zodat OnTriggerEnter werkt net als bij normale vuurballen
-            fScript.ownerTag = "Dragon";
-
-            // Laat hem langzaam naar beneden gaan, niet met zwaartekracht
-            Vector3 fallDir = Vector3.down;
-            float fallSpeed = Random.Range(1.2f, 2.4f);
-            fScript.Launch(fallDir, fallSpeed);
-        }
-
-        // kleine vertraging tussen spawns
-        yield return new WaitForSeconds(Random.Range(0.08f, 0.15f));
+        Debug.LogError("No FireballSpawner assigned!");
+        return;
     }
 
-    Debug.Log("🔥 Fire rain finished!");
+    fireballSpawner.Spit();
 }
 
 
-IEnumerator SlowFall(GameObject fireball, float speed)
-{
-    Transform t = fireball.transform;
-    float fixedZ = -2.33f;
-
-    while (fireball != null)
-{
-    t.position += Vector3.down * speed * Time.deltaTime;
-
-    if (t.position.y <= 0.1f)
+    IEnumerator FireballCurve()
     {
-        Fireball fb = fireball.GetComponent<Fireball>();
-        if (fb != null && fb.hitEffect != null)
-            Instantiate(fb.hitEffect, t.position, Quaternion.identity);
+        if (fireballSpawner == null || playerController == null){
+            yield break;}
+
+        // spawn fireball and get reference
+        Fireball fb = fireballSpawner.Spit();
+        if (fb == null) yield break;
+
+        GameObject fireball = fb.gameObject;
+
+        Vector3 start = fireball.transform.position;
+        Vector3 end = playerController.transform.position + Vector3.up * 2.0f;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 1.5f;
+
+            // Lerp + cinematic arc
+            Vector3 pos = Vector3.Lerp(start, end, t);
+            pos.y += Mathf.Sin(t * Mathf.PI) * 2f;
+
+            fireball.transform.position = pos;
+            yield return null;
+        }
 
         Destroy(fireball);
+    }
+
+    // camera shake utility
+    IEnumerator CameraShake(float duration, float intensity)
+    {
+        if (playerCamera == null) yield break;
+
+        Vector3 originalPos = playerCamera.transform.localPosition;
+
+        float time = 0f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float x = Random.Range(-0.05f, 0.05f) * intensity;
+            float y = Random.Range(-0.05f, 0.05f) * intensity;
+
+            playerCamera.transform.localPosition = originalPos + new Vector3(x, y, 0f);
+
+            yield return null;
+        }
+
+        playerCamera.transform.localPosition = originalPos;
+    }
+
+    public void FireballAtShield()
+{
+    StartCoroutine(FireballToShield());
+}
+
+IEnumerator FireballToShield()
+{
+    Transform mouth = fireballSpawner.transform;
+
+    GameObject fb = Instantiate(
+        fireballSpawner.fireballPrefab,
+        mouth.position,
+        mouth.rotation
+    );
+
+    // GET SHIELD ONLY ONCE
+    GameObject shieldObj = GameObject.FindGameObjectWithTag("Shield");
+    if (shieldObj == null)
+    {
+        Debug.LogWarning("No shield found!");
         yield break;
     }
 
-    yield return null;
-}
+    Transform shield = shieldObj.transform;
 
-    if (fireball != null)
+    Vector3 start = mouth.position;
+    Vector3 end = shield.position;
+
+    float t = 0f;
+    while (t < 1f && fb != null)
     {
-        Fireball fb = fireball.GetComponent<Fireball>();
-        if (fb != null && fb.hitEffect != null)
-            Instantiate(fb.hitEffect, t.position, Quaternion.identity);
-
-        Destroy(fireball);
-    }
-}
-
-void DespawnAllFireballs()
-{
-    // Zoek alle actieve vuurballen in de scene
-    Fireball[] allFireballs = FindObjectsOfType<Fireball>();
-
-    foreach (Fireball fb in allFireballs)
-    {
-        if (fb != null)
-        {
-            // Eventueel visueel effect bij verwijderen
-            if (fb.hitEffect != null)
-                Instantiate(fb.hitEffect, fb.transform.position, Quaternion.identity);
-
-            Destroy(fb.gameObject);
-        }
+        t += Time.deltaTime * 2f;
+        fb.transform.position = Vector3.Lerp(start, end, t);
+        yield return null;
     }
 
-    Debug.Log("🔥 Alle vuurballen vernietigd door knockback event!");
-}
+    // If the fireball still exists, destroy it
+    if (fb != null)
+        Destroy(fb);
 
+    Debug.Log("💥 Fireball hit the shield!");
+}
 
 
 }
