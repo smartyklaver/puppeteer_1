@@ -1,113 +1,84 @@
-
 using UnityEngine;
-
 using UnityEngine.Events;
-
-using System.Collections; // Nieuwe import voor Coroutine
-
-
+using System.Collections; // Nodig voor Coroutine
 
 public class LetterRemove : MonoBehaviour
-
 {
-
     public GameObject letterObject;
-
     public UnityEvent OnResetReady = new UnityEvent();
 
-
-
     [Header("Audio Delay Settings")]
-
     public AudioSource resetAudioSource;
-
     public AudioClip resetClip;
 
-
-
-    // Nieuw: Slaat de absolute tijd op waarop de spatiebalk werd ingedrukt
-
     [HideInInspector]
-
     public float timeOfSpacebarPress = -1f;
 
+    private bool isHandTouching = false;
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Hand"))
+        {
+            isHandTouching = true;
+            Debug.Log("Hand is touching letter");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Hand"))
+        {
+            isHandTouching = false;
+            Debug.Log("Hand not touching letter anymore");
+        }
+    }
 
     void Update()
-
     {
-
-        if (Input.GetKeyDown(KeyCode.Space))
-
+        if (Input.GetKeyDown(KeyCode.Space) && isHandTouching)
         {
-
-            // Vang de tijd van de druk op de spatiebalk op
-
             timeOfSpacebarPress = Time.time;
-
             PerformActionAndDelayReset();
-
         }
-
+        else if (Input.GetKeyDown(KeyCode.Space) && !isHandTouching)
+        {
+            Debug.Log("Spacebar pressed but hand not touching letter!");
+        }
     }
-
-
 
     public void PerformActionAndDelayReset()
-
     {
         SignalResetComplete();
-
     }
-
-
 
     private void SignalResetComplete()
-
     {
-
-        // Stuurt het signaal naar de TimelineRestarter (die de replay start)
-
+        //send to TimelineRestarter 
         OnResetReady.Invoke();
-
     }
-
-
-
-    // NIEUW: Functie om de letter zichtbaar te maken bij de start van de replay
 
     public void ShowLetter()
-
     {
-
         if (letterObject != null)
-
         {
-
             letterObject.SetActive(true);
-
         }
-
     }
-
-
-
-    // NIEUW: Functie om de letter onzichtbaar te maken na de replay
 
     public float HideLetterAndPlayAudio()
-
     {
-
         if (letterObject != null)
-
         {
-
             letterObject.SetActive(false);
-
         }
-        resetAudioSource.PlayOneShot(resetClip);
-        return resetClip.length;
 
+        if (resetAudioSource != null && resetClip != null)
+        {
+            resetAudioSource.PlayOneShot(resetClip);
+            return resetClip.length;
+        }
+
+        return 0f;
     }
-
 }
