@@ -8,6 +8,8 @@ public class KingBowChecker  : MonoBehaviour
     public TimelineRestarter1 restarter;
     public Camera cameraA; 
     public Camera cameraB; 
+    public CurtainsOpenSceneOne curtain1;
+    public CurtainsOpenSceneOne curtain2;
 
 
     void Start(){
@@ -24,14 +26,16 @@ public class KingBowChecker  : MonoBehaviour
     void Update()
     {
         float torsoValue = spine.GetCurrentTorsoValue();
-        Debug.Log("checking bowing");
-        Debug.Log(torsoValue);
+       // Debug.Log("checking bowing");
+       // Debug.Log(torsoValue);
         if (torsoValue >= requiredBend)
         {
- 
+            
             Debug.Log(StartChecking);
             if (Input.GetKeyDown(KeyCode.Space) && StartChecking)
             {
+            curtain1.ResetForTimeline();
+            curtain2.ResetForTimeline();
             cameraA.targetDisplay = 1;
             cameraB.targetDisplay = 0; 
             restarter.RestartTimeline();

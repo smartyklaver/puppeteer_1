@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class SpineController1 : MonoBehaviour
 {
@@ -16,13 +17,14 @@ public class SpineController1 : MonoBehaviour
 
     private List<UdpReceiver.FrameData> allFrames;  
 
-    public KeyCode bendBackwardKey = KeyCode.Q;
+    public UnityEvent CloseCurtains;
 
     public bool Replay = false;
     private float torsoRaw =0;
     private float replayStartTime;
     private float currentReplayTime;
     private int frameindex;
+    private float replayDuration;
 
     void Start()
     {
@@ -47,6 +49,8 @@ public class SpineController1 : MonoBehaviour
         replayStartTime = Time.time;
         Replay = true;
         frameindex = 0;
+
+        replayDuration = allFrames[allFrames.Count - 1].timeStamp;
     }
 
     public float GetCurrentTorsoValue()
@@ -59,20 +63,29 @@ public class SpineController1 : MonoBehaviour
     {
         if (spine == null) return;
 
-        if(!Replay){
+        if (!Replay)
+        {
             torsoRaw = udp.LatestData.torsoBend;
         }
         else
         {
+
             currentReplayTime = Time.time - replayStartTime;
-            while (frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime)
-            {
-                frameindex++;
-            }
+            float t = currentReplayTime / replayDuration;
+
+            frameindex = Mathf.Clamp(
+                Mathf.FloorToInt(t * (allFrames.Count - 1)),
+                0,
+                allFrames.Count - 1
+            );
+
             torsoRaw = allFrames[frameindex].torsoBend;
+
+
             if (frameindex >= allFrames.Count - 1)
             {
                 Replay = false;
+                CloseCurtains?.Invoke();
             }
         }
         
