@@ -42,6 +42,7 @@ public class CurtainsOpenSceneOne : MonoBehaviour
     void Update()
     {
         if (!isMoving) return;
+        Debug.Log("keeeesssss");
 
         // Beweeg het gordijn vloeiend naar de ingestelde doelpositie
         transform.position = Vector3.MoveTowards(
