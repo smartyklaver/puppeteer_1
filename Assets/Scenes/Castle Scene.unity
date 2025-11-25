@@ -3301,6 +3301,8 @@ MonoBehaviour:
   restarter: {fileID: 1863744532}
   cameraA: {fileID: 304229392}
   cameraB: {fileID: 1371783779}
+  curtain1: {fileID: 1026530271}
+  curtain2: {fileID: 952512240}
 --- !u!114 &1713326258
 MonoBehaviour:
   m_ObjectHideFlags: 0
