@@ -5,7 +5,9 @@ public class KingBowChecker  : MonoBehaviour
     public SpineController1 spine;   
     public float requiredBend = 0.45f;
     public bool StartChecking;
-    public TimelineRestarter restarter;
+    public TimelineRestarter1 restarter;
+    public Camera cameraA; 
+    public Camera cameraB; 
 
 
     void Start(){
@@ -15,6 +17,7 @@ public class KingBowChecker  : MonoBehaviour
     public void CheckBow()
     {
         StartChecking = true;
+        
         
     }
 
@@ -26,8 +29,11 @@ public class KingBowChecker  : MonoBehaviour
         if (torsoValue >= requiredBend)
         {
  
+            Debug.Log(StartChecking);
             if (Input.GetKeyDown(KeyCode.Space) && StartChecking)
             {
+            cameraA.targetDisplay = 1;
+            cameraB.targetDisplay = 0; 
             restarter.RestartTimeline();
             }
         }
