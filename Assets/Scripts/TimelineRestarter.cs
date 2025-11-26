@@ -12,6 +12,7 @@ public class TimelineRestarter : MonoBehaviour
     public SpineController1 spinecontroller;
     public ShoulderController1 shouldercontroller;
     public LetterRemove LetterRemove;
+    
 
     private float recordingStartTime = 0f;
 

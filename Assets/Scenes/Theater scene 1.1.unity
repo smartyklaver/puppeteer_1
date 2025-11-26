@@ -153,7 +153,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpineController1
   spine: {fileID: 250264145}
   initialStartAngle: 0
-  bendBackwardKey: 113
+  CloseCurtains:
+    m_PersistentCalls:
+      m_Calls: []
   Replay: 0
 --- !u!1001 &153509813
 PrefabInstance:
@@ -313,6 +315,7 @@ GameObject:
   - component: {fileID: 304229397}
   - component: {fileID: 304229398}
   - component: {fileID: 304229399}
+  - component: {fileID: 304229400}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -497,6 +500,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd9d58ca5d037954392f7c166b8475ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActivateAllDisplays
+--- !u!114 &304229400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304229390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1959c49e99666fd49b3ef7e74c919238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraSwitcher
+  cameraA: {fileID: 304229392}
+  cameraB: {fileID: 1371547317}
 --- !u!4 &326778801 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
@@ -1544,6 +1561,7 @@ MonoBehaviour:
         m_CallState: 2
   resetAudioSource: {fileID: 1705329063}
   resetClip: {fileID: 8300000, guid: 7942f04acc663aa488c3d4f8171539df, type: 3}
+  cameraSwitcher: {fileID: 304229400}
   timeOfSpacebarPress: -1
 --- !u!1 &1026530264
 GameObject:
