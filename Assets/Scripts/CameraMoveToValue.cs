@@ -2,7 +2,7 @@
 
 public class CameraMovetoValue : MonoBehaviour
 {
-    public float moveTime = 3f;  // Hoe lang de beweging duurt
+    public float moveTime = 3f;  
 
     public Vector3 startPosition;
     public Vector3 startRotation;
@@ -12,11 +12,10 @@ public class CameraMovetoValue : MonoBehaviour
 
     private float elapsed = 0f;
     private bool startMove = false;
-    private bool movingForward = true; // NIEUW: Bepaalt of elapsed oploopt (zoom in) of afloopt (zoom uit).
-
+    private bool movingForward = true; 
     void Start()
     {
-        // Zet de startpositie en -rotatie
+        
         ResetForTimeline();
     }
 
@@ -30,10 +29,10 @@ public class CameraMovetoValue : MonoBehaviour
         transform.rotation = Quaternion.Euler(startRotation);
     }
 
-    // Called by the Timeline Signal Emitter to begin movement (Zoom IN).
+    // Called by the Timeline Signal Emitter 
     public void BeginMove()
     {
-        movingForward = true; // Zet de richting op 'vooruit'
+        movingForward = true;
         startMove = true;
         elapsed = 0f; // Start de tijd bij nul
     }
@@ -41,13 +40,12 @@ public class CameraMovetoValue : MonoBehaviour
     // Called by TimelineRestarter to move the camera back (Zoom OUT).
     public void ReturnToStart()
     {
-        // Zet de positie op END, en start met terugtellen
         transform.position = endPosition;
         transform.rotation = Quaternion.Euler(endRotation);
 
-        movingForward = false; // Zet de richting op 'achteruit'
+        movingForward = false; 
         startMove = true;
-        elapsed = moveTime; // Start de tijd op de maximale duur
+        elapsed = moveTime; 
     }
 
     void Update()
@@ -76,11 +74,10 @@ public class CameraMovetoValue : MonoBehaviour
             if (!movingForward) startMove = false; // Stop wanneer volledig uitgezoomd
         }
 
-        // 3. Beweging (de LERP loopt altijd van startPosition naar endPosition)
+       
         float t = elapsed / moveTime;
         t = Mathf.SmoothStep(0, 1, t);
 
-        // De Lerp gebruikt 't' (van 0-1 of 1-0) om de camera correct te bewegen.
         transform.position = Vector3.Lerp(startPosition, endPosition, t);
         transform.rotation = Quaternion.Lerp(Quaternion.Euler(startRotation), Quaternion.Euler(endRotation), t);
     }

@@ -10,6 +10,7 @@ public class LetterRemove : MonoBehaviour
     [Header("Audio Delay Settings")]
     public AudioSource resetAudioSource;
     public AudioClip resetClip;
+    public CameraSwitcher cameraSwitcher;
 
     [HideInInspector]
     public float timeOfSpacebarPress = -1f;
@@ -56,6 +57,7 @@ public class LetterRemove : MonoBehaviour
     {
         //send to TimelineRestarter 
         OnResetReady.Invoke();
+        cameraSwitcher.SwitchCameraDisplays();
     }
 
     public void ShowLetter()
