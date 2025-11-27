@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 using System.Collections;
+using UnityEngine.SceneManagement;   
+
 
 public class TimelineRestarter : MonoBehaviour
 {
-    // MOETEN worden ingevuld in de Inspector!
+    
     public PlayableDirector director;
     public CurtainsOpenSceneOne curtain1;
     public CurtainsOpenSceneOne curtain2;
@@ -82,4 +84,12 @@ public class TimelineRestarter : MonoBehaviour
         curtain2.CloseCurtains();
         cameraController.ReturnToStart();
     }
+
+    public void LoadNextScene()
+{
+    // Load the next scene in the build index
+    int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+    SceneManager.LoadScene(nextScene);
+}
+
 }

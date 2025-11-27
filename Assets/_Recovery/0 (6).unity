@@ -640,9 +640,6 @@ MonoBehaviour:
   closedPosition: {x: -4, y: 0, z: -4}
   openOffset: {x: -7, y: 0, z: -4}
   speed: 2
-  OnCurtainsClosed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!212 &400123065
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1099,9 +1096,6 @@ MonoBehaviour:
   closedPosition: {x: 4, y: 0, z: -4}
   openOffset: {x: 7, y: 0, z: -4}
   speed: 2
-  OnCurtainsClosed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!212 &824616981
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1287,9 +1281,6 @@ MonoBehaviour:
   closedPosition: {x: -4.5, y: 0, z: -4}
   openOffset: {x: -7, y: 0, z: -4}
   speed: 2
-  OnCurtainsClosed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &952512240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,21 +1670,6 @@ MonoBehaviour:
   closedPosition: {x: 4.5, y: 0, z: -4}
   openOffset: {x: 7, y: 0, z: -4}
   speed: 2
-  OnCurtainsClosed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 975510067}
-        m_TargetAssemblyTypeName: TimelineRestarter, Assembly-CSharp
-        m_MethodName: LoadNextScene
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1026530269
 MonoBehaviour:
   m_ObjectHideFlags: 0
