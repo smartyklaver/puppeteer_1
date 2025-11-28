@@ -1,5 +1,8 @@
+// --- toevoegingen binnen CinematicManager (vervang je huidige CinematicManager.cs met onderstaande) ---
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class CinematicManager : MonoBehaviour
 {
@@ -47,112 +50,117 @@ public class CinematicManager : MonoBehaviour
     public SpineController1 spinecontroller;
     public ShoulderController1 shouldercontroller;
 
+    // --- Recorded space presses ---
+    public List<float> spaceTimestamps = new List<float>();
+    public int replayIndex = 0;
+    public bool isReplayingInput = false;
+    public float replayStartTime;
+
+    // internal: when did we start recording (relative timestamps)
+    float recordingStartTime = 0f;
+
     // -----------------------------
     // Throw detection (embedded)
     // -----------------------------
-   
-[Header("Throw Detection")]
-public Transform rightHand;     // Hand met zwaard
-public Transform leftHand;      // Hand met schild
+    [Header("Throw Detection")]
+    public Transform rightHand;     // Hand met zwaard
+    public Transform leftHand;      // Hand met schild
 
     // QTE states
     bool qteSword = false;
     bool qteThrow = false;
     bool qteTickle = false;
     int swordHits = 0;
-[Header("Reset Cache")]
-Vector3 playerStartPos;
-Quaternion playerStartRot;
 
-Vector3 camStartPos;
-Quaternion camStartRot;
+    [Header("Reset Cache")]
+    Vector3 playerStartPos;
+    Quaternion playerStartRot;
 
-Transform swordStartParent;
-Vector3 swordStartLocalPos;
-Quaternion swordStartLocalRot;
+    Vector3 camStartPos;
+    Quaternion camStartRot;
 
-Transform shieldStartParent;
-Vector3 shieldStartLocalPos;
-Quaternion shieldStartLocalRot;
+    Transform swordStartParent;
+    Vector3 swordStartLocalPos;
+    Quaternion swordStartLocalRot;
 
-Quaternion dragonStartRot;
-Vector3 dragonStartPos;
+    Transform shieldStartParent;
+    Vector3 shieldStartLocalPos;
+    Quaternion shieldStartLocalRot;
 
+    Quaternion dragonStartRot;
+    Vector3 dragonStartPos;
 
+    void Start()
+    {
+        // Save player
+        playerStartPos = player.transform.position;
+        playerStartRot = player.transform.rotation;
 
-void Start()
-{
-    // Save player
-    
-    playerStartPos = player.transform.position;
-    playerStartRot = player.transform.rotation;
+        // Save camera
+        camStartPos = cameraTransform.position;
+        camStartRot = cameraTransform.rotation;
 
-    // Save camera
-    camStartPos = cameraTransform.position;
-    camStartRot = cameraTransform.rotation;
+        // Save dragon
+        dragonStartPos = dragon.transform.position;
+        dragonStartRot = dragon.transform.rotation;
 
-    // Save dragon
-    dragonStartPos = dragon.transform.position;
-    dragonStartRot = dragon.transform.rotation;
+        // Save sword
+        swordStartParent = sword.parent;
+        swordStartLocalPos = sword.localPosition;
+        swordStartLocalRot = sword.localRotation;
 
-    // Save sword
-    swordStartParent = sword.parent;
-    swordStartLocalPos = sword.localPosition;
-    swordStartLocalRot = sword.localRotation;
+        // Save shield
+        shieldStartParent = shield.parent;
+        shieldStartLocalPos = shield.localPosition;
+        shieldStartLocalRot = shield.localRotation;
+        Debug.Log("Sword parent at start: " + swordStartParent);
 
-    // Save shield
-    shieldStartParent = shield.parent;
-    shieldStartLocalPos = shield.localPosition;
-    shieldStartLocalRot = shield.localRotation;
-    Debug.Log("Sword parent at start: " + swordStartParent);
+        // ensure list cleared at cold start
+        spaceTimestamps.Clear();
 
-
-    // Start cinematic
-    StartCoroutine(RunCinematicSequence());
-}
-
-
+        // Start cinematic
+        StartCoroutine(RunCinematicSequence());
+    }
 
     public bool IsSwordHitActive() => qteSword;
     public bool IsThrowActive() => qteThrow;
     public bool IsTickleActive() => qteTickle;
 
     void Update()
-{
-    if (Input.GetKeyDown(KeyCode.M))
     {
-        Debug.Log("🔄 Restarting Cinematic...");
-        RestartCinematic();
-        spinecontroller.ReplayPuppetSpine();
-        shouldercontroller.ReplayPuppetShoulders();
-
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log("🔄 Restarting Cinematic...");
+            RestartCinematic();
+            spinecontroller?.ReplayPuppetSpine();
+            shouldercontroller?.ReplayPuppetShoulders();
+        }
     }
-}
 
     // Called by sword collider trigger
     public void RegisterSwordHit()
-{
-    if (!qteSword) return;
-
-    swordHits++;
-    Debug.Log($"Sword Hit Count: {swordHits}");
-
-    if (dragonHealth != null)
     {
-        Debug.Log("🔥 in qte");
-        dragonHealth.TakeQTEHit(5f);
-    }
+        if (!qteSword) return;
 
-    if (swordHits >= 4)
-    {
-        Debug.Log("🔥 QTE FINISHED! Sword hits reached 4");
-        qteSword = false;
+        swordHits++;
+        Debug.Log($"Sword Hit Count: {swordHits}");
 
-        // disable sword collider if still present
-        var col = sword.GetComponent<Collider>();
-        if (col) col.enabled = false;
+        if (dragonHealth != null)
+        {
+            Debug.Log("🔥 in qte");
+            dragonHealth.TakeQTEHit(5f);
+        }
+
+        if (swordHits >= 4)
+        {
+            Debug.Log("🔥 QTE FINISHED! Sword hits reached 4");
+            qteSword = false;
+
+            // disable sword collider if still present
+            var col = sword.GetComponent<Collider>();
+            if (col) col.enabled = false;
+        }
     }
-}
 
     public void RegisterShieldHit()
     {
@@ -173,6 +181,18 @@ void Start()
     // -----------------------------
     IEnumerator RunCinematicSequence()
     {
+        // Start recording if NOT replaying
+        if (!isReplayingInput)
+        {
+            spaceTimestamps.Clear();
+            recordingStartTime = Time.time;
+            Debug.Log("[Record] Starting recording at: " + recordingStartTime);
+        }
+        else
+        {
+            Debug.Log("[Replay] Starting replay at: " + replayStartTime);
+        }
+
         if (dragon != null) dragon.enabled = false;
 
         // camera intro — start zoomed in then out
@@ -240,16 +260,16 @@ void Start()
 
         yield return new WaitForSeconds(1f);
 
-qteThrow = true;
-if (sfxSource && throwPhaseLine) sfxSource.PlayOneShot(throwPhaseLine);
+        qteThrow = true;
+        if (sfxSource && throwPhaseLine) sfxSource.PlayOneShot(throwPhaseLine);
 
-yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5);
 
-// ❗ NOW start listening for throw detection
-StartCoroutine(ThrowSequence());
+        // ❗ NOW start listening for throw detection
+        StartCoroutine(ThrowSequence());
 
-// And wait until this QTE is done
-yield return new WaitUntil(() => !qteThrow);
+        // And wait until this QTE is done
+        yield return new WaitUntil(() => !qteThrow);
 
         yield return new WaitForSeconds(0.8f);
 
@@ -260,6 +280,13 @@ yield return new WaitUntil(() => !qteThrow);
 
         // Victory
         OnVictory();
+
+        // If we were replaying input, stop replay mode when done
+        if (isReplayingInput)
+        {
+            isReplayingInput = false;
+            Debug.Log("[Replay] Finished replaying input.");
+        }
     }
 
     // -----------------------------
@@ -295,99 +322,93 @@ yield return new WaitUntil(() => !qteThrow);
     // -----------------------------
     // Throw sequence (sword first, then shield) — uses embedded throw detection
     // -----------------------------
-IEnumerator ThrowSequence()
-{
-    Debug.Log("Waiting for SPACE to throw sword...");
-
-    // ===============================
-    // 1️⃣ WAIT FOR FIRST SPACE (SWORD)
-    // ===============================
-    yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-    Debug.Log("SPACE pressed → Throwing sword!");
-
-    if (sword != null)
+    IEnumerator ThrowSequence()
     {
-        sword.SetParent(null);
+        Debug.Log("Waiting for SPACE to throw sword...");
+
+        // ===============================
+        // 1️⃣ WAIT FOR FIRST SPACE (SWORD)
+        // ===============================
+        yield return new WaitUntil(() => IsSpacePressed());
+        Debug.Log("SPACE pressed → Throwing sword!");
+
+        if (sword != null)
+        {
+            sword.SetParent(null);
+
+            Rigidbody rb = sword.gameObject.AddComponent<Rigidbody>();
+
+            rb.useGravity = false;
+            rb.isKinematic = true;
 
 
-        Rigidbody rb = sword.gameObject.AddComponent<Rigidbody>();
+            StartCoroutine(LerpObjectTo(
+                sword,
+                swordMissTarget.position,
+                2f,
+                false
+            ));
+        }
 
-        rb.useGravity = false;
-        rb.isKinematic = true; 
+        // Small delay so the sword starts flying
+        yield return new WaitForSeconds(0.4f);
 
+        // ===============================
+        // 2️⃣ WAIT FOR SECOND SPACE (SHIELD)
+        // ===============================
+        Debug.Log("Waiting for SPACE again to throw shield...");
+        yield return new WaitUntil(() => IsSpacePressed());
+        Debug.Log("SPACE pressed → Throwing shield!");
 
-        StartCoroutine(LerpObjectTo(
-            sword,
-            swordMissTarget.position,
-            2f,
-            false
-        ));
-    }
+        if (shield != null)
+        {
+            shield.SetParent(null);
 
-    // Small delay so the sword starts flying
-    yield return new WaitForSeconds(0.4f);
+            Rigidbody rs = shield.gameObject.AddComponent<Rigidbody>();
 
-    // ===============================
-    // 2️⃣ WAIT FOR SECOND SPACE (SHIELD)
-    // ===============================
-    Debug.Log("Waiting for SPACE again to throw shield...");
-    yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-    Debug.Log("SPACE pressed → Throwing shield!");
-
-    if (shield != null)
-    {
-        shield.SetParent(null);
-
-
-    Rigidbody rs = shield.gameObject.AddComponent<Rigidbody>();
-
-rs.useGravity = false;
-rs.isKinematic = true;
-
-
-
-        StartCoroutine(LerpObjectTo(
-            shield,
-            shieldHitTarget.position,
-            2f,
-            true
-        ));
-    }
-
-    // QTE finishes when shield hit lands and LerpObjectTo calls RegisterShieldHit()
-    yield break;
-}
+            rs.useGravity = false;
+            rs.isKinematic = true;
 
 
 
+            StartCoroutine(LerpObjectTo(
+                shield,
+                shieldHitTarget.position,
+                2f,
+                true
+            ));
+        }
 
-IEnumerator LerpObjectTo(Transform obj, Vector3 targetPos, float duration, bool isHit)
-{
-    if (!obj)
+        // QTE finishes when shield hit lands and LerpObjectTo calls RegisterShieldHit()
         yield break;
-
-    Vector3 startPos = obj.position;
-    float t = 0f;
-
-    while (t < 1f)
-    {
-        t += Time.deltaTime / duration;
-        obj.position = Vector3.Lerp(startPos, targetPos, t);
-        yield return null;
     }
 
-    if (isHit)
+    IEnumerator LerpObjectTo(Transform obj, Vector3 targetPos, float duration, bool isHit)
     {
-        RegisterShieldHit();
-        qteThrow = false;
+        if (!obj)
+            yield break;
+
+        Vector3 startPos = obj.position;
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            obj.position = Vector3.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+
+        if (isHit)
+        {
+            RegisterShieldHit();
+            qteThrow = false;
+        }
+
+        var rb = obj.GetComponent<Rigidbody>();
+        if (rb) Destroy(rb);
+
+        obj.gameObject.SetActive(false);
     }
-
-    var rb = obj.GetComponent<Rigidbody>();
-    if (rb) Destroy(rb);
-
-    obj.gameObject.SetActive(false);
-}
-
 
     // -----------------------------
     // Victory
@@ -405,100 +426,146 @@ IEnumerator LerpObjectTo(Transform obj, Vector3 targetPos, float duration, bool 
         Debug.Log("Cinematic: victory sequence complete.");
     }
 
-public void RestartCinematic()
-{
-    Debug.Log("🔄 FULL CINEMATIC RESET");
-    StopAllCoroutines();
-    ResetObjects();
-    StartCoroutine(RunCinematicSequence());
-}
-
-
-void ResetObjects()
-{
-    // RESET PLAYER
-    player.transform.position = playerStartPos;
-    player.transform.rotation = playerStartRot;
-
-    // RESET CAMERA
-    cameraTransform.position = camStartPos;
-    cameraTransform.rotation = camStartRot;
-
-    // RESET DRAGON
-    dragon.transform.position = dragonStartPos;
-    dragon.transform.rotation = dragonStartRot;
-    dragon.enabled = false;
-
-    // RESET DRAGON HEALTH + UI
-    if (dragonHealth != null)
+    public void RestartCinematic()
     {
-        dragonHealth.ResetHealth();
+        Debug.Log("🔄 FULL CINEMATIC RESET");
 
+        // Enable replay mode and mark start time
+        isReplayingInput = true;
+        replayStartTime = Time.time;
+        replayIndex = 0;
+
+        StopAllCoroutines();
+        ResetObjects();
+        StartCoroutine(RunCinematicSequence());
     }
 
-    // RESET PLAYER HEALTH + UI
-    var healthField = player.GetType().GetField("health");
-    if (healthField != null)
+    void ResetObjects()
     {
-        var healthObj = healthField.GetValue(player);
-        if (healthObj != null)
+        // RESET PLAYER
+        player.transform.position = playerStartPos;
+        player.transform.rotation = playerStartRot;
+
+        // RESET CAMERA
+        cameraTransform.position = camStartPos;
+        cameraTransform.rotation = camStartRot;
+
+        // RESET DRAGON
+        dragon.transform.position = dragonStartPos;
+        dragon.transform.rotation = dragonStartRot;
+        dragon.enabled = false;
+
+        // RESET DRAGON HEALTH + UI
+        if (dragonHealth != null)
         {
-            var cur = healthObj.GetType().GetField("currentHealth");
-            var max = healthObj.GetType().GetField("maxHealth");
-            var ui  = healthObj.GetType().GetMethod("UpdateHealthUI");
-
-            if (max != null && cur != null)
-                cur.SetValue(healthObj, max.GetValue(healthObj));
-
-            ui?.Invoke(healthObj, null);
+            dragonHealth.ResetHealth();
         }
+
+        // RESET PLAYER HEALTH + UI
+        var healthField = player.GetType().GetField("health");
+        if (healthField != null)
+        {
+            var healthObj = healthField.GetValue(player);
+            if (healthObj != null)
+            {
+                var cur = healthObj.GetType().GetField("currentHealth");
+                var max = healthObj.GetType().GetField("maxHealth");
+                var ui = healthObj.GetType().GetMethod("UpdateHealthUI");
+
+                if (max != null && cur != null)
+                    cur.SetValue(healthObj, max.GetValue(healthObj));
+
+                ui?.Invoke(healthObj, null);
+            }
+        }
+
+        // RESET SWORD
+        if (sword != null)
+        {
+            sword.SetParent(swordStartParent);
+            sword.localPosition = swordStartLocalPos;
+            sword.localRotation = swordStartLocalRot;
+            sword.gameObject.SetActive(true);
+
+            var col = sword.GetComponent<Collider>();
+            if (col) col.enabled = true;
+        }
+
+        // RESET SHIELD
+        if (shield != null)
+        {
+            shield.SetParent(shieldStartParent);
+            shield.localPosition = shieldStartLocalPos;
+            shield.localRotation = shieldStartLocalRot;
+            shield.gameObject.SetActive(true);
+
+            var col = shield.GetComponent<Collider>();
+            if (col) col.enabled = true;
+        }
+
+        // RESET ZONES
+        if (shieldZone != null)
+        {
+            shieldZone.gameObject.SetActive(false);
+            shieldZone.shieldLocked = false;
+        }
+
+        if (leanZone != null)
+        {
+            leanZone.gameObject.SetActive(false);
+        }
+
+        // RESET QTE STATES
+        qteSword = false;
+        qteThrow = false;
+        qteTickle = false;
+        swordHits = 0;
     }
 
-  // RESET SWORD
-if (sword != null)
-{
-    sword.SetParent(swordStartParent);
-    sword.localPosition = swordStartLocalPos;
-    sword.localRotation = swordStartLocalRot;
-    sword.gameObject.SetActive(true);
-
-    var col = sword.GetComponent<Collider>();
-    if (col) col.enabled = true;
-}
-
-
-// RESET SHIELD
-if (shield != null)
-{
-    shield.SetParent(shieldStartParent);
-    shield.localPosition = shieldStartLocalPos;
-    shield.localRotation = shieldStartLocalRot;
-    shield.gameObject.SetActive(true);
-
-    var col = shield.GetComponent<Collider>();
-    if (col) col.enabled = true;
-}
-
-
-    // RESET ZONES
-    if (shieldZone != null)
+    public bool IsSpacePressed()
     {
-        shieldZone.gameObject.SetActive(false);
-        shieldZone.shieldLocked = false;
+        // During normal play → record real space presses (relative to recordingStartTime)
+        if (!isReplayingInput)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                float relative = Time.time - recordingStartTime;
+                spaceTimestamps.Add(relative);
+                Debug.Log($"[Record] Space at {relative:F3}s (rel)");
+                return true;
+            }
+
+            return false;
+        }
+
+        // During replay → simulate space at correct relative timestamp
+        if (replayIndex < spaceTimestamps.Count)
+        {
+            float nextRelative = spaceTimestamps[replayIndex];
+            float elapsed = Time.time - replayStartTime;
+
+            if (elapsed >= nextRelative)
+            {
+                replayIndex++;
+                Debug.Log($"[Replay] Simulated Space at replay elapsed {elapsed:F3}s (target {nextRelative:F3}s)");
+                // If we've replayed the last one, switch off replay mode after this press
+                if (replayIndex >= spaceTimestamps.Count)
+                {
+                    // allow the last simulated press through, then stop replaying on next frame
+                    StartCoroutine(EndReplayNextFrame());
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    if (leanZone != null)
+    IEnumerator EndReplayNextFrame()
     {
-        leanZone.gameObject.SetActive(false);
+        // small delay so callers can consume the last simulated press
+        yield return null;
+        isReplayingInput = false;
+        Debug.Log("[Replay] Will stop replay mode now.");
     }
-
-    // RESET QTE STATES
-    qteSword = false;
-    qteThrow = false;
-    qteTickle = false;
-    swordHits = 0;
-}
-
-
-
 }

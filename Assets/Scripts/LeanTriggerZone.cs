@@ -44,9 +44,11 @@ public class LeanTriggerZone : MonoBehaviour
     /// <summary>
     /// TRUE if NO player collider is touching the zone
     /// </summary>
-    public bool PlayerIsLowEnough()
+public bool PlayerIsLowEnough()
 {
-    if (Input.GetKeyDown(KeyCode.Space))
+    var cm = FindObjectOfType<CinematicManager>();
+
+    if (cm != null && cm.IsSpacePressed())
     {
         return touchingColliders.Count == 0;
     }

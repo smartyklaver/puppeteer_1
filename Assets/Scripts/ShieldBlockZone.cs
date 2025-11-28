@@ -27,19 +27,18 @@ public class ShieldBlockZone : MonoBehaviour
             instructionAudio.Play();
     }
 
-    void Update()
+void Update()
 {
-    // Shield must be inside the zone
-    if (!shieldInside)
-        return;
+    if (!shieldInside) return;
 
-    // A single quick press should lock immediately
-    if (Input.GetKeyDown(KeyCode.Space))
+    var cm = FindObjectOfType<CinematicManager>();
+    if (cm != null && cm.IsSpacePressed())
     {
         shieldLocked = true;
         Debug.Log("🛡 Shield confirmed with quick press!");
     }
 }
+
 
 
     void OnTriggerEnter(Collider other)
