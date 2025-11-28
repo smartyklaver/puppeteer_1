@@ -29,6 +29,8 @@ public class UdpReceiver : MonoBehaviour
     public List<FrameData> recordedFrames = new List<FrameData>();
 
     public bool freezeInput = false;
+    private float recordingStartTime;
+
 
     [Header("UDP Settings")]
     public int port = 56000;
@@ -61,6 +63,21 @@ public class UdpReceiver : MonoBehaviour
         }
     }
 
+    public void BeginNewRecording()
+    {
+        recordedFrames.Clear();
+        recordingStartTime = Time.time;
+    }
+
+    public void NormalizeRecordingTimestamps()
+    {
+    if (recordedFrames.Count < 2) return;
+
+    float t0 = recordedFrames[0].timeStamp;
+    for (int i = 0; i < recordedFrames.Count; i++)
+        recordedFrames[i].timeStamp -= t0;
+    }
+
     private async Task ReceiveLoop(CancellationToken token)
     {
         while (running && !token.IsCancellationRequested)
@@ -82,7 +99,7 @@ public class UdpReceiver : MonoBehaviour
                     {
                         recordedFrames.Add(new FrameData
                         {
-                            timeStamp = Time.time,
+                            timeStamp = Time.time - recordingStartTime,
                             leftShoulder = data.leftShoulderValue,
                             rightShoulder = data.rightShoulderValue,
                             torsoBend = data.torsoBend
@@ -97,10 +114,10 @@ public class UdpReceiver : MonoBehaviour
         }
     }
 
-    public void ClearRecording()
-    {
-        recordedFrames.Clear();
-    }
+    // public void ClearRecording()
+    // {
+    //     recordedFrames.Clear();
+    // }
 
     public List<FrameData> GetRecordedData()
     {

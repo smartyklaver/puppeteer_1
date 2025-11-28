@@ -188,6 +188,50 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf5c0e76f7110c34fb0e4825e7f5f451, type: 3}
+--- !u!1 &98745280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 98745282}
+  - component: {fileID: 98745281}
+  m_Layer: 0
+  m_Name: SceneInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &98745281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98745280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab204891f815a1b4e9e4aa91eda631fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneInitializer
+--- !u!4 &98745282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98745280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5893, y: 0, z: -5.95251}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &130063178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543945, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
@@ -437,6 +481,9 @@ MonoBehaviour:
   closedPosition: {x: -4, y: 0.81, z: -3.49}
   openOffset: {x: -10, y: 0.81, z: -3.49}
   speed: 2
+  OnCurtainsClosed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &304229390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,6 +1399,9 @@ MonoBehaviour:
   closedPosition: {x: -4, y: 0.81, z: -3.49}
   openOffset: {x: -10, y: 0.81, z: -3.49}
   speed: 2
+  OnCurtainsClosed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,6 +1767,9 @@ MonoBehaviour:
   closedPosition: {x: 4, y: 0.81, z: -3.49}
   openOffset: {x: 10, y: 0.81, z: -3.49}
   speed: 2
+  OnCurtainsClosed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1289615591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2307,6 +2360,9 @@ MonoBehaviour:
   closedPosition: {x: 4, y: 0.81, z: -3.49}
   openOffset: {x: 10, y: 0.81, z: -3.49}
   speed: 2
+  OnCurtainsClosed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1627033365 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6431105003458190973, guid: d8bb925d7e46e2340bf37173c0834366, type: 3}
@@ -3484,6 +3540,7 @@ MonoBehaviour:
   spinecontroller: {fileID: 1335519582}
   shouldercontroller: {fileID: 1335519581}
   LetterRemove: {fileID: 0}
+  udp: {fileID: 0}
 --- !u!114 &1863744532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3627,6 +3684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
   recordedFrames: []
+  freezeInput: 0
   port: 56000
 --- !u!4 &2022151686
 Transform:
@@ -3735,3 +3793,4 @@ SceneRoots:
   - {fileID: 1289615591}
   - {fileID: 1863744530}
   - {fileID: 1371783780}
+  - {fileID: 98745282}
