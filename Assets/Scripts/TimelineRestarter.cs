@@ -14,6 +14,7 @@ public class TimelineRestarter : MonoBehaviour
     public SpineController1 spinecontroller;
     public ShoulderController1 shouldercontroller;
     public LetterRemove LetterRemove;
+    public UdpReceiver udp;
     
 
     private float recordingStartTime = 0f;
@@ -37,8 +38,10 @@ public class TimelineRestarter : MonoBehaviour
         float recordedDuration = timeOfPress - recordingStartTime;
 
         // Start de replay van de animatie controllers
+       // udp.NormalizeRecordingTimestamps();
         spinecontroller.ReplayPuppetSpine();
         shouldercontroller.ReplayPuppetShoulders();
+        udp.freezeInput = false; 
 
         PerformInstantReset();
         ExecuteTimelineControl();
@@ -88,8 +91,10 @@ public class TimelineRestarter : MonoBehaviour
     public void LoadNextScene()
 {
     // Load the next scene in the build index
+
     int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
     SceneManager.LoadScene(nextScene);
+    
 }
 
 }
