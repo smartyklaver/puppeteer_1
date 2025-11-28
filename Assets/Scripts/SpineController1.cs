@@ -44,18 +44,25 @@ public class SpineController1 : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+      allFrames = new List<UdpReceiver.FrameData>();
+      Debug.Log("awake");
+    }
+
     public void ReplayPuppetSpine()
     {
+        udp.freezeInput = true;
         replayStartTime = Time.time;
         Replay = true;
         frameindex = 0;
-
         replayDuration = allFrames[allFrames.Count - 1].timeStamp;
+        udp.freezeInput = true;
     }
 
     public float GetCurrentTorsoValue()
     {
-    return currentAngle;
+        return currentAngle;
     }
 
 
@@ -66,6 +73,7 @@ public class SpineController1 : MonoBehaviour
         if (!Replay)
         {
             torsoRaw = udp.LatestData.torsoBend;
+        //    allFrames.Clear();
         }
         else
         {
@@ -86,6 +94,8 @@ public class SpineController1 : MonoBehaviour
             {
                 Replay = false;
                 CloseCurtains?.Invoke();
+                udp.freezeInput = false;
+                
             }
         }
         

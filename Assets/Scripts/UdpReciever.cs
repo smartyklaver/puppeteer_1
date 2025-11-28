@@ -28,6 +28,8 @@ public class UdpReceiver : MonoBehaviour
 
     public List<FrameData> recordedFrames = new List<FrameData>();
 
+    public bool freezeInput = false;
+
     [Header("UDP Settings")]
     public int port = 56000;
 
@@ -76,13 +78,16 @@ public class UdpReceiver : MonoBehaviour
                   //  Debug.Log($"[UDP] Updated: L={data.leftShoulderValue}, R={data.rightShoulderValue}, torso={data.torsoBend}");
 
               
-                    recordedFrames.Add(new FrameData
+                    if(!freezeInput)
                     {
-                        timeStamp = Time.time,
-                        leftShoulder = data.leftShoulderValue,
-                        rightShoulder = data.rightShoulderValue,
-                        torsoBend = data.torsoBend
-                    });
+                        recordedFrames.Add(new FrameData
+                        {
+                            timeStamp = Time.time,
+                            leftShoulder = data.leftShoulderValue,
+                            rightShoulder = data.rightShoulderValue,
+                            torsoBend = data.torsoBend
+                        });
+                    }
                 }
             }
             catch (Exception ex)
