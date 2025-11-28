@@ -230,6 +230,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &109133407 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3460278577302543945, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+  m_PrefabInstance: {fileID: 1710855355}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &147992662
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +594,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &213531143 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3460278577302544155, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+  m_PrefabInstance: {fileID: 1710855355}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &227163022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,6 +2654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragonHealth
   maxHealth: 100
+  current: 0
   healthBar: {fileID: 620356962}
 --- !u!54 &933963069
 Rigidbody:
@@ -2704,11 +2715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b056f7a537e29345bdd2ce1d75cd3e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireballSpawner
---- !u!4 &933963072 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8429799296439278521, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
-  m_PrefabInstance: {fileID: 788789268}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &933963073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2725,6 +2731,7 @@ MonoBehaviour:
   fireballSpawner: {fileID: 933963071}
   head: {fileID: 788789269}
   playerCamera: {fileID: 304229392}
+  FireballLaunched: 0
   knockbackForce: 30
   cameraShakeDuration: 0.5
   cameraShakeIntensity: 0.25
@@ -3434,6 +3441,52 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1102292892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1102292894}
+  - component: {fileID: 1102292893}
+  m_Layer: 0
+  m_Name: UDP_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1102292893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102292892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd1c5e7af7b4454291d6c1cc3958681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
+  recordedFrames: []
+  port: 56000
+--- !u!4 &1102292894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102292892}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85315, y: 0, z: 73.44949}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1112020704
 GameObject:
   m_ObjectHideFlags: 0
@@ -3853,17 +3906,17 @@ MonoBehaviour:
   pauseDuration: 2
   player: {fileID: 1298817215}
   dragon: {fileID: 933963073}
-  dragonHealth: {fileID: 0}
+  dragonHealth: {fileID: 933963068}
   spawner: {fileID: 933963071}
   leanZone: {fileID: 203604889}
   leanCheckDelay: 1
-  playerStartPos: {fileID: 340910412}
+  playerStartPosi: {fileID: 340910412}
   playerAttackPos: {fileID: 153772914}
   walkSpeed: 2
   sword: {fileID: 169699317}
   shield: {fileID: 1731968250}
   swordMissTarget: {fileID: 890207654}
-  shieldHitTarget: {fileID: 933963072}
+  shieldHitTarget: {fileID: 1916090190}
   shieldZone: {fileID: 311693189}
   shieldCheckDelay: 1
   musicSource: {fileID: 474483906}
@@ -3875,11 +3928,10 @@ MonoBehaviour:
   throwPhaseLine: {fileID: 8300000, guid: 93c4967554355ef43b1b8221d0de1db9, type: 3}
   ticklePhaseLine: {fileID: 8300000, guid: 93c4967554355ef43b1b8221d0de1db9, type: 3}
   sfxSource: {fileID: 0}
+  spinecontroller: {fileID: 1298817220}
+  shouldercontroller: {fileID: 1298817219}
   rightHand: {fileID: 262686991}
   leftHand: {fileID: 633896124}
-  pullBackDistance: 0.15
-  minForwardSpeed: 1.2
-  maxWaitForThrow: 4
 --- !u!4 &1282822787
 Transform:
   m_ObjectHideFlags: 0
@@ -4002,6 +4054,37 @@ MonoBehaviour:
   moveSpeed: 5
   inputEnabled: 1
   rb: {fileID: 1298817209}
+--- !u!114 &1298817219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298817202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 321d5dbeb4e95b242a577312a5fb317e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShoulderController1
+  leftShoulder: {fileID: 109133407}
+  rightShoulder: {fileID: 1980546062}
+  Replay: 0
+--- !u!114 &1298817220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298817202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129e28fdfafe1aa4a962ea5047481e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpineController1
+  spine: {fileID: 213531143}
+  initialStartAngle: 0
+  bendBackwardKey: 113
+  Replay: 0
 --- !u!1 &1312488645
 GameObject:
   m_ObjectHideFlags: 0
@@ -4478,6 +4561,10 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 1282822786}
+    - target: {fileID: 831557662586468538, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3460278577201701324, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
       propertyPath: m_TagString
       value: Player
@@ -4626,6 +4713,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: -0.023357393
       objectReference: {fileID: 0}
+    - target: {fileID: 8493065810159919737, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3460278577312166371, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
     m_RemovedGameObjects: []
@@ -4655,6 +4746,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3460278577302635051, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1298817209}
+    - targetCorrespondingSourceObject: {fileID: 3460278577302635051, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1298817219}
+    - targetCorrespondingSourceObject: {fileID: 3460278577302635051, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1298817220}
     - targetCorrespondingSourceObject: {fileID: 3460278577302635321, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1152772127}
@@ -4715,6 +4812,7 @@ MonoBehaviour:
   shieldOwnerTag: Player
   deflectSound: {fileID: 0}
   deflectEffect: {fileID: 0}
+  cinematicManager: {fileID: 1282822786}
 --- !u!65 &1731968252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4872,6 +4970,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788721109}
   m_CullTransparentMesh: 1
+--- !u!4 &1916090190 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8429799296439278583, guid: 2b7b472609900ea4c97781de5b67d066, type: 3}
+  m_PrefabInstance: {fileID: 788789268}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1980546062 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+  m_PrefabInstance: {fileID: 1710855355}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2001933830
 GameObject:
   m_ObjectHideFlags: 0
@@ -5150,3 +5258,4 @@ SceneRoots:
   - {fileID: 340910412}
   - {fileID: 890207654}
   - {fileID: 153772914}
+  - {fileID: 1102292894}

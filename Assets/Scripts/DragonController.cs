@@ -8,6 +8,8 @@ public class DragonController : MonoBehaviour
     public FireballSpawner fireballSpawner;
     public Transform head;
     public Camera playerCamera;
+    public bool FireballLaunched = false;
+
 
     [Header("Movement")]
     public float knockbackForce = 14f;
@@ -47,7 +49,6 @@ public class DragonController : MonoBehaviour
         {
             Vector3 dir = (playerController.transform.position - transform.position).normalized;
             dir.y = 0.4f; // small upward arc
-            playerController.ApplyKnockback(dir, knockbackForce, 0.8f);
         }
 
         // Camera shake
@@ -87,40 +88,12 @@ public void FireballOverPlayer()
         Debug.LogError("No FireballSpawner assigned!");
         return;
     }
+    FireballLaunched = true;
 
     fireballSpawner.Spit();
+    FireballLaunched = false;
+
 }
-
-
-    IEnumerator FireballCurve()
-    {
-        if (fireballSpawner == null || playerController == null){
-            yield break;}
-
-        // spawn fireball and get reference
-        Fireball fb = fireballSpawner.Spit();
-        if (fb == null) yield break;
-
-        GameObject fireball = fb.gameObject;
-
-        Vector3 start = fireball.transform.position;
-        Vector3 end = playerController.transform.position + Vector3.up * 2.0f;
-
-        float t = 0f;
-        while (t < 1f)
-        {
-            t += Time.deltaTime * 1.5f;
-
-            // Lerp + cinematic arc
-            Vector3 pos = Vector3.Lerp(start, end, t);
-            pos.y += Mathf.Sin(t * Mathf.PI) * 2f;
-
-            fireball.transform.position = pos;
-            yield return null;
-        }
-
-        Destroy(fireball);
-    }
 
     // camera shake utility
     IEnumerator CameraShake(float duration, float intensity)
@@ -144,48 +117,6 @@ public void FireballOverPlayer()
         playerCamera.transform.localPosition = originalPos;
     }
 
-    public void FireballAtShield()
-{
-    StartCoroutine(FireballToShield());
-}
-
-IEnumerator FireballToShield()
-{
-    Transform mouth = fireballSpawner.transform;
-
-    GameObject fb = Instantiate(
-        fireballSpawner.fireballPrefab,
-        mouth.position,
-        mouth.rotation
-    );
-
-    // GET SHIELD ONLY ONCE
-    GameObject shieldObj = GameObject.FindGameObjectWithTag("Shield");
-    if (shieldObj == null)
-    {
-        Debug.LogWarning("No shield found!");
-        yield break;
-    }
-
-    Transform shield = shieldObj.transform;
-
-    Vector3 start = mouth.position;
-    Vector3 end = shield.position;
-
-    float t = 0f;
-    while (t < 1f && fb != null)
-    {
-        t += Time.deltaTime * 2f;
-        fb.transform.position = Vector3.Lerp(start, end, t);
-        yield return null;
-    }
-
-    // If the fireball still exists, destroy it
-    if (fb != null)
-        Destroy(fb);
-
-    Debug.Log("💥 Fireball hit the shield!");
-}
-
+   
 
 }
