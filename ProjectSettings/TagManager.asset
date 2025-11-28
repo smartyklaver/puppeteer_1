@@ -9,6 +9,7 @@ TagManager:
   - Floor
   - Ground
   - Sword
+  - Hand
   layers:
   - Default
   - TransparentFX

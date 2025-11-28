@@ -1,57 +1,86 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections; // Nodig voor Coroutine
 
-public class InputRemover : MonoBehaviour
+public class LetterRemove : MonoBehaviour
 {
-    // --- Letter/Signal Components ---
     public GameObject letterObject;
-    // NOTE: We change this event name for clarity to reflect the delay:
     public UnityEvent OnResetReady = new UnityEvent();
 
-    // --- Audio Components (NEW) ---
     [Header("Audio Delay Settings")]
-    public AudioSource resetAudioSource; // ?? Drag an AudioSource component here
-    public AudioClip resetClip;         // ?? Drag the sound file here
+    public AudioSource resetAudioSource;
+    public AudioClip resetClip;
+    public CameraSwitcher cameraSwitcher;
+
+    [HideInInspector]
+    public float timeOfSpacebarPress = -1f;
+
+    private bool isHandTouching = false;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Hand"))
+        {
+            isHandTouching = true;
+            Debug.Log("Hand is touching letter");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Hand"))
+        {
+            isHandTouching = false;
+            Debug.Log("Hand not touching letter anymore");
+        }
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isHandTouching)
         {
-            // Call the function that handles the delay
+            timeOfSpacebarPress = Time.time;
             PerformActionAndDelayReset();
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && !isHandTouching)
+        {
+            Debug.Log("Spacebar pressed but hand not touching letter!");
         }
     }
 
     public void PerformActionAndDelayReset()
     {
-        // 1. Hide the letter immediately
+        SignalResetComplete();
+    }
+
+    private void SignalResetComplete()
+    {
+        //send to TimelineRestarter 
+        OnResetReady.Invoke();
+        cameraSwitcher.SwitchCameraDisplays();
+    }
+
+    public void ShowLetter()
+    {
         if (letterObject != null)
         {
-            letterObject.SetActive(false);
-            Debug.Log("Letter removed.");
-        }
-
-        // 2. Play the sound and schedule the reset
-        if (resetAudioSource != null && resetClip != null)
-        {
-            resetAudioSource.PlayOneShot(resetClip);
-
-            // Invoke the final signal after the duration of the audio clip.
-            // This is the pause!
-            Invoke(nameof(SignalResetComplete), resetClip.length);
-        }
-        else
-        {
-            // 3. Fail-safe: If audio components are missing, reset immediately
-            Debug.LogWarning("Reset Audio is missing or incomplete. Resetting immediately.");
-            OnResetReady.Invoke();
+            letterObject.SetActive(true);
         }
     }
 
-    // 4. This function is called by Invoke() after the sound has finished playing
-    private void SignalResetComplete()
+    public float HideLetterAndPlayAudio()
     {
-        // Send the signal to the TimelineRestarter
-        OnResetReady.Invoke();
+        if (letterObject != null)
+        {
+            letterObject.SetActive(false);
+        }
+
+        if (resetAudioSource != null && resetClip != null)
+        {
+            resetAudioSource.PlayOneShot(resetClip);
+            return resetClip.length;
+        }
+
+        return 0f;
     }
 }

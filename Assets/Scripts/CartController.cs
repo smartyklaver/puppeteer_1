@@ -1,30 +1,30 @@
 using UnityEngine;
 
 public class CartController : MonoBehaviour
-{
-    private AudioSource wheels;
-    private AudioSource arrival;
+ {
+//     private AudioSource wheels;
+//     private AudioSource arrival;
 
     void Start()
     {
-        AudioSource[] sources = GetComponents<AudioSource>();
-        wheels = sources[0];
-        arrival = sources[1];
+        // AudioSource[] sources = GetComponents<AudioSource>();
+        // wheels = sources[0];
+        // arrival = sources[1];
     }
 
-    // Timeline can call this when cart starts moving
-    public void PlayWheels()
-    {
-        if (!wheels.isPlaying)
-            wheels.Play();
-    }
 
-    // Timeline can call this when the cart reaches the end
-    public void PlayArrival()
-    {
-        arrival.Play();
-        wheels.Stop();
-    }
+    // public void PlayWheels()
+    // {
+    //     if (!wheels.isPlaying)
+    //         wheels.Play();
+    // }
+
+    // // Timeline can call this when the cart reaches the end
+    // public void PlayArrival()
+    // {
+    //     arrival.Play();
+    //     wheels.Stop();
+    // }
 
     public void ResetCart()
     {
