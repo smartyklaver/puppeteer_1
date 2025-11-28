@@ -7,17 +7,21 @@ public class Shield : MonoBehaviour
     public string shieldOwnerTag = "ShieldOwner"; // optional, not usually needed
     public AudioClip deflectSound;
     public ParticleSystem deflectEffect;
+    public CinematicManager cinematicManager;
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        // If fireball hits, we can add a small effect (the actual reflection is handled in Fireball)
-        var fb = collision.gameObject.GetComponent<Fireball>();
-        if (fb != null)
+        Debug.Log("⚔️ shield hit something: " + other.name);
+
+        // Only if it's the dragon
+        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+        if (enemyHealth)
         {
-            if (deflectEffect != null)
-                Instantiate(deflectEffect, collision.contacts[0].point, Quaternion.identity);
-            if (deflectSound != null)
-                AudioSource.PlayClipAtPoint(deflectSound, transform.position);
+            //enemyHealth.TakeDamage(30);
+
+            // IMPORTANT: Register QTE hit
+            if (cinematicManager != null)
+                cinematicManager.RegisterShieldHit();
         }
     }
 }

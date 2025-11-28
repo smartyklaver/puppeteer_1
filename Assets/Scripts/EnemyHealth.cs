@@ -6,7 +6,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Health")]
     public float maxHealth = 100f;
-    float current;
+    public float current;
 
     [Header("UI")]
     public Slider healthBar; // optional existing slider
@@ -37,4 +37,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         // Keep GameObjects needed by cinematic (dragon controller handles visuals)
         Destroy(gameObject);
     }
+    public void ResetHealth()
+    {
+        current = maxHealth;
+        if (healthBar != null)
+        {
+            healthBar.maxValue = maxHealth;
+            healthBar.value = current;
+        }
+    }
+
 }

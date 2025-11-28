@@ -20,7 +20,7 @@ public class CinematicManager : MonoBehaviour
     public float leanCheckDelay = 1f;
 
     [Header("Sword Auto Phase")]
-    public Transform playerStartPos;
+    public Transform playerStartPosi;
     public Transform playerAttackPos;
     public float walkSpeed = 2f;
 
@@ -44,6 +44,8 @@ public class CinematicManager : MonoBehaviour
     public AudioClip throwPhaseLine;
     public AudioClip ticklePhaseLine;
     public AudioSource sfxSource;
+    public SpineController1 spinecontroller;
+    public ShoulderController1 shouldercontroller;
 
     // -----------------------------
     // Throw detection (embedded)
@@ -53,102 +55,104 @@ public class CinematicManager : MonoBehaviour
 public Transform rightHand;     // Hand met zwaard
 public Transform leftHand;      // Hand met schild
 
-public float pullBackDistance = 0.15f;
-public float minForwardSpeed = 1.2f;
-public float maxWaitForThrow = 5f;
-
-private bool pulledBack = false;
-private bool throwDetected = false;
-private Vector3 lastThrowPos;
-
-
     // QTE states
     bool qteSword = false;
     bool qteThrow = false;
     bool qteTickle = false;
     int swordHits = 0;
+[Header("Reset Cache")]
+Vector3 playerStartPos;
+Quaternion playerStartRot;
 
-    void Start()
-    {
-     
-        StartCoroutine(RunCinematicSequence());
-    }
+Vector3 camStartPos;
+Quaternion camStartRot;
 
-    void Update()
-    {
+Transform swordStartParent;
+Vector3 swordStartLocalPos;
+Quaternion swordStartLocalRot;
 
-    }
+Transform shieldStartParent;
+Vector3 shieldStartLocalPos;
+Quaternion shieldStartLocalRot;
 
-   /* void SampleThrowDetection()
-    {
-        // use local X rotation as simple shoulder-back / forward axis (works for many rigs).
-        // convert to signed angle -180..180
-        float raw = handTransform.localEulerAngles.x;
-        float angle = raw > 180f ? raw - 360f : raw;
-        float dt = Mathf.Max(0.0001f, Time.time - lastSampleTime);
-        float dAngle = angle - lastSampleAngle;
-        // unwrap large jumps
-        if (dAngle > 180f) dAngle -= 360f;
-        if (dAngle < -180f) dAngle += 360f;
-        float angSpeed = Mathf.Abs(dAngle) / dt; // deg/sec
+Quaternion dragonStartRot;
+Vector3 dragonStartPos;
 
-        // Detect "pull back" (hand rotates backward beyond threshold)
-        if (!pulledBack && angle < -detectBackAngleDeg) // negative means backward in many rigs
-        {
-            pulledBack = true;
-            // reset throw flag - waiting for forward snap
-            throwDetected = false;
-            //Debug.Log("Throw: pulled back");
-        }
 
-        // If pulled back, detect forward snap: angle moves forward (towards positive) with enough delta & speed
-        if (pulledBack && !throwDetected)
-        {
-            // forward snap: angle increases by at least detectForwardSnapDeg (from its minimum)
-            float forwardDelta = angle - lastSampleAngle; // positive if moved forward
-            if (forwardDelta > 0f && angSpeed >= detectAngularSpeed && angle > detectForwardSnapDeg * 0.5f)
-            {
-                throwDetected = true;
-                pulledBack = false;
-                Debug.Log("Throw detected (shoulder snap)");
-            }
-        }
 
-        lastSampleAngle = angle;
-        lastSampleTime = Time.time;
-    }*/
+void Start()
+{
+    // Save player
+    
+    playerStartPos = player.transform.position;
+    playerStartRot = player.transform.rotation;
 
-    // -----------------------------
-    // Exposed helpers for other scripts
-    // -----------------------------
+    // Save camera
+    camStartPos = cameraTransform.position;
+    camStartRot = cameraTransform.rotation;
+
+    // Save dragon
+    dragonStartPos = dragon.transform.position;
+    dragonStartRot = dragon.transform.rotation;
+
+    // Save sword
+    swordStartParent = sword.parent;
+    swordStartLocalPos = sword.localPosition;
+    swordStartLocalRot = sword.localRotation;
+
+    // Save shield
+    shieldStartParent = shield.parent;
+    shieldStartLocalPos = shield.localPosition;
+    shieldStartLocalRot = shield.localRotation;
+    Debug.Log("Sword parent at start: " + swordStartParent);
+
+
+    // Start cinematic
+    StartCoroutine(RunCinematicSequence());
+}
+
+
+
     public bool IsSwordHitActive() => qteSword;
     public bool IsThrowActive() => qteThrow;
     public bool IsTickleActive() => qteTickle;
 
+    void Update()
+{
+    if (Input.GetKeyDown(KeyCode.M))
+    {
+        Debug.Log("🔄 Restarting Cinematic...");
+        RestartCinematic();
+        spinecontroller.ReplayPuppetSpine();
+        shouldercontroller.ReplayPuppetShoulders();
+
+    }
+}
+
     // Called by sword collider trigger
     public void RegisterSwordHit()
+{
+    if (!qteSword) return;
+
+    swordHits++;
+    Debug.Log($"Sword Hit Count: {swordHits}");
+
+    if (dragonHealth != null)
     {
-        if (!qteSword) return;
-
-        swordHits++;
-        Debug.Log($"Sword Hit Count: {swordHits}");
-
-        if (dragonHealth != null)
-            dragonHealth.TakeQTEHit(5f);
-
-        if (swordHits >= 4)
-        {
-            Debug.Log("🔥 QTE FINISHED! Sword hits reached 4");
-            qteSword = false;
-
-            // disable sword collider if still present
-            if (sword != null)
-            {
-                var col = sword.GetComponent<Collider>();
-                if (col) col.enabled = false;
-            }
-        }
+        Debug.Log("🔥 in qte");
+        dragonHealth.TakeQTEHit(5f);
     }
+
+    if (swordHits >= 4)
+    {
+        Debug.Log("🔥 QTE FINISHED! Sword hits reached 4");
+        qteSword = false;
+
+        // disable sword collider if still present
+        var col = sword.GetComponent<Collider>();
+        if (col) col.enabled = false;
+    }
+}
 
     public void RegisterShieldHit()
     {
@@ -169,7 +173,6 @@ private Vector3 lastThrowPos;
     // -----------------------------
     IEnumerator RunCinematicSequence()
     {
-        if (player != null) player.SetCanMove(false);
         if (dragon != null) dragon.enabled = false;
 
         // camera intro — start zoomed in then out
@@ -210,7 +213,6 @@ private Vector3 lastThrowPos;
 
         // Show lean zone and enable player/dragon
         leanZone?.ShowZone();
-        if (player != null) player.SetCanMove(true);
         if (dragon != null) dragon.enabled = true;
 
         yield return new WaitForSeconds(leanCheckDelay);
@@ -223,7 +225,7 @@ private Vector3 lastThrowPos;
         leanZone.gameObject.SetActive(false);
 
         // small gap to let the first fireball pass
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(6f);
 
         // Advance and sword combo
         yield return StartCoroutine(AdvanceAndSwordAttackSequence());
@@ -238,11 +240,17 @@ private Vector3 lastThrowPos;
 
         yield return new WaitForSeconds(1f);
 
-        // Throw phase: wait for player's throw motion (detected by our embedded detector)
-        qteThrow = true;
-        if (sfxSource && throwPhaseLine) sfxSource.PlayOneShot(throwPhaseLine);
-        yield return StartCoroutine(ThrowSequence());
-        yield return new WaitUntil(() => !qteThrow);
+qteThrow = true;
+if (sfxSource && throwPhaseLine) sfxSource.PlayOneShot(throwPhaseLine);
+
+yield return new WaitForSeconds(5);
+
+// ❗ NOW start listening for throw detection
+StartCoroutine(ThrowSequence());
+
+// And wait until this QTE is done
+yield return new WaitUntil(() => !qteThrow);
+
         yield return new WaitForSeconds(0.8f);
 
         // Tickle QTE
@@ -271,7 +279,7 @@ private Vector3 lastThrowPos;
         yield return new WaitUntil(() => !qteSword);
 
         // walk back to start
-        yield return StartCoroutine(MovePlayer(playerStartPos.position));
+        yield return StartCoroutine(MovePlayer(playerStartPosi.position));
         yield return new WaitForSeconds(0.5f);
     }
 
@@ -287,93 +295,70 @@ private Vector3 lastThrowPos;
     // -----------------------------
     // Throw sequence (sword first, then shield) — uses embedded throw detection
     // -----------------------------
-    IEnumerator ThrowSequence()
+IEnumerator ThrowSequence()
 {
-    throwDetected = false;
-    pulledBack = false;
+    Debug.Log("Waiting for SPACE to throw sword...");
 
-    Debug.Log("Waiting for real throwing motion...");
-
-    lastThrowPos = rightHand.position;
-    float startTime = Time.time;
-
-    // === Detect THROW motion with right hand ===
-    while (!throwDetected && Time.time - startTime < maxWaitForThrow)
-    {
-        Vector3 current = rightHand.position;
-
-        // Step 1 – hand moet eerst naar achter
-        float backwardDist = lastThrowPos.z - current.z;
-        if (!pulledBack && backwardDist > pullBackDistance)
-        {
-            pulledBack = true;
-            Debug.Log("Right arm pulled back – now waiting for forward throw.");
-        }
-
-        // Step 2 – daarna een snelle beweging vooruit
-        if (pulledBack)
-        {
-            float forwardSpeed = current.z - lastThrowPos.z;
-            if (forwardSpeed > minForwardSpeed)
-            {
-                throwDetected = true;
-                Debug.Log("THROW DETECTED!");
-                break;
-            }
-        }
-
-        lastThrowPos = current;
-        yield return null;
-    }
-
-    if (!throwDetected)
-        Debug.LogWarning("No valid throw detected – continuing anyway.");
-
-    // -----------------------------------------------------
-    // 1️⃣ ZWAARD WEG SMETEN (miss)
-    // -----------------------------------------------------
+    // ===============================
+    // 1️⃣ WAIT FOR FIRST SPACE (SWORD)
+    // ===============================
+    yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+    Debug.Log("SPACE pressed → Throwing sword!");
 
     if (sword != null)
     {
         sword.SetParent(null);
 
-        Rigidbody rs = sword.gameObject.AddComponent<Rigidbody>();
-        rs.useGravity = false;
-        rs.isKinematic = true;
+
+        Rigidbody rb = sword.gameObject.AddComponent<Rigidbody>();
+
+        rb.useGravity = false;
+        rb.isKinematic = true; 
+
 
         StartCoroutine(LerpObjectTo(
             sword,
             swordMissTarget.position,
-            0.8f,
+            2f,
             false
         ));
     }
 
-    yield return new WaitForSeconds(0.6f);
+    // Small delay so the sword starts flying
+    yield return new WaitForSeconds(0.4f);
 
-    // -----------------------------------------------------
-    // 2️⃣ SCHILD VAN LINKERHAND LOSSEN EN NAAR DRAAK
-    // -----------------------------------------------------
+    // ===============================
+    // 2️⃣ WAIT FOR SECOND SPACE (SHIELD)
+    // ===============================
+    Debug.Log("Waiting for SPACE again to throw shield...");
+    yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+    Debug.Log("SPACE pressed → Throwing shield!");
 
     if (shield != null)
     {
         shield.SetParent(null);
 
-        Rigidbody rh = shield.gameObject.AddComponent<Rigidbody>();
-        rh.useGravity = false;
-        rh.isKinematic = true;
+
+    Rigidbody rs = shield.gameObject.AddComponent<Rigidbody>();
+
+rs.useGravity = false;
+rs.isKinematic = true;
+
+
 
         StartCoroutine(LerpObjectTo(
             shield,
             shieldHitTarget.position,
-            0.8f,
+            2f,
             true
         ));
     }
 
-    // QTE eindigt wanneer LerpObjectTo → RegisterShieldHit
+    // QTE finishes when shield hit lands and LerpObjectTo calls RegisterShieldHit()
     yield break;
 }
+
+
 
 
 IEnumerator LerpObjectTo(Transform obj, Vector3 targetPos, float duration, bool isHit)
@@ -397,7 +382,10 @@ IEnumerator LerpObjectTo(Transform obj, Vector3 targetPos, float duration, bool 
         qteThrow = false;
     }
 
-    Destroy(obj.gameObject, 0.1f);
+    var rb = obj.GetComponent<Rigidbody>();
+    if (rb) Destroy(rb);
+
+    obj.gameObject.SetActive(false);
 }
 
 
@@ -416,4 +404,101 @@ IEnumerator LerpObjectTo(Transform obj, Vector3 targetPos, float duration, bool 
 
         Debug.Log("Cinematic: victory sequence complete.");
     }
+
+public void RestartCinematic()
+{
+    Debug.Log("🔄 FULL CINEMATIC RESET");
+    StopAllCoroutines();
+    ResetObjects();
+    StartCoroutine(RunCinematicSequence());
+}
+
+
+void ResetObjects()
+{
+    // RESET PLAYER
+    player.transform.position = playerStartPos;
+    player.transform.rotation = playerStartRot;
+
+    // RESET CAMERA
+    cameraTransform.position = camStartPos;
+    cameraTransform.rotation = camStartRot;
+
+    // RESET DRAGON
+    dragon.transform.position = dragonStartPos;
+    dragon.transform.rotation = dragonStartRot;
+    dragon.enabled = false;
+
+    // RESET DRAGON HEALTH + UI
+    if (dragonHealth != null)
+    {
+        dragonHealth.ResetHealth();
+
+    }
+
+    // RESET PLAYER HEALTH + UI
+    var healthField = player.GetType().GetField("health");
+    if (healthField != null)
+    {
+        var healthObj = healthField.GetValue(player);
+        if (healthObj != null)
+        {
+            var cur = healthObj.GetType().GetField("currentHealth");
+            var max = healthObj.GetType().GetField("maxHealth");
+            var ui  = healthObj.GetType().GetMethod("UpdateHealthUI");
+
+            if (max != null && cur != null)
+                cur.SetValue(healthObj, max.GetValue(healthObj));
+
+            ui?.Invoke(healthObj, null);
+        }
+    }
+
+  // RESET SWORD
+if (sword != null)
+{
+    sword.SetParent(swordStartParent);
+    sword.localPosition = swordStartLocalPos;
+    sword.localRotation = swordStartLocalRot;
+    sword.gameObject.SetActive(true);
+
+    var col = sword.GetComponent<Collider>();
+    if (col) col.enabled = true;
+}
+
+
+// RESET SHIELD
+if (shield != null)
+{
+    shield.SetParent(shieldStartParent);
+    shield.localPosition = shieldStartLocalPos;
+    shield.localRotation = shieldStartLocalRot;
+    shield.gameObject.SetActive(true);
+
+    var col = shield.GetComponent<Collider>();
+    if (col) col.enabled = true;
+}
+
+
+    // RESET ZONES
+    if (shieldZone != null)
+    {
+        shieldZone.gameObject.SetActive(false);
+        shieldZone.shieldLocked = false;
+    }
+
+    if (leanZone != null)
+    {
+        leanZone.gameObject.SetActive(false);
+    }
+
+    // RESET QTE STATES
+    qteSword = false;
+    qteThrow = false;
+    qteTickle = false;
+    swordHits = 0;
+}
+
+
+
 }

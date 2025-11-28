@@ -28,20 +28,19 @@ public class ShieldBlockZone : MonoBehaviour
     }
 
     void Update()
+{
+    // Shield must be inside the zone
+    if (!shieldInside)
+        return;
+
+    // A single quick press should lock immediately
+    if (Input.GetKeyDown(KeyCode.Space))
     {
-        // Shield is not inside → reset timer
-        if (!shieldInside)
-        {
-            timer = 0f;
-            return;
-        }
-
-        // Count time while shield stays inside
-        timer += Time.deltaTime;
-
-        if (timer >= requiredHoldTime)
-            shieldLocked = true;
+        shieldLocked = true;
+        Debug.Log("🛡 Shield confirmed with quick press!");
     }
+}
+
 
     void OnTriggerEnter(Collider other)
     {
