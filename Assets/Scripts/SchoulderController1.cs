@@ -23,6 +23,7 @@ public class ShoulderController1 : MonoBehaviour
     private float replayStartTime;
     private float currentReplayTime;
     private int frameindex;
+        private float replayDuration;
 
     void Start()
     {
@@ -41,6 +42,8 @@ public class ShoulderController1 : MonoBehaviour
         replayStartTime = Time.time;
         Replay = true;
         frameindex = 0;
+
+        replayDuration = allFrames[allFrames.Count - 1].timeStamp;
     }
 
     void Update()
@@ -56,19 +59,24 @@ public class ShoulderController1 : MonoBehaviour
                 leftYAngle =  udp.LatestData.leftShoulderValue + 90f ;
 
             }
-            else
-            {
-                currentReplayTime = Time.time - replayStartTime;
-                while (frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime)
-                {
-                    frameindex++;
-                }
-                leftYAngle = allFrames[frameindex].leftShoulder + 90f ;
-                if (frameindex >= allFrames.Count - 1)
-                {
-                    Replay = false;
-                }
-            }
+        else
+        {
+            currentReplayTime = Time.time - replayStartTime;
+            float t = currentReplayTime / replayDuration;
+
+            frameindex = Mathf.Clamp(
+                Mathf.FloorToInt(t * (allFrames.Count - 1)),
+                0,
+                allFrames.Count - 1
+            );
+
+            leftYAngle = allFrames[frameindex].leftShoulder + 90f ;
+
+            // if (frameindex >= allFrames.Count - 1)
+            // {
+            //     allFrames.Clear();
+            // }
+        }
             
             // 360° rotatie behouden
             if (leftYAngle > 360f) leftYAngle -= 360f;
@@ -91,19 +99,26 @@ public class ShoulderController1 : MonoBehaviour
                 rightYAngle =  udp.LatestData.rightShoulderValue +90f;
 
             }
-            else
-            {
-                currentReplayTime = Time.time - replayStartTime;
-                while (frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime)
-                {
-                    frameindex++;
-                }
-                rightYAngle = allFrames[frameindex].rightShoulder +90f;
-                if (frameindex >= allFrames.Count - 1)
-                {
-                    Replay = false;
-                }
-            }
+        else
+        {
+
+            currentReplayTime = Time.time - replayStartTime;
+            float t = currentReplayTime / replayDuration;
+
+            frameindex = Mathf.Clamp(
+                Mathf.FloorToInt(t * (allFrames.Count - 1)),
+                0,
+                allFrames.Count - 1
+            );
+
+            rightYAngle = allFrames[frameindex].rightShoulder + 90f ;
+
+
+            // if (frameindex >= allFrames.Count - 1)
+            // {
+                
+            // }
+        }
 
             if (rightYAngle > 360f) rightYAngle -= 360f;
             if (rightYAngle < 0f) rightYAngle += 360f;
