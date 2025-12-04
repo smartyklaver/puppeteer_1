@@ -31,56 +31,7 @@ public class DragonController : MonoBehaviour
             headBaseRot = head.localRotation;
     }
 
-    // Called by CinematicManager after a hit moment
-    public void OnHitByPlayer()
-    {
-        if (isRoaring) return;
-
-        Debug.Log("⚔️ Dragon hit by player!");
-        StartCoroutine(RoarAndReact());
-    }
-
-    IEnumerator RoarAndReact()
-    {
-        isRoaring = true;
-
-        // Knal de speler terug (gebruik player controller)
-        if (playerController != null)
-        {
-            Vector3 dir = (playerController.transform.position - transform.position).normalized;
-            dir.y = 0.4f; // small upward arc
-        }
-
-        // Camera shake
-        if (playerCamera != null)
-            StartCoroutine(CameraShake(cameraShakeDuration, cameraShakeIntensity));
-
-        // Animate head up
-        Quaternion targetHeadRot = headBaseRot * Quaternion.Euler(-60f, 0f, 0f);
-
-        float t = 0f;
-        while (t < 1f)
-        {
-            t += Time.deltaTime * 2f;
-            if (head != null)
-                head.localRotation = Quaternion.Slerp(head.localRotation, targetHeadRot, t);
-            yield return null;
-        }
-
-        // Play roar sound
-        if (roarAudio != null)
-            roarAudio.Play();
-
-        yield return new WaitForSeconds(roarDuration);
-
-        // Return head
-        if (head != null)
-            head.localRotation = headBaseRot;
-
-        isRoaring = false;
-    }
-
-    // Fireball over player cinematic
+    
 public void FireballOverPlayer()
 {
     if (fireballSpawner == null)

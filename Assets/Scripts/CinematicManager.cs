@@ -11,6 +11,18 @@ public class CinematicManager : MonoBehaviour
     public Transform playerTarget;
     public float zoomDuration = 1.2f;
     public float pauseDuration = 1.2f;
+    public Camera mainCamera;    // Display 1 camera
+    public Camera replayCamera;  // Display 2 camera
+
+    [Header("Curtains")]
+public Transform leftCurtain;
+public Transform rightCurtain;
+public Vector3 leftClosedPos;
+public Vector3 rightClosedPos;
+public Vector3 leftOpenPos;
+public Vector3 rightOpenPos;
+public float curtainOpenDuration = 1.5f;
+
 
     [Header("References")]
     public PlayerController player;
@@ -109,6 +121,10 @@ public class CinematicManager : MonoBehaviour
         swordStartLocalPos = sword.localPosition;
         swordStartLocalRot = sword.localRotation;
 
+        leftCurtain.localPosition = leftClosedPos;
+        rightCurtain.localPosition = rightClosedPos;
+
+
         // Save shield
         shieldStartParent = shield.parent;
         shieldStartLocalPos = shield.localPosition;
@@ -117,6 +133,8 @@ public class CinematicManager : MonoBehaviour
 
         // ensure list cleared at cold start
         spaceTimestamps.Clear();
+        if (dragonHealth != null){
+        dragonHealth.OnEnemyDied += HandleDragonDeath;}
 
         // Start cinematic
         StartCoroutine(RunCinematicSequence());
@@ -201,6 +219,10 @@ public class CinematicManager : MonoBehaviour
         Vector3 zoomPos = playerTarget.position - cameraTransform.forward * 2.5f + Vector3.up * 1f;
 
         cameraTransform.position = zoomPos;
+
+StartCoroutine(OpenCurtains());
+
+
         cameraTransform.LookAt(playerTarget.position + Vector3.up * 0.8f);
 
         if (musicSource && introMusic)
@@ -270,16 +292,17 @@ public class CinematicManager : MonoBehaviour
 
         // And wait until this QTE is done
         yield return new WaitUntil(() => !qteThrow);
+        yield return StartCoroutine(MovePlayer(playerAttackPos.position));
+
 
         yield return new WaitForSeconds(0.8f);
 
         // Tickle QTE
         qteTickle = true;
+        Debug.Log("Tickle active = " + qteTickle);
+
         if (sfxSource && ticklePhaseLine) sfxSource.PlayOneShot(ticklePhaseLine);
         yield return new WaitUntil(() => !qteTickle);
-
-        // Victory
-        OnVictory();
 
         // If we were replaying input, stop replay mode when done
         if (isReplayingInput)
@@ -455,6 +478,9 @@ public class CinematicManager : MonoBehaviour
         dragon.transform.rotation = dragonStartRot;
         dragon.enabled = false;
 
+        if (!dragon.gameObject.activeSelf)
+        dragon.gameObject.SetActive(true);
+
         // RESET DRAGON HEALTH + UI
         if (dragonHealth != null)
         {
@@ -568,4 +594,44 @@ public class CinematicManager : MonoBehaviour
         isReplayingInput = false;
         Debug.Log("[Replay] Will stop replay mode now.");
     }
+    public void RegisterTickleHit()
+{
+    Debug.Log("erin ");
+
+    if (!qteTickle) return;   // enkel tijdens tickle-QTE tellen
+
+    if (dragonHealth != null)
+        Debug.Log("damage");
+
+        dragonHealth.TakeQTEHit(5f);
+
+    Debug.Log("🤣 Tickle hit! Dragon takes 5 damage.");
+}
+void HandleDragonDeath()
+{
+    Debug.Log("CinematicManager: Dragon has died → Triggering victory.");
+    OnVictory();
+}
+
+IEnumerator OpenCurtains()
+{
+    float t = 0f;
+
+    Vector3 lStart = leftCurtain.localPosition;
+    Vector3 rStart = rightCurtain.localPosition;
+
+    while (t < 1f)
+    {
+        t += Time.deltaTime / curtainOpenDuration;
+
+        leftCurtain.localPosition  = Vector3.Lerp(leftClosedPos,  leftOpenPos,  t);
+        rightCurtain.localPosition = Vector3.Lerp(rightClosedPos, rightOpenPos, t);
+
+        yield return null;
+    }
+}
+
+
+
+
 }

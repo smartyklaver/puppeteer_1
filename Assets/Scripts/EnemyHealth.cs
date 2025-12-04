@@ -11,6 +11,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [Header("UI")]
     public Slider healthBar; // optional existing slider
 
+    public System.Action OnEnemyDied;
     void Start()
     {
         current = maxHealth;
@@ -34,8 +35,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Die()
     {
         Debug.Log($"{name} died!");
-        // Keep GameObjects needed by cinematic (dragon controller handles visuals)
-        Destroy(gameObject);
+        OnEnemyDied?.Invoke();
+        gameObject.SetActive(false);
     }
     public void ResetHealth()
     {
