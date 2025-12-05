@@ -371,8 +371,10 @@ StartCoroutine(OpenCurtains());
         // ===============================
         // 1️⃣ WAIT FOR FIRST SPACE (SWORD)
         // ===============================
+        SendLampStateForced(true);
         yield return new WaitUntil(() => IsSpacePressed());
         Debug.Log("SPACE pressed → Throwing sword!");
+        SendLampStateForced(false);
 
         if (sword != null)
         {
@@ -399,8 +401,10 @@ StartCoroutine(OpenCurtains());
         // 2️⃣ WAIT FOR SECOND SPACE (SHIELD)
         // ===============================
         Debug.Log("Waiting for SPACE again to throw shield...");
+        SendLampStateForced(true);
         yield return new WaitUntil(() => IsSpacePressed());
         Debug.Log("SPACE pressed → Throwing shield!");
+        SendLampStateForced(false);
 
         if (shield != null)
         {
