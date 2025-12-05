@@ -10,6 +10,8 @@ TagManager:
   - Ground
   - Sword
   - Hand
+  - hand_L
+  - hand_R
   layers:
   - Default
   - TransparentFX
