@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="Workspace" id="{e2e06da9-15ef-4fc4-95d0-78149b0da842}">
+		<property name="builtBanksOutputDirectory">
+			<value>../../../../../unity/puppeteer_1/Assets/FMODBanks</value>
+		</property>
+		<relationship name="masterEventFolder">
+			<destination>{628965f3-4823-4d5a-b7cf-74fb3d9f76ef}</destination>
+		</relationship>
+		<relationship name="masterTagFolder">
+			<destination>{25f5f933-9474-4a88-87fb-66bba3c641c5}</destination>
+		</relationship>
+		<relationship name="masterEffectPresetFolder">
+			<destination>{d16880aa-99e9-4b0f-a482-e3015a42ed00}</destination>
+		</relationship>
+		<relationship name="masterParameterPresetFolder">
+			<destination>{0a603c9a-0857-4eaa-98db-1fa14d713573}</destination>
+		</relationship>
+		<relationship name="masterBankFolder">
+			<destination>{cd2e7c2b-b096-45e5-bbdd-7ecc7920fff7}</destination>
+		</relationship>
+		<relationship name="masterSandboxFolder">
+			<destination>{e54dc86e-e332-4b43-96fa-88aae89f3c6c}</destination>
+		</relationship>
+		<relationship name="masterAssetFolder">
+			<destination>{56cbeff0-07c2-403b-8ec7-710cf69a34ea}</destination>
+		</relationship>
+		<relationship name="mixer">
+			<destination>{ffe4281d-5fc2-4735-a560-fa2be8d79f23}</destination>
+		</relationship>
+		<relationship name="profilerSessionFolder">
+			<destination>{d8ecb52c-0656-482d-ac96-8b03bec8e164}</destination>
+		</relationship>
+		<relationship name="platforms">
+			<destination>{dfed4522-a3c3-4800-a39d-fec2a21ccd79}</destination>
+		</relationship>
+	</object>
+</objects>
