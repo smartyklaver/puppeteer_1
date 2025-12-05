@@ -7,9 +7,7 @@ using System.Collections.Generic;
 public class CinematicManager : MonoBehaviour
 {
     public ArduinoButtonReader arduinoButton;
-
-bool lampOn = false;
-
+    public bool lampOn;
 
     [Header("Camera")]
     public Transform cameraTransform;
@@ -685,8 +683,6 @@ IEnumerator CloseCurtains()
         yield return null;
     }
 }
-
-
 public void SendLampStateForced(bool on)
 {
     lampOn = on;

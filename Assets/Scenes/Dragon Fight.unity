@@ -4233,6 +4233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CinematicManager
   arduinoButton: {fileID: 1282822788}
+  lampOn: 0
   cameraTransform: {fileID: 304229393}
   playerTarget: {fileID: 1298817214}
   zoomDuration: 9
@@ -4304,7 +4305,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1282822785}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9970f753530924a9d083e37928eee9, type: 3}
+  m_Script: {fileID: 11500000, guid: e91a7d5758f3f9e4aa1d001d0ad378c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArduinoButtonReader
   portName: COM5
