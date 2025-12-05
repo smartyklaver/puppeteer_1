@@ -4,7 +4,7 @@ using UnityEngine;
 public class ArduinoButtonReader : MonoBehaviour
 {
     [Header("Serial Settings")]
-    public string portName = "COM8";  // On Windows: COM3, COM4, etc.
+    public string portName = "COM5";  // On Windows: COM3, COM4, etc.
                                      // On Mac/Linux: "/dev/tty.usbmodemXXXX" or "/dev/ttyACM0"
     public int baudRate = 9600;
 
@@ -98,4 +98,16 @@ public class ArduinoButtonReader : MonoBehaviour
             serialPort.Dispose();
         }
     }
+    public void SendToArduino(string message)
+{
+    if (serialPort != null && serialPort.IsOpen)
+    {
+        try
+        {
+            serialPort.Write(message);
+        }
+        catch { }
+    }
+}
+
 }
