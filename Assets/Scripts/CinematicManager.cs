@@ -1,18 +1,24 @@
-// --- toevoegingen binnen CinematicManager (vervang je huidige CinematicManager.cs met onderstaande) ---
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 
+
 public class CinematicManager : MonoBehaviour
 {
+    public ArduinoButtonReader arduinoButton;
+    enum ActionPhase { None, Duck, ShieldBlock, SwordThrow, ShieldThrow }
+ActionPhase currentPhase = ActionPhase.None;
+bool lampOn = false;
+
+
     [Header("Camera")]
     public Transform cameraTransform;
     public Transform playerTarget;
     public float zoomDuration = 1.2f;
     public float pauseDuration = 1.2f;
-    public Camera mainCamera;    // Display 1 camera
-    public Camera replayCamera;  // Display 2 camera
+    public Camera cameraA; 
+    public Camera cameraB;
 
     [Header("Curtains")]
 public Transform leftCurtain;
@@ -22,6 +28,13 @@ public Vector3 rightClosedPos;
 public Vector3 leftOpenPos;
 public Vector3 rightOpenPos;
 public float curtainOpenDuration = 1.5f;
+
+[Header("Curtains close")]
+
+public Vector3 leftClosedPos2;
+public Vector3 rightClosedPos2;
+
+
 
 
     [Header("References")]
@@ -133,8 +146,7 @@ public float curtainOpenDuration = 1.5f;
 
         // ensure list cleared at cold start
         spaceTimestamps.Clear();
-        if (dragonHealth != null){
-        dragonHealth.OnEnemyDied += HandleDragonDeath;}
+        
 
         // Start cinematic
         StartCoroutine(RunCinematicSequence());
@@ -143,15 +155,26 @@ public float curtainOpenDuration = 1.5f;
     public bool IsSwordHitActive() => qteSword;
     public bool IsThrowActive() => qteThrow;
     public bool IsTickleActive() => qteTickle;
+    private bool end = false;
+    private bool replayed= false;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        UpdateArduinoActionLamp();
+        if (Input.GetKeyDown(KeyCode.M)||end)
         {
+            if(replayed ==false){
+            end = false;
+            replayed = true;
             Debug.Log("🔄 Restarting Cinematic...");
             RestartCinematic();
+
+            cameraA.targetDisplay = 1;
+            cameraB.targetDisplay = 0;
+
             spinecontroller?.ReplayPuppetSpine();
             shouldercontroller?.ReplayPuppetShoulders();
+            }
         }
     }
 
@@ -261,6 +284,9 @@ StartCoroutine(OpenCurtains());
 
         Debug.Log("Waiting for player to duck...");
         yield return new WaitUntil(() => leanZone.PlayerIsLowEnough());
+        StartPhase(ActionPhase.Duck);
+        EndPhase();   // speler drukte → lamp uit
+
         Debug.Log("Player ducked low → FIREBALL!");
 
         dragon.FireballOverPlayer();
@@ -436,18 +462,32 @@ StartCoroutine(OpenCurtains());
     // -----------------------------
     // Victory
     // -----------------------------
-    void OnVictory()
-    {
-        if (musicSource && victoryMusic)
-        {
-            musicSource.Stop();
-            musicSource.clip = victoryMusic;
-            musicSource.loop = false;
-            musicSource.Play();
-        }
+public void OnVictory()
+{
+    StartCoroutine(OnVictoryRoutine());
+}
 
-        Debug.Log("Cinematic: victory sequence complete.");
+private IEnumerator OnVictoryRoutine()
+{
+    // 🎵 Speel victory muziek
+    if (musicSource && victoryMusic)
+    {
+        musicSource.Stop();
+        musicSource.clip = victoryMusic;
+        musicSource.loop = false;
+        musicSource.Play();
     }
+
+    // 🎬 Gordijnen dicht doen
+    yield return StartCoroutine(CloseCurtains());
+
+    Debug.Log("Cinematic: victory sequence complete.");
+
+    // ⏳ Wacht 5 seconden *echt*
+    yield return new WaitForSeconds(5f);
+
+    end = true;
+}
 
     public void RestartCinematic()
     {
@@ -549,43 +589,45 @@ StartCoroutine(OpenCurtains());
     }
 
     public bool IsSpacePressed()
+{
+    bool pressed =
+        Input.GetKeyDown(KeyCode.Space) ||
+        (arduinoButton != null && arduinoButton.WasButtonPressedThisFrame());
+
+    // ---- RECORDING MODE ----
+    if (!isReplayingInput)
     {
-        // During normal play → record real space presses (relative to recordingStartTime)
-        if (!isReplayingInput)
+        if (pressed)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                float relative = Time.time - recordingStartTime;
-                spaceTimestamps.Add(relative);
-                Debug.Log($"[Record] Space at {relative:F3}s (rel)");
-                return true;
-            }
-
-            return false;
+            float relative = Time.time - recordingStartTime;
+            spaceTimestamps.Add(relative);
+            Debug.Log($"[Record] SPACE/Arduino at {relative:F3}s");
+            return true;
         }
-
-        // During replay → simulate space at correct relative timestamp
-        if (replayIndex < spaceTimestamps.Count)
-        {
-            float nextRelative = spaceTimestamps[replayIndex];
-            float elapsed = Time.time - replayStartTime;
-
-            if (elapsed >= nextRelative)
-            {
-                replayIndex++;
-                Debug.Log($"[Replay] Simulated Space at replay elapsed {elapsed:F3}s (target {nextRelative:F3}s)");
-                // If we've replayed the last one, switch off replay mode after this press
-                if (replayIndex >= spaceTimestamps.Count)
-                {
-                    // allow the last simulated press through, then stop replaying on next frame
-                    StartCoroutine(EndReplayNextFrame());
-                }
-                return true;
-            }
-        }
-
         return false;
     }
+
+    // ---- REPLAY MODE ----
+    if (replayIndex < spaceTimestamps.Count)
+    {
+        float nextRelative = spaceTimestamps[replayIndex];
+        float elapsed = Time.time - replayStartTime;
+
+        if (elapsed >= nextRelative)
+        {
+            replayIndex++;
+            Debug.Log($"[Replay] Simulated SPACE at {elapsed:F3}s");
+
+            if (replayIndex >= spaceTimestamps.Count)
+                StartCoroutine(EndReplayNextFrame());
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
     IEnumerator EndReplayNextFrame()
     {
@@ -631,7 +673,71 @@ IEnumerator OpenCurtains()
     }
 }
 
+IEnumerator CloseCurtains()
+{
+    float t = 0f;
 
+    Vector3 lStart = leftCurtain.localPosition;
+    Vector3 rStart = rightCurtain.localPosition;
+
+    while (t < 1f)
+    {
+        t += Time.deltaTime / curtainOpenDuration;
+
+        leftCurtain.localPosition  = Vector3.Lerp(leftOpenPos,  leftClosedPos2,  t);
+        rightCurtain.localPosition = Vector3.Lerp(rightOpenPos, rightClosedPos2, t);
+
+        yield return null;
+    }
+}
+
+void UpdateArduinoActionLamp()
+{
+    // Als er geen fase actief is → lamp uit
+    if (currentPhase == ActionPhase.None)
+    {
+        lampOn = false;
+        SendLampState();
+        return;
+    }
+
+    // Indien LED aan staat → wacht op input
+    if (lampOn)
+    {
+        if (IsSpacePressed())      // speler drukte
+        {
+            EndPhase();            // LED uit + fase klaar
+        }
+        return;
+    }
+
+    // LED uit maar fase nog actief = fout → force LED aan
+    if (currentPhase != ActionPhase.None)
+    {
+        lampOn = true;
+        SendLampState();
+    }
+}
+
+void StartPhase(ActionPhase phase)
+{
+    currentPhase = phase;
+    lampOn = true;                // LED AAN
+    SendLampState();
+}
+
+void EndPhase()
+{
+    lampOn = false;               // LED UIT
+    SendLampState();
+    currentPhase = ActionPhase.None;
+}
+
+void SendLampState()
+{
+    if (arduinoButton != null)
+        arduinoButton.SendToArduino(lampOn ? "L" : "l");
+}
 
 
 }
