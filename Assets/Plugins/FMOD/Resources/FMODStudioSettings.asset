@@ -289,16 +289,16 @@ MonoBehaviour:
     HasValue: 0
   displaySortOrder: 0
   childIdentifiers:
-  - 0f8eb3f400726694eb47beb1a9f94ce8
+  - fd7c55dab0fce234b8c25f6ffca523c1
+  - b7716510a1f36934c87976f3a81dbf3d
   - 46fbfdf3fc43db0458918377fd40293e
+  - 2c5177b11d81d824dbb064f9ac8527da
+  - c88d16e5272a4e241b0ef0ac2e53b73d
+  - 0f8eb3f400726694eb47beb1a9f94ce8
+  - de700ef3f37a49b58a57ae3addf01ad9
+  - 52eb9df5db46521439908db3a29a1bbb
   - 2fea114e74ecf3c4f920e1d5cc1c4c40
   - e7a046c753c3c3d4aacc91f6597f310d
-  - 52eb9df5db46521439908db3a29a1bbb
-  - 2c5177b11d81d824dbb064f9ac8527da
-  - b7716510a1f36934c87976f3a81dbf3d
-  - c88d16e5272a4e241b0ef0ac2e53b73d
-  - de700ef3f37a49b58a57ae3addf01ad9
-  - fd7c55dab0fce234b8c25f6ffca523c1
   codecChannels:
     Value: []
     HasValue: 0
@@ -464,7 +464,7 @@ MonoBehaviour:
   HasSourceProject: 0
   HasPlatforms: 0
   sourceProjectPath: 
-  sourceBankPath: Assets/FMODBanks/Desktop
+  sourceBankPath: Assets/FMOD_storm/Desktop
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -504,18 +504,18 @@ MonoBehaviour:
   HideSetupWizard: 1
   LastEventReferenceScanVersion: 131634
   Platforms:
-  - {fileID: 6052154967712327250}
-  - {fileID: -7266558873607495048}
-  - {fileID: 42164560433065406}
+  - {fileID: -9206612819040137737}
+  - {fileID: -8794834645587273991}
   - {fileID: -8781273854590911821}
+  - {fileID: -7266558873607495048}
+  - {fileID: -3694929491289679820}
+  - {fileID: -1959603658222447208}
+  - {fileID: 42164560433065406}
+  - {fileID: 2534937251467814041}
+  - {fileID: 2919563793501358248}
+  - {fileID: 6052154967712327250}
   - {fileID: 7364336604878173418}
   - {fileID: 8026530557155731550}
-  - {fileID: 2919563793501358248}
-  - {fileID: -3694929491289679820}
-  - {fileID: -8794834645587273991}
-  - {fileID: -1959603658222447208}
-  - {fileID: 2534937251467814041}
-  - {fileID: -9206612819040137737}
   MigratedPlatforms: 0500000000000000060000000a0000000800000009000000120000000c000000150000000b0000000200000001000000
 --- !u!114 &42164560433065406
 MonoBehaviour:

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 
 
 
@@ -58,13 +59,12 @@ public Vector3 rightClosedPos2;
     [Header("Shield Block")]
     public ShieldBlockZone shieldZone;
     public float shieldCheckDelay = 1f;
+[Header("FMOD Music")]
+public StudioEventEmitter introEmitter;
+public StudioEventEmitter bossEmitter;
+public StudioEventEmitter victoryEmitter;
 
     [Header("Audio / Lines")]
-    public AudioSource musicSource;
-    public AudioClip introMusic;
-    public AudioClip bossMusic;
-    public AudioClip victoryMusic;
-    public AudioClip spotlightSFX;
     public AudioClip swordPhaseLine;
     public AudioClip throwPhaseLine;
     public AudioClip ticklePhaseLine;
@@ -244,14 +244,13 @@ StartCoroutine(OpenCurtains());
 
         cameraTransform.LookAt(playerTarget.position + Vector3.up * 0.8f);
 
-        if (musicSource && introMusic)
-        {
-            musicSource.clip = introMusic;
-            musicSource.loop = false;
-            musicSource.Play();
-        }
+    if (introEmitter != null)
+{
 
-        if (spotlightSFX && sfxSource) sfxSource.PlayOneShot(spotlightSFX);
+    introEmitter.Play();
+}
+
+
 
         yield return new WaitForSeconds(pauseDuration);
 
@@ -264,13 +263,13 @@ StartCoroutine(OpenCurtains());
             yield return null;
         }
 
-        if (musicSource && bossMusic)
-        {
-            musicSource.Stop();
-            musicSource.clip = bossMusic;
-            musicSource.loop = true;
-            musicSource.Play();
-        }
+if (introEmitter != null)
+{
+    introEmitter.Stop();
+
+    bossEmitter.Play();
+}
+
 
         // Show lean zone and enable player/dragon
         leanZone?.ShowZone();
@@ -466,14 +465,13 @@ public void OnVictory()
 
 private IEnumerator OnVictoryRoutine()
 {
-    // 🎵 Speel victory muziek
-    if (musicSource && victoryMusic)
-    {
-        musicSource.Stop();
-        musicSource.clip = victoryMusic;
-        musicSource.loop = false;
-        musicSource.Play();
-    }
+if (bossEmitter != null)
+{
+    bossEmitter.Stop();
+
+    victoryEmitter.Play();
+}
+
 
     // 🎬 Gordijnen dicht doen
     yield return StartCoroutine(CloseCurtains());
