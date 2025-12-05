@@ -32,30 +32,45 @@ void Update()
     if (!shieldInside) return;
 
     var cm = FindObjectOfType<CinematicManager>();
-    if (cm != null && cm.IsSpacePressed())
+    if (cm != null && cm.IsSpacePressed())   // of Arduino-knop
     {
         shieldLocked = true;
         Debug.Log("🛡 Shield confirmed with quick press!");
+
+        cm.SendLampStateForced(false);       // LAMPJE UIT
+
+        gameObject.SetActive(false);         // Zone verbergen indien gewenst
     }
 }
 
 
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Shield"))
-        {
-            shieldInside = true;
-            Debug.Log("🟩 Shield entered the zone...");
-        }
-    }
 
-    void OnTriggerExit(Collider other)
+void OnTriggerEnter(Collider other)
+{
+    if (other.CompareTag("Shield"))
     {
-        if (other.CompareTag("Shield"))
-        {
-            shieldInside = false;
-            Debug.Log("🟥 Shield left the zone");
-        }
+        shieldInside = true;
+        Debug.Log("🟩 Shield entered the zone...");
+
+        var cm = FindObjectOfType<CinematicManager>();
+        if (cm != null)
+            cm.SendLampStateForced(true);   // LAMPJE AAN
     }
+}
+
+
+void OnTriggerExit(Collider other)
+{
+    if (other.CompareTag("Shield"))
+    {
+        shieldInside = false;
+        Debug.Log("🟥 Shield left the zone");
+
+        var cm = FindObjectOfType<CinematicManager>();
+        if (cm != null)
+            cm.SendLampStateForced(false);  // LAMPJE UIT
+    }
+}
+
 }

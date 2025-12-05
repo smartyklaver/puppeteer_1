@@ -7,11 +7,11 @@ public class SupermanCheck  : MonoBehaviour
     public ShoulderController1 shoulders;     
     public float requiredBend = 0.45f;
     public bool StartChecking;
-    public TimelineRestarter1 restarter;
-    public Camera cameraA; 
-    public Camera cameraB; 
-    public CurtainsOpenSceneOne curtain1;
-    public CurtainsOpenSceneOne curtain2;
+    // public TimelineRestarter1 restarter;
+    // public Camera cameraA; 
+    // public Camera cameraB; 
+    // public CurtainsOpenSceneOne curtain1;
+    // public CurtainsOpenSceneOne curtain2;
     public ArduinoButtonReader arduino;
     public PlayableDirector director;
 
