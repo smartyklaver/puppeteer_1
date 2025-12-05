@@ -11,7 +11,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [Header("UI")]
     public Slider healthBar; // optional existing slider
 
-    public System.Action OnEnemyDied;
+    //public System.Action OnEnemyDied;
     void Start()
     {
         current = maxHealth;
@@ -35,8 +35,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Die()
     {
         Debug.Log($"{name} died!");
-        OnEnemyDied?.Invoke();
+
         gameObject.SetActive(false);
+        var cm = FindObjectOfType<CinematicManager>();
+        if (cm != null) cm.OnVictory();
     }
     public void ResetHealth()
     {

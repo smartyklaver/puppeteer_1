@@ -11,8 +11,8 @@ public class CinematicManager : MonoBehaviour
     public Transform playerTarget;
     public float zoomDuration = 1.2f;
     public float pauseDuration = 1.2f;
-    public Camera mainCamera;    // Display 1 camera
-    public Camera replayCamera;  // Display 2 camera
+    public Camera cameraA; 
+    public Camera cameraB;
 
     [Header("Curtains")]
 public Transform leftCurtain;
@@ -22,6 +22,13 @@ public Vector3 rightClosedPos;
 public Vector3 leftOpenPos;
 public Vector3 rightOpenPos;
 public float curtainOpenDuration = 1.5f;
+
+[Header("Curtains close")]
+
+public Vector3 leftClosedPos2;
+public Vector3 rightClosedPos2;
+
+
 
 
     [Header("References")]
@@ -133,8 +140,7 @@ public float curtainOpenDuration = 1.5f;
 
         // ensure list cleared at cold start
         spaceTimestamps.Clear();
-        if (dragonHealth != null){
-        dragonHealth.OnEnemyDied += HandleDragonDeath;}
+        
 
         // Start cinematic
         StartCoroutine(RunCinematicSequence());
@@ -143,15 +149,25 @@ public float curtainOpenDuration = 1.5f;
     public bool IsSwordHitActive() => qteSword;
     public bool IsThrowActive() => qteThrow;
     public bool IsTickleActive() => qteTickle;
+    private bool end = false;
+    private bool replayed= false;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M)||end)
         {
+            if(replayed ==false){
+            end = false;
+            replayed = true;
             Debug.Log("🔄 Restarting Cinematic...");
             RestartCinematic();
+
+            cameraA.targetDisplay = 1;
+            cameraB.targetDisplay = 0;
+
             spinecontroller?.ReplayPuppetSpine();
             shouldercontroller?.ReplayPuppetShoulders();
+            }
         }
     }
 
@@ -436,18 +452,32 @@ StartCoroutine(OpenCurtains());
     // -----------------------------
     // Victory
     // -----------------------------
-    void OnVictory()
-    {
-        if (musicSource && victoryMusic)
-        {
-            musicSource.Stop();
-            musicSource.clip = victoryMusic;
-            musicSource.loop = false;
-            musicSource.Play();
-        }
+public void OnVictory()
+{
+    StartCoroutine(OnVictoryRoutine());
+}
 
-        Debug.Log("Cinematic: victory sequence complete.");
+private IEnumerator OnVictoryRoutine()
+{
+    // 🎵 Speel victory muziek
+    if (musicSource && victoryMusic)
+    {
+        musicSource.Stop();
+        musicSource.clip = victoryMusic;
+        musicSource.loop = false;
+        musicSource.Play();
     }
+
+    // 🎬 Gordijnen dicht doen
+    yield return StartCoroutine(CloseCurtains());
+
+    Debug.Log("Cinematic: victory sequence complete.");
+
+    // ⏳ Wacht 5 seconden *echt*
+    yield return new WaitForSeconds(5f);
+
+    end = true;
+}
 
     public void RestartCinematic()
     {
@@ -630,6 +660,25 @@ IEnumerator OpenCurtains()
         yield return null;
     }
 }
+
+IEnumerator CloseCurtains()
+{
+    float t = 0f;
+
+    Vector3 lStart = leftCurtain.localPosition;
+    Vector3 rStart = rightCurtain.localPosition;
+
+    while (t < 1f)
+    {
+        t += Time.deltaTime / curtainOpenDuration;
+
+        leftCurtain.localPosition  = Vector3.Lerp(leftOpenPos,  leftClosedPos2,  t);
+        rightCurtain.localPosition = Vector3.Lerp(rightOpenPos, rightClosedPos2, t);
+
+        yield return null;
+    }
+}
+
 
 
 
