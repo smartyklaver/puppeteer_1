@@ -1956,18 +1956,41 @@ MonoBehaviour:
     m_Events:
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1335519580}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: 
+        - m_Target: {fileID: 1335519590}
+          m_TargetAssemblyTypeName: SupermanCheck, Assembly-CSharp
+          m_MethodName: CheckSuperman
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1335519590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335519580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180efc32896188c46a001c4c7ef26156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SupermanCheck
+  spine: {fileID: 0}
+  shoulders: {fileID: 0}
+  requiredBend: 0.45
+  StartChecking: 0
+  restarter: {fileID: 0}
+  cameraA: {fileID: 0}
+  cameraB: {fileID: 0}
+  curtain1: {fileID: 0}
+  curtain2: {fileID: 0}
+  arduino: {fileID: 0}
+  director: {fileID: 0}
 --- !u!1 &1371783776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,6 +3409,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3460278577302635051, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1335519589}
+    - targetCorrespondingSourceObject: {fileID: 3460278577302635051, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1335519590}
   m_SourcePrefab: {fileID: 100100000, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
 --- !u!4 &1713326255 stripped
 Transform:
@@ -3548,6 +3574,8 @@ GameObject:
   - component: {fileID: 1863744529}
   - component: {fileID: 1863744531}
   - component: {fileID: 1863744532}
+  - component: {fileID: 1863744534}
+  - component: {fileID: 1863744533}
   m_Layer: 0
   m_Name: Timelinecontroller
   m_TagString: Untagged
@@ -3582,6 +3610,8 @@ PlayableDirector:
     value: {fileID: 1335519589}
   - key: {fileID: -2419165841397928587, guid: cde11dea9e934de4ab35f35a3af4124e, type: 2}
     value: {fileID: 1335519588}
+  - key: {fileID: -5973221883537617120, guid: cde11dea9e934de4ab35f35a3af4124e, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1863744530
@@ -3637,6 +3667,52 @@ MonoBehaviour:
   cameraController: {fileID: 304229395}
   spinecontroller: {fileID: 1335519582}
   shouldercontroller: {fileID: 1335519581}
+--- !u!114 &1863744533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863744528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: ad0e211c4f54fa1498b6a2033128d52f, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1863744534}
+          m_TargetAssemblyTypeName: SceneEnder, Assembly-CSharp
+          m_MethodName: EndScene
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1863744534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863744528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51356f2f0a971f84e9617bfcce9411c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneEnder
+  cameraA: {fileID: 0}
+  cameraB: {fileID: 0}
+  curtain1: {fileID: 0}
+  curtain2: {fileID: 0}
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
