@@ -1,11 +1,13 @@
-// --- toevoegingen binnen CinematicManager (vervang je huidige CinematicManager.cs met onderstaande) ---
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 
+
 public class CinematicManager : MonoBehaviour
 {
+    public ArduinoButtonReader arduinoButton;
+
     [Header("Camera")]
     public Transform cameraTransform;
     public Transform playerTarget;
@@ -579,43 +581,45 @@ private IEnumerator OnVictoryRoutine()
     }
 
     public bool IsSpacePressed()
+{
+    bool pressed =
+        Input.GetKeyDown(KeyCode.Space) ||
+        (arduinoButton != null && arduinoButton.WasButtonPressedThisFrame());
+
+    // ---- RECORDING MODE ----
+    if (!isReplayingInput)
     {
-        // During normal play → record real space presses (relative to recordingStartTime)
-        if (!isReplayingInput)
+        if (pressed)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                float relative = Time.time - recordingStartTime;
-                spaceTimestamps.Add(relative);
-                Debug.Log($"[Record] Space at {relative:F3}s (rel)");
-                return true;
-            }
-
-            return false;
+            float relative = Time.time - recordingStartTime;
+            spaceTimestamps.Add(relative);
+            Debug.Log($"[Record] SPACE/Arduino at {relative:F3}s");
+            return true;
         }
-
-        // During replay → simulate space at correct relative timestamp
-        if (replayIndex < spaceTimestamps.Count)
-        {
-            float nextRelative = spaceTimestamps[replayIndex];
-            float elapsed = Time.time - replayStartTime;
-
-            if (elapsed >= nextRelative)
-            {
-                replayIndex++;
-                Debug.Log($"[Replay] Simulated Space at replay elapsed {elapsed:F3}s (target {nextRelative:F3}s)");
-                // If we've replayed the last one, switch off replay mode after this press
-                if (replayIndex >= spaceTimestamps.Count)
-                {
-                    // allow the last simulated press through, then stop replaying on next frame
-                    StartCoroutine(EndReplayNextFrame());
-                }
-                return true;
-            }
-        }
-
         return false;
     }
+
+    // ---- REPLAY MODE ----
+    if (replayIndex < spaceTimestamps.Count)
+    {
+        float nextRelative = spaceTimestamps[replayIndex];
+        float elapsed = Time.time - replayStartTime;
+
+        if (elapsed >= nextRelative)
+        {
+            replayIndex++;
+            Debug.Log($"[Replay] Simulated SPACE at {elapsed:F3}s");
+
+            if (replayIndex >= spaceTimestamps.Count)
+                StartCoroutine(EndReplayNextFrame());
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
     IEnumerator EndReplayNextFrame()
     {
