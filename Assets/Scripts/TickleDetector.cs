@@ -1,20 +1,14 @@
-// TickleDetector.cs
 using UnityEngine;
 
 public class TickleDetector : MonoBehaviour
 {
-    public CinematicManager manager;
-    int frames = 0;
-    void OnTriggerStay(Collider other)
+    public CinematicManager cm;
+
+    void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Dragon")) return;
-        frames++;
-        if (frames > 20)
+        if (other.CompareTag("Dragon"))
         {
-            manager?.RegisterTickle();
-            frames = 0;
+            cm.RegisterTickleHit();
         }
     }
-
-    void OnTriggerExit(Collider other) { if (other.CompareTag("Dragon")) frames = 0; }
 }

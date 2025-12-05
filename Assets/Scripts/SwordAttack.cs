@@ -18,7 +18,7 @@ public class SwordAttack : MonoBehaviour
         EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
         if (enemyHealth)
         {
-            enemyHealth.TakeDamage(5);
+            //enemyHealth.TakeDamage(5);
 
             // IMPORTANT: Register QTE hit
             if (cinematicManager != null)

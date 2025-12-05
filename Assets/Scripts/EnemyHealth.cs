@@ -6,11 +6,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Health")]
     public float maxHealth = 100f;
-    float current;
+    public float current;
 
     [Header("UI")]
     public Slider healthBar; // optional existing slider
 
+    //public System.Action OnEnemyDied;
     void Start()
     {
         current = maxHealth;
@@ -34,7 +35,19 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Die()
     {
         Debug.Log($"{name} died!");
-        // Keep GameObjects needed by cinematic (dragon controller handles visuals)
-        Destroy(gameObject);
+
+        gameObject.SetActive(false);
+        var cm = FindObjectOfType<CinematicManager>();
+        if (cm != null) cm.OnVictory();
     }
+    public void ResetHealth()
+    {
+        current = maxHealth;
+        if (healthBar != null)
+        {
+            healthBar.maxValue = maxHealth;
+            healthBar.value = current;
+        }
+    }
+
 }

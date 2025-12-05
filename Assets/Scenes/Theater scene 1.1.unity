@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpineController1
   spine: {fileID: 250264145}
-  initialStartAngle: 0
+  initialStartAngle: 180
   CloseCurtains:
     m_PersistentCalls:
       m_Calls: []
@@ -1395,6 +1395,7 @@ MonoBehaviour:
   spinecontroller: {fileID: 100414251}
   shouldercontroller: {fileID: 100414250}
   LetterRemove: {fileID: 1006910380}
+  udp: {fileID: 1794345324}
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0

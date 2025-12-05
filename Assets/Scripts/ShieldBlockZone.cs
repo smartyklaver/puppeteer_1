@@ -27,21 +27,19 @@ public class ShieldBlockZone : MonoBehaviour
             instructionAudio.Play();
     }
 
-    void Update()
+void Update()
+{
+    if (!shieldInside) return;
+
+    var cm = FindObjectOfType<CinematicManager>();
+    if (cm != null && cm.IsSpacePressed())
     {
-        // Shield is not inside → reset timer
-        if (!shieldInside)
-        {
-            timer = 0f;
-            return;
-        }
-
-        // Count time while shield stays inside
-        timer += Time.deltaTime;
-
-        if (timer >= requiredHoldTime)
-            shieldLocked = true;
+        shieldLocked = true;
+        Debug.Log("🛡 Shield confirmed with quick press!");
     }
+}
+
+
 
     void OnTriggerEnter(Collider other)
     {

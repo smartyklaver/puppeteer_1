@@ -6,126 +6,101 @@ public class ShoulderController1 : MonoBehaviour
     [Header("Shoulder Setup")]
     public Transform leftShoulder;
     public Transform rightShoulder;
-   // public float rotationSpeed = 100f;
-
-    // [Header("Input Keys")]
-    // public KeyCode leftClockwiseKey = KeyCode.Z;   // links arm draait mee met klok
-    // public KeyCode leftCounterKey = KeyCode.S;     // links arm draait tegen klok in
-    // public KeyCode rightClockwiseKey = KeyCode.E;
-    // public KeyCode rightCounterKey = KeyCode.D;
 
     private float leftYAngle;
     private float rightYAngle;
-    
+
     private UdpReceiver udp;
-    private List<UdpReceiver.FrameData> allFrames;  
+    private List<UdpReceiver.FrameData> allFrames;
+
     public bool Replay = false;
     private float replayStartTime;
     private float currentReplayTime;
     private int frameindex;
-        private float replayDuration;
 
     void Start()
     {
-        if (leftShoulder != null)
-            leftYAngle = leftShoulder.localEulerAngles.z;
-
-        if (rightShoulder != null)
-            rightYAngle = rightShoulder.localEulerAngles.z;
-
         udp = FindObjectOfType<UdpReceiver>();
-         allFrames = udp.GetRecordedData();
+        allFrames = udp.GetRecordedData();
     }
 
     public void ReplayPuppetShoulders()
     {
+        if (allFrames == null || allFrames.Count < 2)
+        {
+            Debug.LogWarning("[Shoulders] Not enough frames for replay");
+            return;
+        }
+
+        float t0 = allFrames[0].timeStamp;
+        for (int i = 0; i < allFrames.Count; i++)
+            allFrames[i].timeStamp -= t0;
+
         replayStartTime = Time.time;
         Replay = true;
         frameindex = 0;
-
-        replayDuration = allFrames[allFrames.Count - 1].timeStamp;
     }
 
     void Update()
     {
-        // === Left Arm ===
+        if (!Replay)
+        {
+            // LIVE INPUT
+            leftYAngle = udp.LatestData.leftShoulderValue + 90f;
+            rightYAngle = udp.LatestData.rightShoulderValue + 90f;
+        }
+        else
+        {
+            // SAFETY: if list was cleared we stop replay
+            if (allFrames == null || allFrames.Count < 2)
+            {
+                Debug.LogWarning("[Shoulders] Replay aborted: no frames");
+                Replay = false;
+                return;
+            }
+
+            currentReplayTime = Time.time - replayStartTime;
+
+            // Prevent overflow:
+            if (frameindex >= allFrames.Count)
+                frameindex = allFrames.Count - 1;
+
+            // Advance through frames
+            while (frameindex < allFrames.Count - 1 &&
+                   allFrames[frameindex + 1].timeStamp <= currentReplayTime)
+            {
+                frameindex++;
+            }
+
+            // SAFETY: avoid out-of-range
+            frameindex = Mathf.Clamp(frameindex, 0, allFrames.Count - 1);
+
+            // Apply frame
+            leftYAngle = allFrames[frameindex].leftShoulder + 90f;
+            rightYAngle = allFrames[frameindex].rightShoulder + 90f;
+
+            // End of replay
+            float endTime = allFrames[allFrames.Count - 1].timeStamp;
+            if (currentReplayTime >= endTime - 0.0001f)
+            {
+                Replay = false;
+                Debug.Log("[Shoulders] Replay finished");
+            }
+        }
+
+        // Apply rotations
         if (leftShoulder != null)
         {
-            // if (Input.GetKey(leftClockwiseKey))
-            //     leftYAngle += rotationSpeed * Time.deltaTime;
-            // if (Input.GetKey(leftCounterKey))
-            //     leftYAngle -= rotationSpeed * Time.deltaTime;
-            if(!Replay){
-                leftYAngle =  udp.LatestData.leftShoulderValue + 90f ;
-
-            }
-        else
-        {
-            currentReplayTime = Time.time - replayStartTime;
-            float t = currentReplayTime / replayDuration;
-
-            frameindex = Mathf.Clamp(
-                Mathf.FloorToInt(t * (allFrames.Count - 1)),
-                0,
-                allFrames.Count - 1
-            );
-
-            leftYAngle = allFrames[frameindex].leftShoulder + 90f ;
-
-            // if (frameindex >= allFrames.Count - 1)
-            // {
-            //     allFrames.Clear();
-            // }
-        }
-            
-            // 360° rotatie behouden
-            if (leftYAngle > 360f) leftYAngle -= 360f;
-            if (leftYAngle < 0f) leftYAngle += 360f;
-
-            Vector3 euler = leftShoulder.localEulerAngles;
-            euler.z = leftYAngle;
-            leftShoulder.localEulerAngles = euler;
+            Vector3 e = leftShoulder.localEulerAngles;
+            e.z = leftYAngle;
+            leftShoulder.localEulerAngles = e;
         }
 
-        // === Right Arm (Mirrored) ===
         if (rightShoulder != null)
         {
-            // if (Input.GetKey(rightClockwiseKey))
-            //     rightYAngle += rotationSpeed * Time.deltaTime;
-            // if (Input.GetKey(rightCounterKey))
-            //     rightYAngle -= rotationSpeed * Time.deltaTime;
-
-            if(!Replay){
-                rightYAngle =  udp.LatestData.rightShoulderValue +90f;
-
-            }
-        else
-        {
-
-            currentReplayTime = Time.time - replayStartTime;
-            float t = currentReplayTime / replayDuration;
-
-            frameindex = Mathf.Clamp(
-                Mathf.FloorToInt(t * (allFrames.Count - 1)),
-                0,
-                allFrames.Count - 1
-            );
-
-            rightYAngle = allFrames[frameindex].rightShoulder + 90f ;
-
-
-            // if (frameindex >= allFrames.Count - 1)
-            // {
-                
-            // }
-        }
-
-            if (rightYAngle > 360f) rightYAngle -= 360f;
-            if (rightYAngle < 0f) rightYAngle += 360f;
-
-            Vector3 euler = rightShoulder.localEulerAngles;
-            euler.z = rightYAngle;
-            rightShoulder.localEulerAngles = euler;
+            Vector3 e = rightShoulder.localEulerAngles;
+            e.z = rightYAngle;
+            rightShoulder.localEulerAngles = e;
         }
     }
 }

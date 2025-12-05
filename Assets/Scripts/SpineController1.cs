@@ -29,7 +29,6 @@ public class SpineController1 : MonoBehaviour
     void Start()
     {
         udp = FindObjectOfType<UdpReceiver>();
-
         
         allFrames = udp.GetRecordedData();
 
@@ -44,21 +43,28 @@ public class SpineController1 : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-      allFrames = new List<UdpReceiver.FrameData>();
-      Debug.Log("awake");
-    }
+    //  void Awake()
+    //  {
+    //     allFrames = new List<UdpReceiver.FrameData>();
+    //     Debug.Log("awake");
+    //  }
 
-    public void ReplayPuppetSpine()
-    {
-        udp.freezeInput = true;
-        replayStartTime = Time.time;
-        Replay = true;
-        frameindex = 0;
-        replayDuration = allFrames[allFrames.Count - 1].timeStamp;
-        udp.freezeInput = true;
-    }
+public void ReplayPuppetSpine()
+{
+    if (allFrames.Count < 2) return;
+
+    udp.freezeInput = true;
+
+    float t0 = allFrames[0].timeStamp;
+    for (int i = 0; i < allFrames.Count; i++)
+        allFrames[i].timeStamp -= t0;
+
+    replayStartTime = Time.time;
+    Replay = true;
+    frameindex = 0;
+
+}
+
 
     public float GetCurrentTorsoValue()
     {
@@ -70,33 +76,27 @@ public class SpineController1 : MonoBehaviour
     {
         if (spine == null) return;
 
-        if (!Replay)
-        {
-            torsoRaw = udp.LatestData.torsoBend;
-        //    allFrames.Clear();
-        }
-        else
-        {
-
-            currentReplayTime = Time.time - replayStartTime;
-            float t = currentReplayTime / replayDuration;
-
-            frameindex = Mathf.Clamp(
-                Mathf.FloorToInt(t * (allFrames.Count - 1)),
-                0,
-                allFrames.Count - 1
-            );
-
+if(!Replay) { torsoRaw = udp.LatestData.torsoBend; } else { currentReplayTime = Time.time - replayStartTime; while(frameindex < allFrames.Count - 1 && allFrames[frameindex + 1].timeStamp<= currentReplayTime) { frameindex++; }
             torsoRaw = allFrames[frameindex].torsoBend;
 
+      
+        float endTime = allFrames[allFrames.Count - 1].timeStamp;
 
-            if (frameindex >= allFrames.Count - 1)
-            {
-                Replay = false;
-                CloseCurtains?.Invoke();
-                udp.freezeInput = false;
-                
-            }
+        if (currentReplayTime >= endTime - 0.0001f)
+        {
+            // force last frame
+            frameindex = allFrames.Count - 1;
+            torsoRaw = allFrames[frameindex].torsoBend;
+
+            Replay = false;
+
+            udp.freezeInput = false;
+            udp.BeginNewRecording();
+
+            CloseCurtains?.Invoke();
+
+            Debug.Log("Replay ended safely");
+        }
         }
         
         currentAngle = Mathf.Lerp(-40f, 120f, torsoRaw);
