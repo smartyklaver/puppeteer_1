@@ -15,14 +15,12 @@ public class LetterRemove : MonoBehaviour
     [HideInInspector]
     public float timeOfSpacebarPress = -1f;
 
-    // NIEUWE VELDEN: Definieer de tags in de Unity Inspector
     [Header("Hand Tags")]
     public string rightHandTag = "RightHand";
     public string leftHandTag = "LeftHand";
 
     private bool isHandTouching = false;
 
-    // NIEUWE METHODE: Controleert of de collider de juiste tag heeft
     private bool IsAHand(Collider other)
     {
         // Controleert of de collider de RightHand OF de LeftHand tag heeft
@@ -31,7 +29,7 @@ public class LetterRemove : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsAHand(other)) // Gebruik nu de IsAHand methode
+        if (IsAHand(other)) 
         {
             isHandTouching = true;
             Debug.Log("Hand is touching letter: " + other.gameObject.name);
@@ -40,7 +38,7 @@ public class LetterRemove : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (IsAHand(other)) // Gebruik nu de IsAHand methode
+        if (IsAHand(other)) 
         {
             isHandTouching = false;
             Debug.Log("Hand not touching letter anymore: " + other.gameObject.name);
