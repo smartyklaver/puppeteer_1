@@ -47,13 +47,32 @@ public class LeanTriggerZone : MonoBehaviour
 public bool PlayerIsLowEnough()
 {
     var cm = FindObjectOfType<CinematicManager>();
+    if (cm == null) return false;
 
-    if (cm != null && cm.IsSpacePressed())
+    bool lowEnough = touchingColliders.Count == 0;
+
+    // -----------------------------
+    // 1️⃣ Update lamp state LIVE
+    // -----------------------------
+    if (lowEnough)
+        cm.SendLampStateForced(true);    // L
+    else
+        cm.SendLampStateForced(false);   // l
+
+
+    // -----------------------------
+    // 2️⃣ Player low + button press?
+    // -----------------------------
+    if (lowEnough && cm.IsSpacePressed())
     {
-        return touchingColliders.Count == 0;
+        // Lamp moet uit gaan omdat de fase klaar is
+        cm.SendLampStateForced(false);
+
+        return true;
     }
 
     return false;
 }
+
 
 }

@@ -7,8 +7,7 @@ using System.Collections.Generic;
 public class CinematicManager : MonoBehaviour
 {
     public ArduinoButtonReader arduinoButton;
-    enum ActionPhase { None, Duck, ShieldBlock, SwordThrow, ShieldThrow }
-ActionPhase currentPhase = ActionPhase.None;
+
 bool lampOn = false;
 
 
@@ -160,7 +159,6 @@ public Vector3 rightClosedPos2;
 
     void Update()
     {
-        UpdateArduinoActionLamp();
         if (Input.GetKeyDown(KeyCode.M)||end)
         {
             if(replayed ==false){
@@ -284,9 +282,6 @@ StartCoroutine(OpenCurtains());
 
         Debug.Log("Waiting for player to duck...");
         yield return new WaitUntil(() => leanZone.PlayerIsLowEnough());
-        StartPhase(ActionPhase.Duck);
-        EndPhase();   // speler drukte → lamp uit
-
         Debug.Log("Player ducked low → FIREBALL!");
 
         dragon.FireballOverPlayer();
@@ -691,52 +686,12 @@ IEnumerator CloseCurtains()
     }
 }
 
-void UpdateArduinoActionLamp()
+
+public void SendLampStateForced(bool on)
 {
-    // Als er geen fase actief is → lamp uit
-    if (currentPhase == ActionPhase.None)
-    {
-        lampOn = false;
-        SendLampState();
-        return;
-    }
-
-    // Indien LED aan staat → wacht op input
-    if (lampOn)
-    {
-        if (IsSpacePressed())      // speler drukte
-        {
-            EndPhase();            // LED uit + fase klaar
-        }
-        return;
-    }
-
-    // LED uit maar fase nog actief = fout → force LED aan
-    if (currentPhase != ActionPhase.None)
-    {
-        lampOn = true;
-        SendLampState();
-    }
-}
-
-void StartPhase(ActionPhase phase)
-{
-    currentPhase = phase;
-    lampOn = true;                // LED AAN
-    SendLampState();
-}
-
-void EndPhase()
-{
-    lampOn = false;               // LED UIT
-    SendLampState();
-    currentPhase = ActionPhase.None;
-}
-
-void SendLampState()
-{
+    lampOn = on;
     if (arduinoButton != null)
-        arduinoButton.SendToArduino(lampOn ? "L" : "l");
+        arduinoButton.SendToArduino(on ? "L" : "l");
 }
 
 
