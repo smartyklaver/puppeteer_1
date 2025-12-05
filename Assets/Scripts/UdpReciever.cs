@@ -92,7 +92,7 @@ public class UdpReceiver : MonoBehaviour
                 if (data != null)
                 {
                     LatestData = data;
-                  //  Debug.Log($"[UDP] Updated: L={data.leftShoulderValue}, R={data.rightShoulderValue}, torso={data.torsoBend}");
+                   // Debug.Log($"[UDP] Updated: L={data.leftShoulderValue}, R={data.rightShoulderValue}, torso={data.torsoBend}");
 
               
                     if(!freezeInput)

@@ -41,6 +41,15 @@ public class ShoulderController1 : MonoBehaviour
         frameindex = 0;
     }
 
+    public float GetCurrentLeftShoulderValue()
+    {
+        return leftYAngle;
+    }
+    public float GetCurrentRightShoulderValue()
+    {
+        return rightYAngle;
+    }
+
     void Update()
     {
         if (!Replay)

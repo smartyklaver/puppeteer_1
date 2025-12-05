@@ -5,7 +5,10 @@ public class SupermanCheck  : MonoBehaviour
 {
     public SpineController1 spine;
     public ShoulderController1 shoulders;     
-    public float requiredBend = 0.45f;
+    public float maxleftarm= 340f;
+    public float minleftarm = 200f;
+    public float maxrightarm = 350f;
+    public float minrightarm = 150f;
     public bool StartChecking;
     // public TimelineRestarter1 restarter;
     // public Camera cameraA; 
@@ -31,12 +34,16 @@ public class SupermanCheck  : MonoBehaviour
     void Update()
     {
         float torsoValue = spine.GetCurrentTorsoValue();
+        float shoulderleftValue = shoulders.GetCurrentLeftShoulderValue();
+        float shoulderrightValue = shoulders.GetCurrentRightShoulderValue();
+        Debug.Log($"Be superman!!");
 
-        if (torsoValue >= requiredBend)
+       // Debug.Log($"goeie linkerarm max, L={shoulderrightValue}");
+
+       // Debug.Log($"Updated: L={shoulderleftValue}, R={shoulderrightValue},");
+        if ((shoulderleftValue >= minleftarm && shoulderleftValue <= maxleftarm) || (shoulderrightValue >= minrightarm && shoulderrightValue <= maxrightarm))
         {
-            
-            //Debug.Log(StartChecking);
-           // if (arduino.WasButtonPressedThisFrame() && StartChecking)
+            Debug.Log($"Good Superman Pose");    
             if (Input.GetKeyDown(KeyCode.Space) && StartChecking)
             {
             // curtain1.ResetForTimeline();
