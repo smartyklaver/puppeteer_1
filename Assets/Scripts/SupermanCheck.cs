@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class KingBowChecker  : MonoBehaviour
+public class SupermanCheck  : MonoBehaviour
 {
-    public SpineController1 spine;   
+    public SpineController1 spine;
+    public ShoulderController1 shoulders;     
     public float requiredBend = 0.45f;
     public bool StartChecking;
     public TimelineRestarter1 restarter;
@@ -20,7 +21,7 @@ public class KingBowChecker  : MonoBehaviour
         StartChecking = false; 
     }
 
-    public void CheckBow()
+    public void CheckSuperman()
     {
         StartChecking = true;
         director.Pause();
@@ -30,8 +31,7 @@ public class KingBowChecker  : MonoBehaviour
     void Update()
     {
         float torsoValue = spine.GetCurrentTorsoValue();
-       // Debug.Log("checking bowing");
-       // Debug.Log(torsoValue);
+
         if (torsoValue >= requiredBend)
         {
             
