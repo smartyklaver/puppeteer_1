@@ -10,6 +10,7 @@ public class ArduinoButtonReader : MonoBehaviour
     private SerialPort serialPort;
     private bool buttonPressedThisFrame = false;
 
+
     void Start()
     {
         try
@@ -77,4 +78,15 @@ public class ArduinoButtonReader : MonoBehaviour
             serialPort.Dispose();
         }
     }
+    public void SendToArduino(string message)
+{
+    if (serialPort != null && serialPort.IsOpen)
+    {
+        try
+        {
+            serialPort.Write(message);
+        }
+        catch { }
+    }
+}
 }
