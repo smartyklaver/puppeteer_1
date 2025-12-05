@@ -1980,17 +1980,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180efc32896188c46a001c4c7ef26156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SupermanCheck
-  spine: {fileID: 0}
-  shoulders: {fileID: 0}
+  spine: {fileID: 1335519582}
+  shoulders: {fileID: 1335519581}
   requiredBend: 0.45
   StartChecking: 0
-  restarter: {fileID: 0}
-  cameraA: {fileID: 0}
-  cameraB: {fileID: 0}
-  curtain1: {fileID: 0}
-  curtain2: {fileID: 0}
-  arduino: {fileID: 0}
-  director: {fileID: 0}
+  arduino: {fileID: 1335519584}
+  director: {fileID: 1863744529}
 --- !u!1 &1371783776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3611,7 +3606,7 @@ PlayableDirector:
   - key: {fileID: -2419165841397928587, guid: cde11dea9e934de4ab35f35a3af4124e, type: 2}
     value: {fileID: 1335519588}
   - key: {fileID: -5973221883537617120, guid: cde11dea9e934de4ab35f35a3af4124e, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1863744533}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1863744530
@@ -3709,10 +3704,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51356f2f0a971f84e9617bfcce9411c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneEnder
-  cameraA: {fileID: 0}
-  cameraB: {fileID: 0}
-  curtain1: {fileID: 0}
-  curtain2: {fileID: 0}
+  restarter: {fileID: 1863744532}
+  cameraA: {fileID: 304229392}
+  cameraB: {fileID: 1371783779}
+  curtain1: {fileID: 1026530271}
+  curtain2: {fileID: 952512240}
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}

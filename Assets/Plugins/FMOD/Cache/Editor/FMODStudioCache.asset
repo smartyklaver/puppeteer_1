@@ -154,7 +154,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 1449695828364585270}
   cacheVersion: 131857
-  cacheTime: 639005396992670410
+  cacheTime: 639005438788033554
   SerializableEventsDict:
   - key: event:/knightLastWords
     index: 0
@@ -193,7 +193,7 @@ MonoBehaviour:
   Path: Assets/FMODBanks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639005396992670410
+  lastModified: 639005438788033554
   FileSizes:
   - Name: 
     Value: 830
@@ -213,7 +213,7 @@ MonoBehaviour:
   Path: Assets/FMODBanks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639005396992660336
+  lastModified: 639005438788023574
   FileSizes: []
   Exists: 1
 --- !u!114 &5013919124347051829
