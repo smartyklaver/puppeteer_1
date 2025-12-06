@@ -3759,6 +3759,7 @@ MonoBehaviour:
   curtain1: {fileID: 1026530271}
   curtain2: {fileID: 952512240}
   cameraSwitcher: {fileID: 1204654469}
+  nextSceneName: Dragon Fight
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}

@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Castle Scene.unity
     guid: 0d2a881ca3d53b345a9c0d2ec223b7f8
+  - enabled: 1
+    path: Assets/Scenes/Dragon Fight.unity
+    guid: 2cc5137dcd1d51646bb08e52fd036a7b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
