@@ -13,6 +13,9 @@ public class KingBowChecker  : MonoBehaviour
     public CurtainsOpenSceneOne curtain2;
     public ArduinoButtonReader arduino;
     public PlayableDirector director;
+    public UdpReceiver udp;
+    private float TimeStartChecking;
+    private float TimeDoneChecking;
 
 
 
@@ -24,6 +27,7 @@ public class KingBowChecker  : MonoBehaviour
     {
         StartChecking = true;
         director.Pause();
+        TimeStartChecking = Time.time;
         
     }
 
@@ -31,19 +35,18 @@ public class KingBowChecker  : MonoBehaviour
     {
         float torsoValue = spine.GetCurrentTorsoValue();
        // Debug.Log("checking bowing");
-       // Debug.Log(torsoValue);
+        Debug.Log($"Timedonechecking={TimeDoneChecking}, Timestartchecking={TimeStartChecking},Timenow={Time.time}");
         if (torsoValue >= requiredBend)
         {
-            
             //Debug.Log(StartChecking);
            // if (arduino.WasButtonPressedThisFrame() && StartChecking)
-            if (Input.GetKeyDown(KeyCode.Space) && StartChecking)
+            if ((Input.GetKeyDown(KeyCode.Space) && StartChecking) || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
             {
-            // curtain1.ResetForTimeline();
-            // curtain2.ResetForTimeline();
-            // cameraA.targetDisplay = 1;
-            // cameraB.targetDisplay = 0; 
-            // restarter.RestartTimeline();
+            TimeDoneChecking = Time.time - TimeStartChecking;
+            StartChecking = false;
+            director.Resume();
+            var root = director.playableGraph.GetRootPlayable(0);
+            root.SetSpeed(1);
             director.Resume();
             }
         }

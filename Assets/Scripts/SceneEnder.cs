@@ -1,12 +1,12 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneEnder : MonoBehaviour
 {
     public TimelineRestarter1 restarter;
-    public Camera cameraA; 
-    public Camera cameraB; 
     public CurtainsOpenSceneOne curtain1;
     public CurtainsOpenSceneOne curtain2;
+    public CameraSwitcher cameraSwitcher;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,8 +18,7 @@ public class SceneEnder : MonoBehaviour
     {
         curtain1.ResetForTimeline();
         curtain2.ResetForTimeline();
-        cameraA.targetDisplay = 1;
-        cameraB.targetDisplay = 0; 
+        cameraSwitcher.SwitchCameraDisplays();
         restarter.RestartTimeline();
     }
 

@@ -1773,6 +1773,52 @@ MonoBehaviour:
   OnCurtainsClosed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1204654468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1204654470}
+  - component: {fileID: 1204654469}
+  m_Layer: 0
+  m_Name: Cameraswitcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1204654469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204654468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1959c49e99666fd49b3ef7e74c919238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraSwitcher
+  cameraA: {fileID: 304229392}
+  cameraB: {fileID: 1371783779}
+--- !u!4 &1204654470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204654468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.18011, y: -0.13085, z: -2.49099}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1289615591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1982,10 +2028,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SupermanCheck
   spine: {fileID: 1335519582}
   shoulders: {fileID: 1335519581}
-  requiredBend: 0.45
+  maxleftarm: 340
+  minleftarm: 200
+  maxrightarm: 350
+  minrightarm: 150
   StartChecking: 0
   arduino: {fileID: 1335519584}
   director: {fileID: 1863744529}
+  udp: {fileID: 2022151685}
 --- !u!1 &1371783776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3440,6 +3490,7 @@ MonoBehaviour:
   curtain2: {fileID: 952512240}
   arduino: {fileID: 1713326259}
   director: {fileID: 1863744529}
+  udp: {fileID: 2022151685}
 --- !u!114 &1713326258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3705,10 +3756,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneEnder
   restarter: {fileID: 1863744532}
-  cameraA: {fileID: 304229392}
-  cameraB: {fileID: 1371783779}
   curtain1: {fileID: 1026530271}
   curtain2: {fileID: 952512240}
+  cameraSwitcher: {fileID: 1204654469}
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
@@ -3944,3 +3994,4 @@ SceneRoots:
   - {fileID: 1863744530}
   - {fileID: 1371783780}
   - {fileID: 98745282}
+  - {fileID: 1204654470}

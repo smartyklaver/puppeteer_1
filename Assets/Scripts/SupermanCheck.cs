@@ -17,6 +17,9 @@ public class SupermanCheck  : MonoBehaviour
     // public CurtainsOpenSceneOne curtain2;
     public ArduinoButtonReader arduino;
     public PlayableDirector director;
+    public UdpReceiver udp;
+    private float TimeStartChecking;
+    private float TimeDoneChecking;
 
 
 
@@ -28,6 +31,7 @@ public class SupermanCheck  : MonoBehaviour
     {
         StartChecking = true;
         director.Pause();
+        TimeStartChecking = Time.time;
         
     }
 
@@ -36,21 +40,23 @@ public class SupermanCheck  : MonoBehaviour
         float torsoValue = spine.GetCurrentTorsoValue();
         float shoulderleftValue = shoulders.GetCurrentLeftShoulderValue();
         float shoulderrightValue = shoulders.GetCurrentRightShoulderValue();
-        Debug.Log($"Be superman!!");
+        //Debug.Log($"Be superman!!");
+        if(StartChecking){
+            Debug.Log($"het werkt");
+        }
 
-       // Debug.Log($"goeie linkerarm max, L={shoulderrightValue}");
 
-       // Debug.Log($"Updated: L={shoulderleftValue}, R={shoulderrightValue},");
+        //Debug.Log($"Updated: L={shoulderleftValue}, R={shoulderrightValue},");
         if ((shoulderleftValue >= minleftarm && shoulderleftValue <= maxleftarm) || (shoulderrightValue >= minrightarm && shoulderrightValue <= maxrightarm))
         {
-            Debug.Log($"Good Superman Pose");    
-            if (Input.GetKeyDown(KeyCode.Space) && StartChecking)
+            //Debug.Log($"Good Superman Pose");    
+            if (Input.GetKeyDown(KeyCode.Space) && StartChecking || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
             {
-            // curtain1.ResetForTimeline();
-            // curtain2.ResetForTimeline();
-            // cameraA.targetDisplay = 1;
-            // cameraB.targetDisplay = 0; 
-            // restarter.RestartTimeline();
+            TimeDoneChecking = Time.time - TimeStartChecking;
+            StartChecking = false;
+            director.Resume();
+            var root = director.playableGraph.GetRootPlayable(0);
+            root.SetSpeed(1);
             director.Resume();
             }
         }

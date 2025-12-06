@@ -42,7 +42,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639005487192319948
+  lastModified: 639006111403243531
   FileSizes: []
   Exists: 1
 --- !u!114 &-5518471257085157111
@@ -191,7 +191,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 7890496761627732213}
   cacheVersion: 131857
-  cacheTime: 639005487192329945
+  cacheTime: 639006111403410789
   SerializableEventsDict:
   - key: event:/knightLastWords
     index: 0
@@ -272,7 +272,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639005487192329945
+  lastModified: 639006111403410789
   FileSizes:
   - Name: 
     Value: 940
