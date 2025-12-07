@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3744
+--- !u!114 &-7744067435138698854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/shield throw
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/shield throw
+  Guid:
+    Data1: -1822224056
+    Data2: 1213541452
+    Data3: 283138739
+    Data4: -1254077499
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 8376
 --- !u!114 &-7084273287791641864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,9 +69,36 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639006111403243531
+  lastModified: 639007436557463213
   FileSizes: []
   Exists: 1
+--- !u!114 &-6827346586974180531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/sword throw
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/sword throw
+  Guid:
+    Data1: 1680899163
+    Data2: 1302986086
+    Data3: 1068415642
+    Data4: -1737098509
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 9600
 --- !u!114 &-5518471257085157111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +117,33 @@ MonoBehaviour:
   lastModified: 639005433015152344
   FileSizes: []
   Exists: 1
+--- !u!114 &-5160663158649700600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/hero
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/hero
+  Guid:
+    Data1: -1825286364
+    Data2: 1259403666
+    Data3: 1296829111
+    Data4: 1288646613
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2664
 --- !u!114 &-3659044758967162040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,6 +218,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4440
+--- !u!114 &-459985431328408851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Duck
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Duck
+  Guid:
+    Data1: -496662408
+    Data2: 1264919141
+    Data3: -696489574
+    Data4: 1080464315
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 10008
 --- !u!114 &-348687322191677090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,13 +293,21 @@ MonoBehaviour:
   - {fileID: 476926990389489041}
   - {fileID: -2710192316665074006}
   - {fileID: -2222488163495178350}
+  - {fileID: 1467987455160253914}
+  - {fileID: 1484580910988878914}
+  - {fileID: 4126548453113681875}
+  - {fileID: -5160663158649700600}
+  - {fileID: -7744067435138698854}
+  - {fileID: -6827346586974180531}
+  - {fileID: -459985431328408851}
+  - {fileID: 2671062581047149496}
   EditorParameters: []
   MasterBanks:
   - {fileID: -7084273287791641864}
   StringsBanks:
   - {fileID: 7890496761627732213}
   cacheVersion: 131857
-  cacheTime: 639006111403410789
+  cacheTime: 639007436557483278
   SerializableEventsDict:
   - key: event:/knightLastWords
     index: 0
@@ -203,6 +319,22 @@ MonoBehaviour:
     index: 3
   - key: event:/Victory
     index: 4
+  - key: event:/Reached the mounatin
+    index: 5
+  - key: event:/shield zone
+    index: 6
+  - key: event:/tickle
+    index: 7
+  - key: event:/hero
+    index: 8
+  - key: event:/shield throw
+    index: 9
+  - key: event:/sword throw
+    index: 10
+  - key: event:/Duck
+    index: 11
+  - key: event:/Attack
+    index: 12
 --- !u!114 &325668967422090096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +389,114 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 10004
+--- !u!114 &1467987455160253914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Reached the mounatin
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Reached the mounatin
+  Guid:
+    Data1: 1180167439
+    Data2: 1321963605
+    Data3: 726171554
+    Data4: 1488203515
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 9504
+--- !u!114 &1484580910988878914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/shield zone
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/shield zone
+  Guid:
+    Data1: -1840094960
+    Data2: 1265600603
+    Data3: -1664199263
+    Data4: -372650532
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 8472
+--- !u!114 &2671062581047149496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Attack
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Attack
+  Guid:
+    Data1: -57932551
+    Data2: 1215342094
+    Data3: 1416226183
+    Data4: -1596833091
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3168
+--- !u!114 &4126548453113681875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/tickle
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/tickle
+  Guid:
+    Data1: 2040438809
+    Data2: 1111456478
+    Data3: 518533302
+    Data4: -2021866149
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5976
 --- !u!114 &7890496761627732213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,10 +512,10 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639006111403410789
+  lastModified: 639007436557483278
   FileSizes:
   - Name: 
-    Value: 940
+    Value: 1276
   Exists: 1
 --- !u!114 &8370725013641729483
 MonoBehaviour:

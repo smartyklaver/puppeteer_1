@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Workspace" id="{e2e06da9-15ef-4fc4-95d0-78149b0da842}">
 		<property name="builtBanksOutputDirectory">
-			<value>../../../../../unity/puppeteer_1/Assets/FMODBanks</value>
+			<value>../../Assets/FMOD_storm</value>
 		</property>
 		<relationship name="masterEventFolder">
 			<destination>{628965f3-4823-4d5a-b7cf-74fb3d9f76ef}</destination>

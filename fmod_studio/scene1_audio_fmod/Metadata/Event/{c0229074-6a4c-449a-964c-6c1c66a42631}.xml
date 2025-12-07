@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{c0229074-6a4c-449a-964c-6c1c66a42631}">
 		<property name="name">
-			<value>Slow Heartbeat (for NervousExciting Moments) - Sound Effect for Editing</value>
+			<value>Intro</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>

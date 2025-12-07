@@ -22,8 +22,8 @@ public class AudioOutputSwitcher : MonoBehaviour
 
     [Header("Device Names")]
     // NOTE: These strings should be as short and reliable as possible (e.g., "Realtek" or "Headset")
-    public string primaryDevice = "Speakers (Realtek(R) Audio)";
-    public string secondaryDevice = "Headset (soundcore Space One)";
+    public string primaryDevice = "Headset (Realtek(R) Audio)";
+    public string secondaryDevice = "Nothing Ear (a)";
 
     public void SwitchToPrimary() => SwitchOutputDevice(primaryDevice);
     public void SwitchToSecondary() => SwitchOutputDevice(secondaryDevice);

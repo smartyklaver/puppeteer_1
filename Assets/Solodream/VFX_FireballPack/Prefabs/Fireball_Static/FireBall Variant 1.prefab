@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1aa98aa3bf49d429a75c41060126a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fireball
-  speed: 12
+  speed: 40
   lifeTime: 50
   damage: 10
   ownerTag: Player

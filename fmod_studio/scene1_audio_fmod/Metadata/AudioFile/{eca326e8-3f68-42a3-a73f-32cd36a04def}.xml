@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{eca326e8-3f68-42a3-a73f-32cd36a04def}">
+		<property name="assetPath">
+			<value>Reached the mounatin.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>9.5039999999999996</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{56cbeff0-07c2-403b-8ec7-710cf69a34ea}</destination>
+		</relationship>
+	</object>
+</objects>

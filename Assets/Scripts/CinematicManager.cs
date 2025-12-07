@@ -9,6 +9,8 @@ public class CinematicManager : MonoBehaviour
 {
     public ArduinoButtonReader arduinoButton;
     public bool lampOn;
+    public AudioOutputSwitcher audioSwitcher;
+
 
     [Header("Camera")]
     public Transform cameraTransform;
@@ -63,12 +65,15 @@ public Vector3 rightClosedPos2;
 public StudioEventEmitter introEmitter;
 public StudioEventEmitter bossEmitter;
 public StudioEventEmitter victoryEmitter;
+public StudioEventEmitter begin;
+public StudioEventEmitter duck;
+public StudioEventEmitter attack;
+public StudioEventEmitter zone;
+public StudioEventEmitter swordthrow;
+public StudioEventEmitter shieldthrow;
+public StudioEventEmitter tickle;
+public StudioEventEmitter hero;
 
-    [Header("Audio / Lines")]
-    public AudioClip swordPhaseLine;
-    public AudioClip throwPhaseLine;
-    public AudioClip ticklePhaseLine;
-    public AudioSource sfxSource;
     public SpineController1 spinecontroller;
     public ShoulderController1 shouldercontroller;
 
@@ -248,6 +253,7 @@ StartCoroutine(OpenCurtains());
 {
 
     introEmitter.Play();
+    begin.Play();
 }
 
 
@@ -268,12 +274,15 @@ if (introEmitter != null)
     introEmitter.Stop();
 
     bossEmitter.Play();
+    
 }
 
 
         // Show lean zone and enable player/dragon
         leanZone?.ShowZone();
         if (dragon != null) dragon.enabled = true;
+        yield return new WaitForSeconds(1);
+        duck.Play();
 
         yield return new WaitForSeconds(leanCheckDelay);
 
@@ -291,6 +300,7 @@ if (introEmitter != null)
         yield return StartCoroutine(AdvanceAndSwordAttackSequence());
 
         // Shield block sequence (green zone)
+        zone.Play();
         if (shieldZone != null) shieldZone.ShowZone();
         yield return new WaitForSeconds(shieldCheckDelay);
         yield return new WaitUntil(() => shieldZone.shieldLocked);
@@ -301,9 +311,11 @@ if (introEmitter != null)
         yield return new WaitForSeconds(1f);
 
         qteThrow = true;
-        if (sfxSource && throwPhaseLine) sfxSource.PlayOneShot(throwPhaseLine);
+
 
         yield return new WaitForSeconds(5);
+
+        
 
         // ❗ NOW start listening for throw detection
         StartCoroutine(ThrowSequence());
@@ -314,12 +326,12 @@ if (introEmitter != null)
 
 
         yield return new WaitForSeconds(0.8f);
+        tickle.Play();
 
         // Tickle QTE
         qteTickle = true;
         Debug.Log("Tickle active = " + qteTickle);
 
-        if (sfxSource && ticklePhaseLine) sfxSource.PlayOneShot(ticklePhaseLine);
         yield return new WaitUntil(() => !qteTickle);
 
         // If we were replaying input, stop replay mode when done
@@ -337,11 +349,11 @@ if (introEmitter != null)
     {
         // move player to attack pos (direct MoveTowards)
         yield return StartCoroutine(MovePlayer(playerAttackPos.position));
+        attack.Play();
 
         // start sword QTE
         qteSword = true;
         swordHits = 0;
-        if (sfxSource && swordPhaseLine) sfxSource.PlayOneShot(swordPhaseLine);
 
         // wait until QTE ends (RegisterSwordHit will set qteSword=false)
         yield return new WaitUntil(() => !qteSword);
@@ -366,6 +378,7 @@ if (introEmitter != null)
     IEnumerator ThrowSequence()
     {
         Debug.Log("Waiting for SPACE to throw sword...");
+        swordthrow.Play();
 
         // ===============================
         // 1️⃣ WAIT FOR FIRST SPACE (SWORD)
@@ -400,6 +413,7 @@ if (introEmitter != null)
         // 2️⃣ WAIT FOR SECOND SPACE (SHIELD)
         // ===============================
         Debug.Log("Waiting for SPACE again to throw shield...");
+        shieldthrow.Play();
         SendLampStateForced(true);
         yield return new WaitUntil(() => IsSpacePressed());
         Debug.Log("SPACE pressed → Throwing shield!");
@@ -469,6 +483,8 @@ if (bossEmitter != null)
 {
     bossEmitter.Stop();
 
+    hero.Play();
+
     victoryEmitter.Play();
 }
 
@@ -492,6 +508,10 @@ if (bossEmitter != null)
         isReplayingInput = true;
         replayStartTime = Time.time;
         replayIndex = 0;
+
+        if (audioSwitcher != null)
+    audioSwitcher.SwitchToSecondary(); // of SwitchToSecondary()
+
 
         StopAllCoroutines();
         ResetObjects();

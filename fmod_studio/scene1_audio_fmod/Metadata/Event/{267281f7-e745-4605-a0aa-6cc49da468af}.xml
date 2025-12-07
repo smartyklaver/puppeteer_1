@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{267281f7-e745-4605-a0aa-6cc49da468af}">
 		<property name="name">
-			<value>ULTRAKILL OST - Divine Intervention (Extended)</value>
+			<value>Boss</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -97,6 +97,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{6dae1648-2b19-412d-8374-08c47c4d0634}">
+		<property name="volume">
+			<value>-19</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
