@@ -20,11 +20,14 @@ public class SupermanCheck  : MonoBehaviour
     public UdpReceiver udp;
     private float TimeStartChecking;
     private float TimeDoneChecking;
+    public AudioSource superman;
 
 
 
     void Start(){
         StartChecking = false; 
+        AudioSource[] sources = GetComponents<AudioSource>();
+        superman = sources[0];
     }
 
     public void CheckSuperman()
@@ -32,6 +35,7 @@ public class SupermanCheck  : MonoBehaviour
         StartChecking = true;
         director.Pause();
         TimeStartChecking = Time.time;
+        superman.Play();    
         
     }
 
