@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{92bdd53d-a828-4a38-a1dc-c86f62f7329b}">
+		<property name="assetPath">
+			<value>actlikeSuperman.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>18.719999999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{56cbeff0-07c2-403b-8ec7-710cf69a34ea}</destination>
+		</relationship>
+	</object>
+</objects>

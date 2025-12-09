@@ -7,6 +7,8 @@ public class SceneEnder : MonoBehaviour
     public CurtainsOpenSceneOne curtain1;
     public CurtainsOpenSceneOne curtain2;
     public CameraSwitcher cameraSwitcher;
+    public AudioOutputSwitcher audioSwitcher;
+
     private bool replay;
     public string nextSceneName;    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,11 +27,13 @@ public class SceneEnder : MonoBehaviour
         curtain2.ResetForTimeline();
         cameraSwitcher.SwitchCameraDisplays();
         restarter.RestartTimeline();
+        audioSwitcher.SwitchToSecondary();
+
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   
 
     }
 }

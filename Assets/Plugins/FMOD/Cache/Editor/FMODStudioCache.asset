@@ -54,6 +54,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3744
+--- !u!114 &-7768834557710268205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/superman Theme
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/superman Theme
+  Guid:
+    Data1: 1794059365
+    Data2: 1126860512
+    Data3: 1823142578
+    Data4: -858362303
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 253048
 --- !u!114 &-7084273287791641864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +96,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639008890423999696
+  lastModified: 639009082509999152
   FileSizes: []
   Exists: 1
 --- !u!114 &-6746549033407131171
@@ -109,9 +136,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Attack
+  m_Name: event:/attack
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Attack
+  Path: event:/attack
   Guid:
     Data1: -57932551
     Data2: 1215342094
@@ -245,6 +272,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 9504
+--- !u!114 &-3548301055522779022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Intro_castle_scene2
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Intro_castle_scene2
+  Guid:
+    Data1: -217270665
+    Data2: 1238406235
+    Data3: -937078133
+    Data4: 549563380
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 8280
 --- !u!114 &-2112417675877148162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,6 +326,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 3744
+--- !u!114 &-1241369625022090411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/happy Wheels victory green screen
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/happy Wheels victory green screen
+  Guid:
+    Data1: 1645977322
+    Data2: 1074799279
+    Data3: 191866758
+    Data4: -1243265433
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 5694
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,40 +383,52 @@ MonoBehaviour:
   - {fileID: -6746549033407131171}
   - {fileID: -8689125370722835083}
   - {fileID: -6219370652339496934}
+  - {fileID: -3548301055522779022}
+  - {fileID: 2887711123968546150}
+  - {fileID: 2724383932015205867}
+  - {fileID: 6750009019018230523}
+  - {fileID: -1241369625022090411}
+  - {fileID: -7768834557710268205}
   EditorParameters: []
   MasterBanks:
   - {fileID: -7084273287791641864}
   StringsBanks:
   - {fileID: 7890496761627732213}
   cacheVersion: 131857
-  cacheTime: 639008890424036219
+  cacheTime: 639009082510019376
   SerializableEventsDict:
-  - key: event:/knightLastWords
-    index: 0
-  - key: event:/scene1intro
-    index: 1
-  - key: event:/Intro
-    index: 2
-  - key: event:/Boss
-    index: 3
-  - key: event:/Victory
-    index: 4
   - key: event:/Reached the mounatin
-    index: 5
+    index: 0
   - key: event:/shield zone
-    index: 6
+    index: 1
   - key: event:/tickle
-    index: 7
+    index: 2
   - key: event:/hero
-    index: 8
+    index: 3
   - key: event:/shield throw
-    index: 9
+    index: 4
   - key: event:/sword throw
-    index: 10
+    index: 5
+  - key: event:/Victory
+    index: 6
+  - key: event:/Intro
+    index: 7
   - key: event:/Duck
+    index: 8
+  - key: event:/knightLastWords
+    index: 9
+  - key: event:/Intro_castle_scene1
+    index: 10
+  - key: event:/Boss
     index: 11
-  - key: event:/Attack
+  - key: event:/scene1intro
     index: 12
+  - key: event:/attack
+    index: 13
+  - key: event:/Intro_castle_scene2
+    index: 14
+  - key: event:/actlikeSuperman
+    index: 15
 --- !u!114 &720874620586593534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +456,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 8376
+--- !u!114 &2724383932015205867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Great_job_after_bow
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Great_job_after_bow
+  Guid:
+    Data1: 1907611004
+    Data2: 1134386408
+    Data3: -1987323233
+    Data4: 492746618
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 4320
+--- !u!114 &2887711123968546150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/actlikeSuperman
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/actlikeSuperman
+  Guid:
+    Data1: 380757518
+    Data2: 1093627525
+    Data3: -1609178749
+    Data4: 61800340
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 18720
 --- !u!114 &5543149259423540180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +591,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 8472
+--- !u!114 &6750009019018230523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Wheel Squeak Sound Effect
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Wheel Squeak Sound Effect
+  Guid:
+    Data1: -1180640828
+    Data2: 1325537287
+    Data3: -1866972784
+    Data4: 2006275057
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 14001
 --- !u!114 &7890496761627732213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,10 +633,10 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639008890424036219
+  lastModified: 639009082510019376
   FileSizes:
   - Name: 
-    Value: 1332
+    Value: 1658
   Exists: 1
 --- !u!114 &8370725013641729483
 MonoBehaviour:

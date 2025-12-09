@@ -59,7 +59,7 @@ public class AudioOutputSwitcher : MonoBehaviour
         Debug.Log("----------------------------");
     }
 
-    private void SwitchOutputDevice(string deviceName)
+    public void SwitchOutputDevice(string deviceName)
     {
         var system = RuntimeManager.CoreSystem;
         system.getNumDrivers(out int numDrivers);

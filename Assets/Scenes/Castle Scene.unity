@@ -3622,6 +3622,7 @@ GameObject:
   - component: {fileID: 1863744532}
   - component: {fileID: 1863744534}
   - component: {fileID: 1863744533}
+  - component: {fileID: 1863744535}
   m_Layer: 0
   m_Name: Timelinecontroller
   m_TagString: Untagged
@@ -3759,7 +3760,22 @@ MonoBehaviour:
   curtain1: {fileID: 1026530271}
   curtain2: {fileID: 952512240}
   cameraSwitcher: {fileID: 1204654469}
+  audioSwitcher: {fileID: 1863744535}
   nextSceneName: Dragon Fight
+--- !u!114 &1863744535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863744528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8c6f70e72469a40ae07bc123600548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
+  primaryDevice: Speakers (Realtek(R) Audio)
+  secondaryDevice: Hoofdtelefoon (3- SteelSeries Arctis Nova 5X)
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}

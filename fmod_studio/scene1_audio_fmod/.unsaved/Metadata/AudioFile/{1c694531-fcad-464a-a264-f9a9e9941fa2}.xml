@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{1c694531-fcad-464a-a264-f9a9e9941fa2}">
+		<property name="assetPath">
+			<value>Happy Wheels victory green screen.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.6946938775510203</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{56cbeff0-07c2-403b-8ec7-710cf69a34ea}</destination>
+		</relationship>
+	</object>
+</objects>
