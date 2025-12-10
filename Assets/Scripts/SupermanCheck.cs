@@ -57,6 +57,7 @@ public class SupermanCheck  : MonoBehaviour
             {
             TimeDoneChecking = Time.time - TimeStartChecking;
             StartChecking = false;
+            superman.Stop(); 
             director.Resume();
             var root = director.playableGraph.GetRootPlayable(0);
             root.SetSpeed(1);
