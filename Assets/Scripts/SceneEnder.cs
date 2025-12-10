@@ -8,6 +8,7 @@ public class SceneEnder : MonoBehaviour
     public CurtainsOpenSceneOne curtain2;
     public CameraSwitcher cameraSwitcher;
     public AudioOutputSwitcher audioSwitcher;
+    public SupermanCheck supermanCheck;
 
     private bool replay;
     public string nextSceneName;    
@@ -25,6 +26,7 @@ public class SceneEnder : MonoBehaviour
         replay = true;
         curtain1.ResetForTimeline();
         curtain2.ResetForTimeline();
+        supermanCheck.StopSupermanSound();
         cameraSwitcher.SwitchCameraDisplays();
         restarter.RestartTimeline();
         audioSwitcher.SwitchToSecondary();

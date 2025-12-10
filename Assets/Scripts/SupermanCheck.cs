@@ -38,6 +38,10 @@ public class SupermanCheck  : MonoBehaviour
         
     }
 
+    public void StopSupermanSound(){
+        superman.Stop();
+    }
+
     void Update()
     {
         float torsoValue = spine.GetCurrentTorsoValue();
@@ -56,8 +60,7 @@ public class SupermanCheck  : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && StartChecking || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
             {
             TimeDoneChecking = Time.time - TimeStartChecking;
-            StartChecking = false;
-            superman.Stop(); 
+            StartChecking = false; 
             director.Resume();
             var root = director.playableGraph.GetRootPlayable(0);
             root.SetSpeed(1);
