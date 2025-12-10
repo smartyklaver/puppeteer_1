@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections; // Nodig voor Coroutine
+using System.Collections;
 
 public class LetterRemove : MonoBehaviour
 {
@@ -21,15 +21,28 @@ public class LetterRemove : MonoBehaviour
 
     private bool isHandTouching = false;
 
+    // We make this private because we will find it automatically
+    private ArduinoButtonReader arduinoReader;
+
+    void Start()
+    {
+        // Automatically find the ArduinoButtonReader on THIS same object
+        arduinoReader = GetComponent<ArduinoButtonReader>();
+
+        if (arduinoReader == null)
+        {
+            Debug.LogError("Error: No 'ArduinoButtonReader' script found on this object! Please add it.");
+        }
+    }
+
     private bool IsAHand(Collider other)
     {
-        // Controleert of de collider de RightHand OF de LeftHand tag heeft
         return other.CompareTag(rightHandTag) || other.CompareTag(leftHandTag);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsAHand(other)) 
+        if (IsAHand(other))
         {
             isHandTouching = true;
             Debug.Log("Hand is touching letter: " + other.gameObject.name);
@@ -38,7 +51,7 @@ public class LetterRemove : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (IsAHand(other)) 
+        if (IsAHand(other))
         {
             isHandTouching = false;
             Debug.Log("Hand not touching letter anymore: " + other.gameObject.name);
@@ -47,14 +60,28 @@ public class LetterRemove : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isHandTouching)
+        // 1. Default to Spacebar
+        bool inputTriggered = Input.GetKeyDown(KeyCode.Space);
+
+        // 2. Check Arduino if the script was found
+        if (arduinoReader != null)
         {
+            if (arduinoReader.WasButtonPressedThisFrame())
+            {
+                inputTriggered = true;
+            }
+        }
+
+        // 3. Final Logic
+        if (inputTriggered && isHandTouching)
+        {
+            Debug.Log("button pressed and Hand is touching!");
             timeOfSpacebarPress = Time.time;
             PerformActionAndDelayReset();
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && !isHandTouching)
+        else if (inputTriggered && !isHandTouching)
         {
-            Debug.Log("Spacebar pressed but hand not touching letter!");
+            Debug.Log("button pressed but hand not touching letter!");
         }
     }
 
@@ -65,7 +92,6 @@ public class LetterRemove : MonoBehaviour
 
     private void SignalResetComplete()
     {
-        //send to TimelineRestarter 
         OnResetReady.Invoke();
         cameraSwitcher.SwitchCameraDisplays();
     }

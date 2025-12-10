@@ -1595,6 +1595,20 @@ MonoBehaviour:
   timeOfSpacebarPress: -1
   rightHandTag: hand_R
   leftHandTag: hand_L
+--- !u!114 &1006910381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923540669}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91a7d5758f3f9e4aa1d001d0ad378c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArduinoButtonReader
+  portName: COM5
+  baudRate: 9600
 --- !u!1 &1026530264
 GameObject:
   m_ObjectHideFlags: 0
@@ -2937,6 +2951,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 407389675392296560, guid: a231f659a371a2642934d1c9a019ed9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1006910380}
+    - targetCorrespondingSourceObject: {fileID: 407389675392296560, guid: a231f659a371a2642934d1c9a019ed9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1006910381}
   m_SourcePrefab: {fileID: 100100000, guid: a231f659a371a2642934d1c9a019ed9b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
