@@ -3762,6 +3762,7 @@ MonoBehaviour:
   curtain2: {fileID: 952512240}
   cameraSwitcher: {fileID: 1204654469}
   audioSwitcher: {fileID: 1863744535}
+  supermanCheck: {fileID: 1335519590}
   nextSceneName: Dragon Fight
 --- !u!114 &1863744535
 MonoBehaviour:
@@ -3775,8 +3776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8c6f70e72469a40ae07bc123600548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
-  primaryDevice: Speakers (Realtek(R) Audio)
-  secondaryDevice: Hoofdtelefoon (3- SteelSeries Arctis Nova 5X)
+  primaryDevice: Hoofdtelefoon (3- SteelSeries Arctis Nova 5X)
+  secondaryDevice: Speakers (Realtek(R) Audio)
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}
