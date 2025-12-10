@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Playables;
+using FMODUnity;
 
 public class SupermanCheck  : MonoBehaviour
 {
@@ -20,14 +21,12 @@ public class SupermanCheck  : MonoBehaviour
     public UdpReceiver udp;
     private float TimeStartChecking;
     private float TimeDoneChecking;
-    public AudioSource superman;
+    public StudioEventEmitter superman;
 
 
 
     void Start(){
         StartChecking = false; 
-        AudioSource[] sources = GetComponents<AudioSource>();
-        superman = sources[0];
     }
 
     public void CheckSuperman()

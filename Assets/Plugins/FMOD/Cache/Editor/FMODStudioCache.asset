@@ -68,10 +68,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
   Path: event:/superman Theme
   Guid:
-    Data1: 1794059365
-    Data2: 1126860512
-    Data3: 1823142578
-    Data4: -858362303
+    Data1: 1775556699
+    Data2: 1229432738
+    Data3: -243339647
+    Data4: -2051862301
   Banks:
   - {fileID: -7084273287791641864}
   IsStream: 1
@@ -96,7 +96,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639009082509999152
+  lastModified: 639009639739897298
   FileSizes: []
   Exists: 1
 --- !u!114 &-6746549033407131171
@@ -395,7 +395,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 7890496761627732213}
   cacheVersion: 131857
-  cacheTime: 639009082510019376
+  cacheTime: 639009639739942496
   SerializableEventsDict:
   - key: event:/Reached the mounatin
     index: 0
@@ -429,6 +429,14 @@ MonoBehaviour:
     index: 14
   - key: event:/actlikeSuperman
     index: 15
+  - key: event:/Great_job_after_bow
+    index: 16
+  - key: event:/Wheel Squeak Sound Effect
+    index: 17
+  - key: event:/happy Wheels victory green screen
+    index: 18
+  - key: event:/superman Theme
+    index: 19
 --- !u!114 &720874620586593534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,7 +641,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639009082510019376
+  lastModified: 639009639739942496
   FileSizes:
   - Name: 
     Value: 1658
