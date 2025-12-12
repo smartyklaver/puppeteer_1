@@ -96,7 +96,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639009639739897298
+  lastModified: 639011515948312001
   FileSizes: []
   Exists: 1
 --- !u!114 &-6746549033407131171
@@ -109,9 +109,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Boss
+  m_Name: event:/BOss
   m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Boss
+  Path: event:/BOss
   Guid:
     Data1: 645038583
     Data2: 1174792005
@@ -389,13 +389,15 @@ MonoBehaviour:
   - {fileID: 6750009019018230523}
   - {fileID: -1241369625022090411}
   - {fileID: -7768834557710268205}
+  - {fileID: 5286819310844879175}
+  - {fileID: 4239211990986495685}
   EditorParameters: []
   MasterBanks:
   - {fileID: -7084273287791641864}
   StringsBanks:
   - {fileID: 7890496761627732213}
   cacheVersion: 131857
-  cacheTime: 639009639739942496
+  cacheTime: 639011515948332059
   SerializableEventsDict:
   - key: event:/Reached the mounatin
     index: 0
@@ -419,7 +421,7 @@ MonoBehaviour:
     index: 9
   - key: event:/Intro_castle_scene1
     index: 10
-  - key: event:/Boss
+  - key: event:/BOss
     index: 11
   - key: event:/scene1intro
     index: 12
@@ -437,6 +439,10 @@ MonoBehaviour:
     index: 18
   - key: event:/superman Theme
     index: 19
+  - key: event:/BOW
+    index: 20
+  - key: event:/superman3
+    index: 21
 --- !u!114 &720874620586593534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,6 +524,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 18720
+--- !u!114 &4239211990986495685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/superman3
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/superman3
+  Guid:
+    Data1: 1459935413
+    Data2: 1240546693
+    Data3: 2133850812
+    Data4: -81500243
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 9576
+--- !u!114 &5286819310844879175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BOW
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/BOW
+  Guid:
+    Data1: 818855018
+    Data2: 1200780742
+    Data3: -1195154008
+    Data4: 1914384767
+  Banks:
+  - {fileID: -7084273287791641864}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3492
 --- !u!114 &5543149259423540180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,10 +701,10 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639009639739942496
+  lastModified: 639011515948332059
   FileSizes:
   - Name: 
-    Value: 1658
+    Value: 1746
   Exists: 1
 --- !u!114 &8370725013641729483
 MonoBehaviour:
