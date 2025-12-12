@@ -20,19 +20,11 @@ public class LetterRemove : MonoBehaviour
     public string leftHandTag = "LeftHand";
 
     private bool isHandTouching = false;
-
-    // We make this private because we will find it automatically
     private ArduinoButtonReader arduinoReader;
 
     void Start()
     {
-        // Automatically find the ArduinoButtonReader on THIS same object
         arduinoReader = GetComponent<ArduinoButtonReader>();
-
-        if (arduinoReader == null)
-        {
-            Debug.LogError("Error: No 'ArduinoButtonReader' script found on this object! Please add it.");
-        }
     }
 
     private bool IsAHand(Collider other)
@@ -46,6 +38,11 @@ public class LetterRemove : MonoBehaviour
         {
             isHandTouching = true;
             Debug.Log("Hand is touching letter: " + other.gameObject.name);
+
+            if (arduinoReader != null)
+            {
+                arduinoReader.SendLampStateForced(true);
+            }
         }
     }
 
@@ -55,33 +52,31 @@ public class LetterRemove : MonoBehaviour
         {
             isHandTouching = false;
             Debug.Log("Hand not touching letter anymore: " + other.gameObject.name);
+
+            if (arduinoReader != null)
+            {
+                arduinoReader.SendLampStateForced(false);
+            }
         }
     }
 
     void Update()
     {
-        // 1. Default to Spacebar
         bool inputTriggered = Input.GetKeyDown(KeyCode.Space);
 
-        // 2. Check Arduino if the script was found
-        if (arduinoReader != null)
+        if (arduinoReader != null && arduinoReader.WasButtonPressedThisFrame())
         {
-            if (arduinoReader.WasButtonPressedThisFrame())
-            {
-                inputTriggered = true;
-            }
+            inputTriggered = true;
         }
 
-        // 3. Final Logic
         if (inputTriggered && isHandTouching)
         {
-            Debug.Log("button pressed and Hand is touching!");
             timeOfSpacebarPress = Time.time;
             PerformActionAndDelayReset();
         }
         else if (inputTriggered && !isHandTouching)
         {
-            Debug.Log("button pressed but hand not touching letter!");
+            Debug.Log("Input pressed but hand not touching letter!");
         }
     }
 
@@ -98,25 +93,18 @@ public class LetterRemove : MonoBehaviour
 
     public void ShowLetter()
     {
-        if (letterObject != null)
-        {
-            letterObject.SetActive(true);
-        }
+        if (letterObject != null) letterObject.SetActive(true);
     }
 
     public float HideLetterAndPlayAudio()
     {
-        if (letterObject != null)
-        {
-            letterObject.SetActive(false);
-        }
+        if (letterObject != null) letterObject.SetActive(false);
 
         if (resetAudioSource != null && resetClip != null)
         {
             resetAudioSource.PlayOneShot(resetClip);
             return resetClip.length;
         }
-
         return 0f;
     }
 }

@@ -2445,7 +2445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8c6f70e72469a40ae07bc123600548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
-  primaryDevice: Hoofdtelefoon (3- SteelSeries Arctis Nova 5X)
+  primaryDevice: Headphones (soundcore Space One)
   secondaryDevice: Speakers (Realtek(R) Audio)
 --- !u!114 &1705329067
 MonoBehaviour:

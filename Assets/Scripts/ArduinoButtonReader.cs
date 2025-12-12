@@ -98,16 +98,23 @@ public class ArduinoButtonReader : MonoBehaviour
             serialPort.Dispose();
         }
     }
-    public void SendToArduino(string message)
-{
-    if (serialPort != null && serialPort.IsOpen)
+    public void SendLampStateForced(bool on)
     {
-        try
-        {
-            serialPort.Write(message);
-        }
-        catch { }
+        SendToArduino(on ? "L" : "l");
     }
-}
+    public void SendToArduino(string message)
+    {
+        if (serialPort != null && serialPort.IsOpen)
+        {
+            try
+            {
+                serialPort.Write(message);
+            }
+            catch { }
+        }
+
+    }
 
 }
+
+

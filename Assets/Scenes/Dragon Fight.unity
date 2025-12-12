@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
   primaryDevice: Headset (Realtek(R) Audio)
-  secondaryDevice: Nothing Ear (a)
+  secondaryDevice: Headphones (soundcore Space One)
 --- !u!4 &285029952
 Transform:
   m_ObjectHideFlags: 0
