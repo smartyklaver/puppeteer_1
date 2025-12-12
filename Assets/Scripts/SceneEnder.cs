@@ -9,6 +9,7 @@ public class SceneEnder : MonoBehaviour
     public CameraSwitcher cameraSwitcher;
     public AudioOutputSwitcher audioSwitcher;
     public SupermanCheck supermanCheck;
+    public ArduinoButtonReader arduino;
 
     private bool replay;
     public string nextSceneName;    
@@ -24,6 +25,7 @@ public class SceneEnder : MonoBehaviour
             SceneManager.LoadScene(nextSceneName);
         }
         replay = true;
+        arduino.ClosePort();
         curtain1.ResetForTimeline();
         curtain2.ResetForTimeline();
         supermanCheck.StopSupermanSound();

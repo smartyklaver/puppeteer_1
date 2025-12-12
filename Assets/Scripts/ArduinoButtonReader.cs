@@ -115,6 +115,12 @@ public class ArduinoButtonReader : MonoBehaviour
 
     }
 
+    public void ClosePort()
+    {
+        if (serialPort != null && serialPort.IsOpen)
+            serialPort.Close();
+    }
+
 }
 
 

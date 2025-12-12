@@ -1396,6 +1396,7 @@ MonoBehaviour:
   shouldercontroller: {fileID: 100414250}
   LetterRemove: {fileID: 1006910380}
   udp: {fileID: 1794345324}
+  arduino: {fileID: 1006910381}
 --- !u!1 &981463485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,12 +1603,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923540669}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e91a7d5758f3f9e4aa1d001d0ad378c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArduinoButtonReader
-  portName: COM5
+  portName: COM8
   baudRate: 9600
 --- !u!1 &1026530264
 GameObject:
@@ -2445,8 +2446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8c6f70e72469a40ae07bc123600548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
-  primaryDevice: Headphones (soundcore Space One)
-  secondaryDevice: Speakers (Realtek(R) Audio)
+  primaryDevice: Hoofdtelefoon (2- SteelSeries Arctis Nova 5X)
+  secondaryDevice: Headphones (Realtek(R) Audio)
 --- !u!114 &1705329067
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -625,8 +625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8c6f70e72469a40ae07bc123600548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
-  primaryDevice: Headset (Realtek(R) Audio)
-  secondaryDevice: Headphones (soundcore Space One)
+  primaryDevice: Hoofdtelefoon (2- SteelSeries Arctis Nova 5X)
+  secondaryDevice: Headphones (Realtek(R) Audio)
 --- !u!4 &285029952
 Transform:
   m_ObjectHideFlags: 0
@@ -3265,7 +3265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UdpReceiver
   recordedFrames: []
   freezeInput: 0
-  port: 56000
+  port: 56001
 --- !u!4 &1102292894
 Transform:
   m_ObjectHideFlags: 0
@@ -3827,7 +3827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91a7d5758f3f9e4aa1d001d0ad378c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArduinoButtonReader
-  portName: COM5
+  portName: COM8
   baudRate: 9600
 --- !u!1 &1298817202 stripped
 GameObject:

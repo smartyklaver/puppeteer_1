@@ -16,6 +16,7 @@ public class KingBowChecker  : MonoBehaviour
     public UdpReceiver udp;
     private float TimeStartChecking;
     private float TimeDoneChecking;
+    private bool LightCanTurnOn = true;
 
 
 
@@ -38,12 +39,17 @@ public class KingBowChecker  : MonoBehaviour
         Debug.Log($"Timedonechecking={TimeDoneChecking}, Timestartchecking={TimeStartChecking},Timenow={Time.time}");
         if (torsoValue >= requiredBend)
         {
+            if(LightCanTurnOn){
+                arduino.SendLampStateForced(true);   
+            }
+            
             //Debug.Log(StartChecking);
-           // if (arduino.WasButtonPressedThisFrame() && StartChecking)
-            if ((Input.GetKeyDown(KeyCode.Space) && StartChecking) || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
+            if (arduino.WasButtonPressedThisFrame() && StartChecking  || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
+           // if ((Input.GetKeyDown(KeyCode.Space) && StartChecking) || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
             {
             TimeDoneChecking = Time.time - TimeStartChecking;
             StartChecking = false;
+            LightCanTurnOn = false;
             director.Resume();
             var root = director.playableGraph.GetRootPlayable(0);
             root.SetSpeed(1);
@@ -52,7 +58,7 @@ public class KingBowChecker  : MonoBehaviour
         }
         else
         {
-
+            arduino.SendLampStateForced(false);
         }
     }
 }

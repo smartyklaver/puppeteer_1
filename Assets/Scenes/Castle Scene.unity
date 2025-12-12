@@ -1972,7 +1972,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335519580}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e91a7d5758f3f9e4aa1d001d0ad378c6, type: 3}
   m_Name: 
@@ -3489,7 +3489,7 @@ MonoBehaviour:
   cameraB: {fileID: 1371783779}
   curtain1: {fileID: 1026530271}
   curtain2: {fileID: 952512240}
-  arduino: {fileID: 1713326259}
+  arduino: {fileID: 1335519584}
   director: {fileID: 1863744529}
   udp: {fileID: 2022151685}
 --- !u!114 &1713326258
@@ -3534,7 +3534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91a7d5758f3f9e4aa1d001d0ad378c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArduinoButtonReader
-  portName: COM7
+  portName: COM8
   baudRate: 9600
 --- !u!1001 &1720082144
 PrefabInstance:
@@ -3697,6 +3697,7 @@ MonoBehaviour:
   shouldercontroller: {fileID: 1335519581}
   LetterRemove: {fileID: 0}
   udp: {fileID: 0}
+  arduino: {fileID: 0}
 --- !u!114 &1863744532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3763,6 +3764,7 @@ MonoBehaviour:
   cameraSwitcher: {fileID: 1204654469}
   audioSwitcher: {fileID: 1863744535}
   supermanCheck: {fileID: 1335519590}
+  arduino: {fileID: 1335519584}
   nextSceneName: Dragon Fight
 --- !u!114 &1863744535
 MonoBehaviour:
@@ -3776,8 +3778,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8c6f70e72469a40ae07bc123600548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioOutputSwitcher
-  primaryDevice: Headphones (soundcore Space One)
-  secondaryDevice: Speakers (Realtek(R) Audio)
+  primaryDevice: Hoofdtelefoon (2- SteelSeries Arctis Nova 5X)
+  secondaryDevice: Headphones (Realtek(R) Audio)
 --- !u!4 &1898435937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3460278577302543951, guid: 395dd9c9138664d498a4547dbfac4c62, type: 3}

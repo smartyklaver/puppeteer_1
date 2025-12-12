@@ -15,6 +15,7 @@ public class TimelineRestarter : MonoBehaviour
     public ShoulderController1 shouldercontroller;
     public LetterRemove LetterRemove;
     public UdpReceiver udp;
+    public ArduinoButtonReader arduino;
     
 
     private float recordingStartTime = 0f;
@@ -91,7 +92,7 @@ public class TimelineRestarter : MonoBehaviour
     public void LoadNextScene()
 {
     // Load the next scene in the build index
-
+    arduino.ClosePort();
     int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
     SceneManager.LoadScene(nextScene);
     
