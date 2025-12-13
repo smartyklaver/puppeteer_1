@@ -11,6 +11,7 @@ public class CinematicManager : MonoBehaviour
     public bool lampOn;
     public AudioOutputSwitcher audioSwitcher;
 
+    public GameObject thankYouText;
 
     [Header("Camera")]
     public Transform cameraTransform;
@@ -148,6 +149,7 @@ public StudioEventEmitter hero;
 
         // ensure list cleared at cold start
         spaceTimestamps.Clear();
+        thankYouText.SetActive(false);
         
 
         // Start cinematic
@@ -496,6 +498,11 @@ if (bossEmitter != null)
 
     // ⏳ Wacht 5 seconden *echt*
     yield return new WaitForSeconds(5f);
+
+     if (isReplayingInput && thankYouText != null)
+    {
+        thankYouText.SetActive(true);
+    }
 
     end = true;
 }
