@@ -83,7 +83,7 @@ public class LetterRemove : MonoBehaviour
 
     public void PerformActionAndDelayReset()
     {
-        targetText.Remove();
+        targetText.RemoveText();
         SignalResetComplete();
     }
 

@@ -31,7 +31,7 @@ public class TextToggle : MonoBehaviour
         StartCoroutine(FadeTo(0f));
     }
 
-    public void Remove()
+    public void RemoveText()
     {
         gameObject.SetActive(false);
     }
