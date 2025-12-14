@@ -21,6 +21,7 @@ public class LetterRemove : MonoBehaviour
 
     private bool isHandTouching = false;
     private ArduinoButtonReader arduinoReader;
+    public TextToggle targetText;
 
     void Start()
     {
@@ -82,6 +83,7 @@ public class LetterRemove : MonoBehaviour
 
     public void PerformActionAndDelayReset()
     {
+        targetText.Remove();
         SignalResetComplete();
     }
 
