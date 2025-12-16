@@ -99,7 +99,7 @@ if(!Replay) { torsoRaw = udp.LatestData.torsoBend; } else { currentReplayTime = 
         }
         }
         
-        currentAngle = Mathf.Lerp(-40f, 120f, torsoRaw);
+        currentAngle = Mathf.Lerp(-25f, 80f, torsoRaw);
 
         spine.localRotation = Quaternion.Euler(
             fixedXAngle,

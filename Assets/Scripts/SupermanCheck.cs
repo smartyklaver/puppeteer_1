@@ -11,14 +11,10 @@ public class SupermanCheck  : MonoBehaviour
     public float maxrightarm = 350f;
     public float minrightarm = 150f;
     public bool StartChecking;
-    // public TimelineRestarter1 restarter;
-    // public Camera cameraA; 
-    // public Camera cameraB; 
-    // public CurtainsOpenSceneOne curtain1;
-    // public CurtainsOpenSceneOne curtain2;
     public ArduinoButtonReader arduino;
     public PlayableDirector director;
     public UdpReceiver udp;
+    public TextToggle text;
     private float TimeStartChecking;
     private float TimeDoneChecking;
     public StudioEventEmitter superman;
@@ -33,6 +29,9 @@ public class SupermanCheck  : MonoBehaviour
     public void CheckSuperman()
     {
         StartChecking = true;
+        if(udp.freezeInput==false){
+            text.ShowText();
+        }
         director.Pause();
         TimeStartChecking = Time.time;
         superman.Play();    
@@ -62,11 +61,12 @@ public class SupermanCheck  : MonoBehaviour
                 arduino.SendLampStateForced(true);   
             }
             //Debug.Log($"Good Superman Pose");   
-            if (arduino.WasButtonPressedThisFrame() && StartChecking  || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking)) 
-            //if (Input.GetKeyDown(KeyCode.Space) && StartChecking || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
+           // if (arduino.WasButtonPressedThisFrame() && StartChecking  || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking)) 
+            if (Input.GetKeyDown(KeyCode.Space) && StartChecking || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
             {
             TimeDoneChecking = Time.time - TimeStartChecking;
             StartChecking = false; 
+            text.HideText();
             LightCanTurnOn = false;
             director.Resume();
             var root = director.playableGraph.GetRootPlayable(0);
