@@ -5,6 +5,7 @@ public class ShieldBlockZone : MonoBehaviour
     [Header("Shield Detection")]
     public bool shieldLocked = false;
     public float requiredHoldTime = 0.4f;
+    public TextToggle text;
 
     float timer = 0f;
     bool shieldInside = false;
@@ -25,6 +26,7 @@ public class ShieldBlockZone : MonoBehaviour
 
         if (instructionAudio != null)
             instructionAudio.Play();
+            text.ShowText();
     }
 
 void Update()
@@ -36,6 +38,7 @@ void Update()
     {
         shieldLocked = true;
         Debug.Log("🛡 Shield confirmed with quick press!");
+        text.RemoveText();
 
         cm.SendLampStateForced(false);       // LAMPJE UIT
 

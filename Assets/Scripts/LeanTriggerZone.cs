@@ -54,8 +54,9 @@ public bool PlayerIsLowEnough()
     // -----------------------------
     // 1️⃣ Update lamp state LIVE
     // -----------------------------
-    if (lowEnough)
+    if (lowEnough){
         cm.SendLampStateForced(true);    // L
+        Debug.Log("lwo enough");}
     else
         cm.SendLampStateForced(false);   // l
 
