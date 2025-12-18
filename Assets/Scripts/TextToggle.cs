@@ -35,6 +35,11 @@ public class TextToggle : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    public void DestroyText()
+{
+    Destroy(gameObject);
+}
+
 
     private void SetAlpha(float alpha)
     {
