@@ -96,7 +96,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639012252071803254
+  lastModified: 639011515948312001
   FileSizes: []
   Exists: 1
 --- !u!114 &-6746549033407131171
@@ -397,7 +397,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 7890496761627732213}
   cacheVersion: 131857
-  cacheTime: 639012252071843298
+  cacheTime: 639011515948332059
   SerializableEventsDict:
   - key: event:/Reached the mounatin
     index: 0
@@ -701,7 +701,7 @@ MonoBehaviour:
   Path: Assets/FMOD_storm/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639012252071843298
+  lastModified: 639011515948332059
   FileSizes:
   - Name: 
     Value: 1746
