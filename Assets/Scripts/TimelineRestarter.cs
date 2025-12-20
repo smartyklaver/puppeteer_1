@@ -32,7 +32,8 @@ public class TimelineRestarter : MonoBehaviour
     public void RestartTimeline()
     {
         LetterRemove.ShowLetter();
-
+        //arduino.ClosePort();
+        ClosePort();
         float timeOfPress = LetterRemove.timeOfSpacebarPress;
 
         // Berekende duur: Tijd tussen start opname en spatiebalk-druk
@@ -53,6 +54,30 @@ public class TimelineRestarter : MonoBehaviour
             StartCoroutine(HideLetterAfterDelay(recordedDuration));
         }
     }
+
+    public void ClosePort()
+{
+    try
+    {
+        if (arduino.serialPort != null)
+        {
+            if (arduino.serialPort.IsOpen)
+            {
+                arduino.serialPort.DiscardInBuffer();
+                arduino.serialPort.DiscardOutBuffer();
+                arduino.serialPort.Close();
+            }
+
+            arduino.serialPort.Dispose();
+            arduino.serialPort = null;
+        }
+    }
+    catch (System.Exception e)
+    {
+        Debug.LogWarning("Error closing serial port: " + e.Message);
+    }
+}
+
 
     private void PerformInstantReset()
     {

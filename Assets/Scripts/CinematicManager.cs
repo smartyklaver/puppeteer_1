@@ -607,9 +607,9 @@ public class CinematicManager : MonoBehaviour
         if (!qteTickle) return; 
 
         if (dragonHealth != null)
-            dragonHealth.TakeQTEHit(5f);
+            dragonHealth.TakeQTEHit(10f);
 
-        Debug.Log("🤣 Tickle hit! Dragon takes 5 damage.");
+        Debug.Log("🤣 Tickle hit! Dragon takes 10 damage.");
     }
 
     void HandleDragonDeath()

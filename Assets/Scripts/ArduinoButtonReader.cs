@@ -8,7 +8,7 @@ public class ArduinoButtonReader : MonoBehaviour
                                      // On Mac/Linux: "/dev/tty.usbmodemXXXX" or "/dev/ttyACM0"
     public int baudRate = 9600;
 
-    private SerialPort serialPort;
+    public SerialPort serialPort;
     private bool buttonPressedThisFrame = false;
 
     void Start()

@@ -61,8 +61,8 @@ public class SupermanCheck  : MonoBehaviour
                 arduino.SendLampStateForced(true);   
             }
             //Debug.Log($"Good Superman Pose");   
-           // if (arduino.WasButtonPressedThisFrame() && StartChecking  || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking)) 
-            if (Input.GetKeyDown(KeyCode.Space) && StartChecking || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
+            if (arduino.WasButtonPressedThisFrame() && StartChecking  || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking)) 
+          //  if (Input.GetKeyDown(KeyCode.Space) && StartChecking || ((Time.time - TimeStartChecking >= TimeDoneChecking) && udp.freezeInput==true && StartChecking))
             {
             TimeDoneChecking = Time.time - TimeStartChecking;
             StartChecking = false; 
