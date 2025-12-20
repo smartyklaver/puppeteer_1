@@ -54,13 +54,12 @@ public class ShoulderController1 : MonoBehaviour
     {
         if (!Replay)
         {
-            // LIVE INPUT
             leftYAngle = udp.LatestData.leftShoulderValue + 90f;
             rightYAngle = udp.LatestData.rightShoulderValue + 90f;
         }
         else
         {
-            // SAFETY: if list was cleared we stop replay
+            //if list was cleared stop replay
             if (allFrames == null || allFrames.Count < 2)
             {
                 Debug.LogWarning("[Shoulders] Replay aborted: no frames");
@@ -74,17 +73,16 @@ public class ShoulderController1 : MonoBehaviour
             if (frameindex >= allFrames.Count)
                 frameindex = allFrames.Count - 1;
 
-            // Advance through frames
             while (frameindex < allFrames.Count - 1 &&
                    allFrames[frameindex + 1].timeStamp <= currentReplayTime)
             {
                 frameindex++;
             }
 
-            // SAFETY: avoid out-of-range
+            //avoid out-of-range
             frameindex = Mathf.Clamp(frameindex, 0, allFrames.Count - 1);
 
-            // Apply frame
+
             leftYAngle = allFrames[frameindex].leftShoulder + 90f;
             rightYAngle = allFrames[frameindex].rightShoulder + 90f;
 
